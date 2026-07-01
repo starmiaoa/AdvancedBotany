@@ -6,5 +6,14 @@
   "item.advancedbotany.air_of_forgotten_lands": "Воздух забытых земель",
   "item.advancedbotany.natures_gift": "Дар природы",
   "item.advancedbotany.nebula_fragment": "Фрагмент туманности",
-  "item.advancedbotany.piece_of_nebula": "Кусочек туманности"
+  "item.advancedbotany.piece_of_nebula": "Кусочек туманности",
+  "block.advancedbotany.mithril_block": "Блок мифрилла",
+  "block.advancedbotany.lebethron_wood": "Древесина Лебертона",
+  "block.advancedbotany.lebethron_planks": "Доски из древесины Лебертона",
+  "block.advancedbotany.mossy_lebethron_planks": "Замшелые доски из древесины Лебертона",
+  "block.advancedbotany.glimmering_lebethron_wood": "Светящаяся древесина Лебертона",
+  "block.advancedbotany.terra_farmland": "Плодородная почва",
+  "block.advancedbotany.freyr_liana": "Плодородная Лиана",
+  "block.advancedbotany.luminous_freyr_liana": "Светящаяся Плодородная Лиана",
+  "block.advancedbotany.antigravitation": "Антигравитационный блок"
 }
