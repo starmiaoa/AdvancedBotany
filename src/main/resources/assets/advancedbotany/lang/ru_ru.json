@@ -34,5 +34,15 @@
   "ab.gameBoard.misc.0.mult": "%s побеждает в игре",
   "ab.gameBoard.misc.1.mult": "Игра завершается ничьей",
   "ab.gameBoard.misc.2.mult": "%s побеждает в игре",
-  "ab.gameBoard.misc.notPlayer": "Игра завершается, отсутствует второй игрок"
+  "ab.gameBoard.misc.notPlayer": "Игра завершается, отсутствует второй игрок",
+  "block.advancedbotany.ancient_alphirine": "Древний Альфирин",
+  "block.advancedbotany.floating_ancient_alphirine": "Парящий Древний Альфирин",
+  "block.advancedbotany.ardent_azarcissus": "Пылкий Азарцисс",
+  "block.advancedbotany.floating_ardent_azarcissus": "Парящий Пылкий Азарцисс",
+  "block.advancedbotany.dictarius": "Диктариус",
+  "block.advancedbotany.floating_dictarius": "Парящий Диктариус",
+  "block.advancedbotany.aspecolus": "Аспеколус",
+  "block.advancedbotany.floating_aspecolus": "Парящий Аспеколус",
+  "block.advancedbotany.pure_gladiolus": "Чистый Гладиулос",
+  "block.advancedbotany.floating_pure_gladiolus": "Парящий Чистый Гладиулос"
 }

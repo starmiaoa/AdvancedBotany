@@ -45,6 +45,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.PLAYING_BOARD.get());
                 output.accept(ModItems.FATE_PLAYING_BOARD.get());
                 output.accept(ModItems.LEBETHRON_NATURAL_CORE.get());
+                ModFlowers.addToCreativeTab(output);
             })
             .build());
 

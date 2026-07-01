@@ -34,5 +34,15 @@
   "ab.gameBoard.misc.0.mult": "%s wins the game",
   "ab.gameBoard.misc.1.mult": "Game ends in a draw",
   "ab.gameBoard.misc.2.mult": "%s wins the game",
-  "ab.gameBoard.misc.notPlayer": "The game ends, the second player is missing"
+  "ab.gameBoard.misc.notPlayer": "The game ends, the second player is missing",
+  "block.advancedbotany.ancient_alphirine": "Ancient Alphirine",
+  "block.advancedbotany.floating_ancient_alphirine": "Floating Ancient Alphirine",
+  "block.advancedbotany.ardent_azarcissus": "Ardent Azarcissus",
+  "block.advancedbotany.floating_ardent_azarcissus": "Floating Ardent Azarcissus",
+  "block.advancedbotany.dictarius": "Dictarius",
+  "block.advancedbotany.floating_dictarius": "Floating Dictarius",
+  "block.advancedbotany.aspecolus": "Aspecolus",
+  "block.advancedbotany.floating_aspecolus": "Floating Aspecolus",
+  "block.advancedbotany.pure_gladiolus": "Pure Gladiolus",
+  "block.advancedbotany.floating_pure_gladiolus": "Floating Pure Gladiolus"
 }
