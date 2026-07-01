@@ -21,5 +21,18 @@
   "block.advancedbotany.mana_container": "Mana Container",
   "block.advancedbotany.diluted_mana_container": "Diluted Mana Container",
   "block.advancedbotany.fabulous_mana_container": "Fabulous Mana Container",
-  "block.advancedbotany.mana_charger": "Mana Charger"
+  "block.advancedbotany.mana_charger": "Mana Charger",
+  "block.advancedbotany.engineer_hopper": "Engineer Hopper",
+  "block.advancedbotany.nidavellir_forge": "Forge of Nidavellir",
+  "block.advancedbotany.magic_craft_crate": "Thaumim Crafty Crate",
+  "block.advancedbotany.playing_board": "Playing Board",
+  "block.advancedbotany.fate_playing_board": "Fate Playing Board",
+  "block.advancedbotany.lebethron_natural_core": "Natural Core",
+  "ab.gameBoard.misc.0": "%s wins the game",
+  "ab.gameBoard.misc.1": "Game ends in a draw",
+  "ab.gameBoard.misc.2": "%s loses the game",
+  "ab.gameBoard.misc.0.mult": "%s wins the game",
+  "ab.gameBoard.misc.1.mult": "Game ends in a draw",
+  "ab.gameBoard.misc.2.mult": "%s wins the game",
+  "ab.gameBoard.misc.notPlayer": "The game ends, the second player is missing"
 }

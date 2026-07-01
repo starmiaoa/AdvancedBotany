@@ -39,6 +39,12 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.DILUTED_MANA_CONTAINER.get());
                 output.accept(ModItems.FABULOUS_MANA_CONTAINER.get());
                 output.accept(ModItems.MANA_CHARGER.get());
+                output.accept(ModItems.ENGINEER_HOPPER.get());
+                output.accept(ModItems.NIDAVELLIR_FORGE.get());
+                output.accept(ModItems.MAGIC_CRAFT_CRATE.get());
+                output.accept(ModItems.PLAYING_BOARD.get());
+                output.accept(ModItems.FATE_PLAYING_BOARD.get());
+                output.accept(ModItems.LEBETHRON_NATURAL_CORE.get());
             })
             .build());
 

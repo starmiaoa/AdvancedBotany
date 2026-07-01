@@ -21,5 +21,18 @@
   "block.advancedbotany.mana_container": "Контейнер маны",
   "block.advancedbotany.diluted_mana_container": "Контейнер разбавленной маны",
   "block.advancedbotany.fabulous_mana_container": "Мифический контейнер маны",
-  "block.advancedbotany.mana_charger": "Зарядник маны"
+  "block.advancedbotany.mana_charger": "Зарядник маны",
+  "block.advancedbotany.engineer_hopper": "Воронка инженера",
+  "block.advancedbotany.nidavellir_forge": "Кузня из Нидавеллира",
+  "block.advancedbotany.magic_craft_crate": "Таум - Сборочный ящик",
+  "block.advancedbotany.playing_board": "Игральная Доска",
+  "block.advancedbotany.fate_playing_board": "Игральная Доска Судьбы",
+  "block.advancedbotany.lebethron_natural_core": "Природное ядро",
+  "ab.gameBoard.misc.0": "%s побеждает в игре",
+  "ab.gameBoard.misc.1": "Игра завершается ничьей",
+  "ab.gameBoard.misc.2": "%s проигрывает в игре",
+  "ab.gameBoard.misc.0.mult": "%s побеждает в игре",
+  "ab.gameBoard.misc.1.mult": "Игра завершается ничьей",
+  "ab.gameBoard.misc.2.mult": "%s побеждает в игре",
+  "ab.gameBoard.misc.notPlayer": "Игра завершается, отсутствует второй игрок"
 }

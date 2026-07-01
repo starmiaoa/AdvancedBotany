@@ -1,12 +1,15 @@
 package com.pulxes.advancedbotany;
 
 import com.mojang.logging.LogUtils;
+import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import com.pulxes.advancedbotany.registry.ModBlocks;
 import com.pulxes.advancedbotany.registry.ModCreativeTabs;
 import com.pulxes.advancedbotany.registry.ModEntities;
 import com.pulxes.advancedbotany.registry.ModItems;
 import com.pulxes.advancedbotany.registry.ModForgeEvents;
+import com.pulxes.advancedbotany.registry.ModMenuTypes;
+import com.pulxes.advancedbotany.registry.ModSounds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -24,11 +27,14 @@ public class AdvancedBotany {
         ModItems.register(modBus);
         ModBlocks.register(modBus);
         ModBlockEntities.register(modBus);
+        ModMenuTypes.register(modBus);
         ModEntities.register(modBus);
+        ModSounds.register(modBus);
         ModCreativeTabs.register(modBus);
 
         modBus.addListener(ModCreativeTabs::addCreativeTabItems);
 
         MinecraftForge.EVENT_BUS.register(ModForgeEvents.class);
+        AdvancedBotanyAPI.registerDefaultBoardEntries();
     }
 }

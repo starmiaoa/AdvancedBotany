@@ -2,14 +2,19 @@ package com.pulxes.advancedbotany.registry;
 
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.common.block.AntigravitationBlock;
+import com.pulxes.advancedbotany.common.block.EngineerHopperBlock;
 import com.pulxes.advancedbotany.common.block.FreyrLianaBlock;
 import com.pulxes.advancedbotany.common.block.LebethronWoodBlock;
+import com.pulxes.advancedbotany.common.block.LebethronNaturalCoreBlock;
 import com.pulxes.advancedbotany.common.block.LuminousFreyrLianaBlock;
+import com.pulxes.advancedbotany.common.block.MagicCraftCrateBlock;
 import com.pulxes.advancedbotany.common.block.ManaChargerBlock;
 import com.pulxes.advancedbotany.common.block.ManaContainerBlock;
 import com.pulxes.advancedbotany.common.block.ManaCrystalCubeBlock;
 import com.pulxes.advancedbotany.common.block.MithrilStorageBlock;
 import com.pulxes.advancedbotany.common.block.NaturalManaSpreaderBlock;
+import com.pulxes.advancedbotany.common.block.NidavellirForgeBlock;
+import com.pulxes.advancedbotany.common.block.PlayingBoardBlock;
 import com.pulxes.advancedbotany.common.block.TerraFarmlandBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,6 +40,12 @@ public final class ModBlocks {
     public static final RegistryObject<Block> DILUTED_MANA_CONTAINER = BLOCKS.register("diluted_mana_container", () -> new ManaContainerBlock(ManaContainerBlock.Variant.DILUTED));
     public static final RegistryObject<Block> FABULOUS_MANA_CONTAINER = BLOCKS.register("fabulous_mana_container", () -> new ManaContainerBlock(ManaContainerBlock.Variant.FABULOUS));
     public static final RegistryObject<Block> MANA_CHARGER = BLOCKS.register("mana_charger", ManaChargerBlock::new);
+    public static final RegistryObject<Block> ENGINEER_HOPPER = BLOCKS.register("engineer_hopper", EngineerHopperBlock::new);
+    public static final RegistryObject<Block> NIDAVELLIR_FORGE = BLOCKS.register("nidavellir_forge", NidavellirForgeBlock::new);
+    public static final RegistryObject<Block> MAGIC_CRAFT_CRATE = BLOCKS.register("magic_craft_crate", MagicCraftCrateBlock::new);
+    public static final RegistryObject<Block> PLAYING_BOARD = BLOCKS.register("playing_board", () -> new PlayingBoardBlock(false));
+    public static final RegistryObject<Block> FATE_PLAYING_BOARD = BLOCKS.register("fate_playing_board", () -> new PlayingBoardBlock(true));
+    public static final RegistryObject<Block> LEBETHRON_NATURAL_CORE = BLOCKS.register("lebethron_natural_core", LebethronNaturalCoreBlock::new);
 
     private ModBlocks() {
     }

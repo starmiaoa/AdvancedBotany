@@ -39,6 +39,12 @@ public final class ModItems {
     public static final RegistryObject<Item> DILUTED_MANA_CONTAINER = blockItem("diluted_mana_container", ModBlocks.DILUTED_MANA_CONTAINER);
     public static final RegistryObject<Item> FABULOUS_MANA_CONTAINER = blockItem("fabulous_mana_container", ModBlocks.FABULOUS_MANA_CONTAINER);
     public static final RegistryObject<Item> MANA_CHARGER = blockItem("mana_charger", ModBlocks.MANA_CHARGER);
+    public static final RegistryObject<Item> ENGINEER_HOPPER = blockItem("engineer_hopper", ModBlocks.ENGINEER_HOPPER);
+    public static final RegistryObject<Item> NIDAVELLIR_FORGE = blockItem("nidavellir_forge", ModBlocks.NIDAVELLIR_FORGE);
+    public static final RegistryObject<Item> MAGIC_CRAFT_CRATE = blockItem("magic_craft_crate", ModBlocks.MAGIC_CRAFT_CRATE);
+    public static final RegistryObject<Item> PLAYING_BOARD = blockItem("playing_board", ModBlocks.PLAYING_BOARD);
+    public static final RegistryObject<Item> FATE_PLAYING_BOARD = blockItem("fate_playing_board", ModBlocks.FATE_PLAYING_BOARD);
+    public static final RegistryObject<Item> LEBETHRON_NATURAL_CORE = blockItem("lebethron_natural_core", ModBlocks.LEBETHRON_NATURAL_CORE);
 
     private ModItems() {
     }

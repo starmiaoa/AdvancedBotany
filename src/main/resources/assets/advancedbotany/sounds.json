@@ -1,5 +1,6 @@
 {
 	"boardCube": { "category": "block", "sounds":["boardCube"] },
+	"board_cube": { "category": "block", "sounds":["board_cube"] },
 	"nebulaBlaze": { "category": "player", "sounds":["nebulaBlaze"] },
 	"bladeSpace": { "category": "player", "sounds":["bladeSpace"] },
 	"nebulaRod": { "category": "player", "sounds":["nebulaRod"] },
