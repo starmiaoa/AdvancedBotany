@@ -65,6 +65,15 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.ROD_OF_NEBULA.get());
                 output.accept(ModItems.NEBULA_BLAZE.get());
                 output.accept(ModItems.SUPERCONDUCTIVE_SPARK.get());
+                output.accept(ModItems.NEBULA_HELMET.get());
+                output.accept(ModItems.NEBULA_HELMET_OF_REVEALING.get());
+                output.accept(ModItems.NEBULA_CHESTPLATE.get());
+                output.accept(ModItems.NEBULA_LEGGINGS.get());
+                output.accept(ModItems.NEBULA_BOOTS.get());
+                output.accept(ModItems.WILD_HUNT_HELMET.get());
+                output.accept(ModItems.WILD_HUNT_CHESTPLATE.get());
+                output.accept(ModItems.WILD_HUNT_LEGGINGS.get());
+                output.accept(ModItems.WILD_HUNT_BOOTS.get());
                 ModFlowers.addToCreativeTab(output);
             })
             .build());
