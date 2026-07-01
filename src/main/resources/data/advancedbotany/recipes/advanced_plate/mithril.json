@@ -1,0 +1,19 @@
+{
+  "type": "advancedbotany:advanced_plate",
+  "color": 2479799,
+  "ingredients": [
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:manasteel_block"
+    },
+    {
+      "item": "botania:terrasteel_nugget"
+    }
+  ],
+  "mana": 2500000,
+  "output": {
+    "item": "advancedbotany:mithril"
+  }
+}

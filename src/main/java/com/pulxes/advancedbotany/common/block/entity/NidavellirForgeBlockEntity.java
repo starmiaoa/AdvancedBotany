@@ -1,7 +1,9 @@
 package com.pulxes.advancedbotany.common.block.entity;
 
 import com.pulxes.advancedbotany.common.menu.NidavellirForgeMenu;
+import com.pulxes.advancedbotany.common.recipe.AdvancedPlateRecipe;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
+import com.pulxes.advancedbotany.registry.ModRecipes;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -124,11 +126,11 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
         }
 
         int oldManaToGet = manaToGet;
-        Optional<AdvancedPlateRecipeView> recipe = findMatchingAdvancedPlateRecipe();
-        if (recipe.isPresent() && canAcceptOutput(recipe.get().output())) {
-            AdvancedPlateRecipeView view = recipe.get();
-            manaToGet = view.manaUsage();
-            recipeColor = view.color();
+        Optional<AdvancedPlateRecipe> recipe = findMatchingAdvancedPlateRecipe();
+        if (recipe.isPresent() && canAcceptOutput(recipe.get().getOutput())) {
+            AdvancedPlateRecipe view = recipe.get();
+            manaToGet = view.getManaUsage();
+            recipeColor = view.getColor();
             if (mana >= manaToGet && manaToGet > 0) {
                 craft(view);
                 hasUpdate = true;
@@ -145,19 +147,25 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
         }
     }
 
-    private Optional<AdvancedPlateRecipeView> findMatchingAdvancedPlateRecipe() {
-        // TODO Batch 8: query the modern RecipeAdvancedPlate recipe type here.
-        return Optional.empty();
+    private Optional<AdvancedPlateRecipe> findMatchingAdvancedPlateRecipe() {
+        if (level == null) {
+            return Optional.empty();
+        }
+        return level.getRecipeManager().getAllRecipesFor(ModRecipes.ADVANCED_PLATE_TYPE.get())
+                .stream()
+                .filter(recipe -> recipe.matches(this, level))
+                .findFirst();
     }
 
     private boolean canAcceptOutput(ItemStack output) {
         ItemStack currentOutput = getItem(OUTPUT_SLOT);
         return currentOutput.isEmpty()
-                || ItemStack.isSameItemSameTags(currentOutput, output) && currentOutput.getCount() < currentOutput.getMaxStackSize();
+                || ItemStack.isSameItemSameTags(currentOutput, output)
+                && currentOutput.getCount() + output.getCount() <= currentOutput.getMaxStackSize();
     }
 
-    private void craft(AdvancedPlateRecipeView recipe) {
-        receiveMana(-recipe.manaUsage());
+    private void craft(AdvancedPlateRecipe recipe) {
+        receiveMana(-recipe.getManaUsage());
         manaToGet = 0;
         for (int i = FIRST_INPUT_SLOT; i < getContainerSize(); i++) {
             ItemStack stack = getItem(i);
@@ -167,7 +175,7 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
                 items.set(i, ItemStack.EMPTY);
             }
         }
-        ItemStack output = recipe.output().copy();
+        ItemStack output = recipe.getOutput();
         ItemStack currentOutput = getItem(OUTPUT_SLOT);
         if (currentOutput.isEmpty()) {
             items.set(OUTPUT_SLOT, output);
@@ -350,13 +358,5 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
             return sidedHandlers[side.ordinal()].cast();
         }
         return super.getCapability(capability, side);
-    }
-
-    private interface AdvancedPlateRecipeView {
-        ItemStack output();
-
-        int manaUsage();
-
-        int color();
     }
 }

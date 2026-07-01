@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "botania:livingrock"
+    },
+    "M": {
+      "item": "botania:bellows"
+    },
+    "N": {
+      "item": "advancedbotany:mithril_nugget"
+    },
+    "P": {
+      "item": "botania:mana_pylon"
+    },
+    "R": {
+      "item": "botania:rune_mana"
+    }
+  },
+  "pattern": [
+    "NLN",
+    "MPM",
+    " R "
+  ],
+  "result": {
+    "item": "advancedbotany:mana_charger"
+  },
+  "show_notification": true
+}

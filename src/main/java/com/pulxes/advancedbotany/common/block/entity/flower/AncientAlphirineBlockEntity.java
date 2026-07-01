@@ -1,9 +1,13 @@
 package com.pulxes.advancedbotany.common.block.entity.flower;
 
 import com.pulxes.advancedbotany.common.entity.EntityAlphirinePortal;
+import com.pulxes.advancedbotany.common.recipe.AncientAlphirineRecipe;
 import com.pulxes.advancedbotany.registry.ModFlowers;
+import com.pulxes.advancedbotany.registry.ModRecipes;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -41,8 +45,46 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 item -> !item.isRemoved() && !item.getItem().isEmpty());
 
         if (!nearbyItems.isEmpty()) {
-            // TODO Batch 8: consume matching RecipeAncientAlphirine inputs, then call spawnPortal(output).
+            for (ItemEntity itemEntity : nearbyItems) {
+                ItemStack stack = itemEntity.getItem();
+                Optional<AncientAlphirineRecipe> recipe = findMatchingRecipe(level, stack);
+                if (recipe.isEmpty()) {
+                    continue;
+                }
+
+                AncientAlphirineRecipe alphirineRecipe = recipe.get();
+                if (getMana() < alphirineRecipe.getManaUsage()) {
+                    continue;
+                }
+
+                if (level.isClientSide) {
+                    return;
+                }
+
+                stack.shrink(1);
+                if (stack.isEmpty()) {
+                    itemEntity.discard();
+                }
+
+                if (level.random.nextInt(111) <= alphirineRecipe.getChance()) {
+                    addMana(-alphirineRecipe.getManaUsage());
+                    spawnPortal(alphirineRecipe.getResultItem(level.registryAccess()).copy());
+                } else {
+                    addMana(-(alphirineRecipe.getManaUsage() / 10));
+                }
+                sync();
+                return;
+            }
         }
+    }
+
+    private Optional<AncientAlphirineRecipe> findMatchingRecipe(Level level, ItemStack input) {
+        SimpleContainer container = new SimpleContainer(1);
+        container.setItem(0, input);
+        return level.getRecipeManager().getAllRecipesFor(ModRecipes.ANCIENT_ALPHIRINE_TYPE.get())
+                .stream()
+                .filter(recipe -> recipe.matches(container, level))
+                .findFirst();
     }
 
     private void spawnPortal(ItemStack stack) {

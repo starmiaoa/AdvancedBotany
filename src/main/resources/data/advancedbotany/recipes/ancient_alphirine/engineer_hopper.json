@@ -1,0 +1,11 @@
+{
+  "type": "advancedbotany:ancient_alphirine",
+  "chance": 23,
+  "input": {
+    "item": "minecraft:hopper"
+  },
+  "mana": 4500,
+  "output": {
+    "item": "advancedbotany:engineer_hopper"
+  }
+}

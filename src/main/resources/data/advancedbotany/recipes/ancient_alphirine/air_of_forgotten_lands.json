@@ -1,0 +1,11 @@
+{
+  "type": "advancedbotany:ancient_alphirine",
+  "chance": 75,
+  "input": {
+    "item": "botania:ender_air_bottle"
+  },
+  "mana": 4500,
+  "output": {
+    "item": "advancedbotany:air_of_forgotten_lands"
+  }
+}

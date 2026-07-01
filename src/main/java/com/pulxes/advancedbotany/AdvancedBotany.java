@@ -12,6 +12,7 @@ import com.pulxes.advancedbotany.registry.ModFlowers;
 import com.pulxes.advancedbotany.registry.ModItems;
 import com.pulxes.advancedbotany.registry.ModForgeEvents;
 import com.pulxes.advancedbotany.registry.ModMenuTypes;
+import com.pulxes.advancedbotany.registry.ModRecipes;
 import com.pulxes.advancedbotany.registry.ModSounds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -31,6 +32,7 @@ public class AdvancedBotany {
         ModBlocks.register(modBus);
         ModBlockEntities.register(modBus);
         ModMenuTypes.register(modBus);
+        ModRecipes.register(modBus);
         ModEntities.register(modBus);
         ModSounds.register(modBus);
         ModFlowers.register(modBus);

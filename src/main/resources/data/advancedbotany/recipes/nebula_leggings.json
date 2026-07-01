@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "advancedbotany:air_of_forgotten_lands"
+    },
+    "E": {
+      "item": "botania:pixie_dust"
+    },
+    "H": {
+      "item": "botania:terrasteel_leggings"
+    },
+    "N": {
+      "item": "advancedbotany:nebula_fragment"
+    },
+    "R": {
+      "item": "botania:dragonstone"
+    }
+  },
+  "pattern": [
+    "ENE",
+    "RHR",
+    "NAN"
+  ],
+  "result": {
+    "item": "advancedbotany:nebula_leggings"
+  },
+  "show_notification": true
+}

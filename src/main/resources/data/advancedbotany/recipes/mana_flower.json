@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "item": "advancedbotany:natures_gift"
+    },
+    "M": {
+      "item": "botania:mana_bottle"
+    },
+    "R": {
+      "item": "botania:rune_mana"
+    }
+  },
+  "pattern": [
+    "F",
+    "M",
+    "R"
+  ],
+  "result": {
+    "item": "advancedbotany:mana_flower"
+  },
+  "show_notification": true
+}

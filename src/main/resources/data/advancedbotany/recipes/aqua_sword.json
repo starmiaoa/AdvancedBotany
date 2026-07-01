@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": {
+      "item": "advancedbotany:mithril"
+    },
+    "N": {
+      "item": "advancedbotany:mithril_nugget"
+    },
+    "R": {
+      "item": "botania:rune_water"
+    },
+    "W": {
+      "item": "botania:dreamwood_twig"
+    }
+  },
+  "pattern": [
+    "  N",
+    "RM ",
+    "WR "
+  ],
+  "result": {
+    "item": "advancedbotany:aqua_sword"
+  },
+  "show_notification": true
+}
