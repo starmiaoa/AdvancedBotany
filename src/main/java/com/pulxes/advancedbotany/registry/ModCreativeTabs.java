@@ -33,6 +33,12 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.FREYR_LIANA.get());
                 output.accept(ModItems.LUMINOUS_FREYR_LIANA.get());
                 output.accept(ModItems.ANTIGRAVITATION.get());
+                output.accept(ModItems.MANA_CRYSTAL_CUBE.get());
+                output.accept(ModItems.NATURAL_MANA_SPREADER.get());
+                output.accept(ModItems.MANA_CONTAINER.get());
+                output.accept(ModItems.DILUTED_MANA_CONTAINER.get());
+                output.accept(ModItems.FABULOUS_MANA_CONTAINER.get());
+                output.accept(ModItems.MANA_CHARGER.get());
             })
             .build());
 

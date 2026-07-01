@@ -15,5 +15,11 @@
   "block.advancedbotany.terra_farmland": "Плодородная почва",
   "block.advancedbotany.freyr_liana": "Плодородная Лиана",
   "block.advancedbotany.luminous_freyr_liana": "Светящаяся Плодородная Лиана",
-  "block.advancedbotany.antigravitation": "Антигравитационный блок"
+  "block.advancedbotany.antigravitation": "Антигравитационный блок",
+  "block.advancedbotany.mana_crystal_cube": "Кристаллический куб маны",
+  "block.advancedbotany.natural_mana_spreader": "Природный распространитель маны",
+  "block.advancedbotany.mana_container": "Контейнер маны",
+  "block.advancedbotany.diluted_mana_container": "Контейнер разбавленной маны",
+  "block.advancedbotany.fabulous_mana_container": "Мифический контейнер маны",
+  "block.advancedbotany.mana_charger": "Зарядник маны"
 }

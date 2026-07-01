@@ -15,5 +15,11 @@
   "block.advancedbotany.terra_farmland": "Fertile soil",
   "block.advancedbotany.freyr_liana": "Fertile Liana",
   "block.advancedbotany.luminous_freyr_liana": "Glowing Fertile Liana",
-  "block.advancedbotany.antigravitation": "Antigravitation Block"
+  "block.advancedbotany.antigravitation": "Antigravitation Block",
+  "block.advancedbotany.mana_crystal_cube": "Mana Crystal Cube",
+  "block.advancedbotany.natural_mana_spreader": "Natural Mana Spreader",
+  "block.advancedbotany.mana_container": "Mana Container",
+  "block.advancedbotany.diluted_mana_container": "Diluted Mana Container",
+  "block.advancedbotany.fabulous_mana_container": "Fabulous Mana Container",
+  "block.advancedbotany.mana_charger": "Mana Charger"
 }

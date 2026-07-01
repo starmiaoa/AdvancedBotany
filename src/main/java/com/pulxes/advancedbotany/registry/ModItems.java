@@ -33,6 +33,12 @@ public final class ModItems {
     public static final RegistryObject<Item> FREYR_LIANA = blockItem("freyr_liana", ModBlocks.FREYR_LIANA);
     public static final RegistryObject<Item> LUMINOUS_FREYR_LIANA = blockItem("luminous_freyr_liana", ModBlocks.LUMINOUS_FREYR_LIANA);
     public static final RegistryObject<Item> ANTIGRAVITATION = blockItem("antigravitation", ModBlocks.ANTIGRAVITATION);
+    public static final RegistryObject<Item> MANA_CRYSTAL_CUBE = blockItem("mana_crystal_cube", ModBlocks.MANA_CRYSTAL_CUBE);
+    public static final RegistryObject<Item> NATURAL_MANA_SPREADER = blockItem("natural_mana_spreader", ModBlocks.NATURAL_MANA_SPREADER);
+    public static final RegistryObject<Item> MANA_CONTAINER = blockItem("mana_container", ModBlocks.MANA_CONTAINER);
+    public static final RegistryObject<Item> DILUTED_MANA_CONTAINER = blockItem("diluted_mana_container", ModBlocks.DILUTED_MANA_CONTAINER);
+    public static final RegistryObject<Item> FABULOUS_MANA_CONTAINER = blockItem("fabulous_mana_container", ModBlocks.FABULOUS_MANA_CONTAINER);
+    public static final RegistryObject<Item> MANA_CHARGER = blockItem("mana_charger", ModBlocks.MANA_CHARGER);
 
     private ModItems() {
     }

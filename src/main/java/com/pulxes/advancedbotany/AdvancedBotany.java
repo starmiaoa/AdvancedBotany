@@ -6,6 +6,8 @@ import com.pulxes.advancedbotany.registry.ModBlocks;
 import com.pulxes.advancedbotany.registry.ModCreativeTabs;
 import com.pulxes.advancedbotany.registry.ModEntities;
 import com.pulxes.advancedbotany.registry.ModItems;
+import com.pulxes.advancedbotany.registry.ModForgeEvents;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,5 +28,7 @@ public class AdvancedBotany {
         ModCreativeTabs.register(modBus);
 
         modBus.addListener(ModCreativeTabs::addCreativeTabItems);
+
+        MinecraftForge.EVENT_BUS.register(ModForgeEvents.class);
     }
 }

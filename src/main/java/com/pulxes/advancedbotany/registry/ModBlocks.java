@@ -5,7 +5,11 @@ import com.pulxes.advancedbotany.common.block.AntigravitationBlock;
 import com.pulxes.advancedbotany.common.block.FreyrLianaBlock;
 import com.pulxes.advancedbotany.common.block.LebethronWoodBlock;
 import com.pulxes.advancedbotany.common.block.LuminousFreyrLianaBlock;
+import com.pulxes.advancedbotany.common.block.ManaChargerBlock;
+import com.pulxes.advancedbotany.common.block.ManaContainerBlock;
+import com.pulxes.advancedbotany.common.block.ManaCrystalCubeBlock;
 import com.pulxes.advancedbotany.common.block.MithrilStorageBlock;
+import com.pulxes.advancedbotany.common.block.NaturalManaSpreaderBlock;
 import com.pulxes.advancedbotany.common.block.TerraFarmlandBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -25,6 +29,12 @@ public final class ModBlocks {
     public static final RegistryObject<Block> FREYR_LIANA = BLOCKS.register("freyr_liana", FreyrLianaBlock::new);
     public static final RegistryObject<Block> LUMINOUS_FREYR_LIANA = BLOCKS.register("luminous_freyr_liana", LuminousFreyrLianaBlock::new);
     public static final RegistryObject<Block> ANTIGRAVITATION = BLOCKS.register("antigravitation", AntigravitationBlock::new);
+    public static final RegistryObject<Block> MANA_CRYSTAL_CUBE = BLOCKS.register("mana_crystal_cube", ManaCrystalCubeBlock::new);
+    public static final RegistryObject<Block> NATURAL_MANA_SPREADER = BLOCKS.register("natural_mana_spreader", NaturalManaSpreaderBlock::new);
+    public static final RegistryObject<Block> MANA_CONTAINER = BLOCKS.register("mana_container", () -> new ManaContainerBlock(ManaContainerBlock.Variant.NORMAL));
+    public static final RegistryObject<Block> DILUTED_MANA_CONTAINER = BLOCKS.register("diluted_mana_container", () -> new ManaContainerBlock(ManaContainerBlock.Variant.DILUTED));
+    public static final RegistryObject<Block> FABULOUS_MANA_CONTAINER = BLOCKS.register("fabulous_mana_container", () -> new ManaContainerBlock(ManaContainerBlock.Variant.FABULOUS));
+    public static final RegistryObject<Block> MANA_CHARGER = BLOCKS.register("mana_charger", ManaChargerBlock::new);
 
     private ModBlocks() {
     }
