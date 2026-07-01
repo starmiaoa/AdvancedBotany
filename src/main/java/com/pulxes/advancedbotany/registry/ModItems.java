@@ -8,6 +8,15 @@ import com.pulxes.advancedbotany.common.item.FoilResourceItem;
 import com.pulxes.advancedbotany.common.item.SphereOfAttractionItem;
 import com.pulxes.advancedbotany.common.item.equipment.ManaFlowerItem;
 import com.pulxes.advancedbotany.common.item.equipment.ManaRingItem;
+import com.pulxes.advancedbotany.common.item.equipment.AdvancedSparkItem;
+import com.pulxes.advancedbotany.common.item.equipment.AquaSwordItem;
+import com.pulxes.advancedbotany.common.item.equipment.BlackHaloItem;
+import com.pulxes.advancedbotany.common.item.equipment.MaterialDestroyerItem;
+import com.pulxes.advancedbotany.common.item.equipment.NebulaBlazeItem;
+import com.pulxes.advancedbotany.common.item.equipment.NebulaRodItem;
+import com.pulxes.advancedbotany.common.item.equipment.SpaceBladeItem;
+import com.pulxes.advancedbotany.common.item.equipment.SprawlRodItem;
+import com.pulxes.advancedbotany.common.item.equipment.TerraHoeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -52,6 +61,15 @@ public final class ModItems {
     public static final RegistryObject<Item> PLAYING_BOARD = blockItem("playing_board", ModBlocks.PLAYING_BOARD);
     public static final RegistryObject<Item> FATE_PLAYING_BOARD = blockItem("fate_playing_board", ModBlocks.FATE_PLAYING_BOARD);
     public static final RegistryObject<Item> LEBETHRON_NATURAL_CORE = blockItem("lebethron_natural_core", ModBlocks.LEBETHRON_NATURAL_CORE);
+    public static final RegistryObject<Item> MATERIAL_DESTROYER = ITEMS.register("material_destroyer", () -> new MaterialDestroyerItem(defaultProperties()));
+    public static final RegistryObject<Item> TERRA_HOE = ITEMS.register("terra_hoe", () -> new TerraHoeItem(defaultProperties()));
+    public static final RegistryObject<Item> AQUA_SWORD = ITEMS.register("aqua_sword", () -> new AquaSwordItem(defaultProperties()));
+    public static final RegistryObject<Item> BLACK_HOLE_BOX = ITEMS.register("black_hole_box", () -> new BlackHaloItem(defaultProperties()));
+    public static final RegistryObject<Item> ROD_OF_SPRAWL = ITEMS.register("rod_of_sprawl", () -> new SprawlRodItem(defaultProperties()));
+    public static final RegistryObject<Item> BLADE_OF_SPACE = ITEMS.register("blade_of_space", () -> new SpaceBladeItem(defaultProperties()));
+    public static final RegistryObject<Item> ROD_OF_NEBULA = ITEMS.register("rod_of_nebula", () -> new NebulaRodItem(defaultProperties()));
+    public static final RegistryObject<Item> NEBULA_BLAZE = ITEMS.register("nebula_blaze", () -> new NebulaBlazeItem(defaultProperties()));
+    public static final RegistryObject<Item> SUPERCONDUCTIVE_SPARK = ITEMS.register("superconductive_spark", () -> new AdvancedSparkItem(defaultProperties()));
 
     private ModItems() {
     }

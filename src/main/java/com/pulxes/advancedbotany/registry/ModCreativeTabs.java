@@ -1,6 +1,8 @@
 package com.pulxes.advancedbotany.registry;
 
 import com.pulxes.advancedbotany.AdvancedBotany;
+import com.pulxes.advancedbotany.common.item.equipment.AdvancedBotanyEquipment;
+import com.pulxes.advancedbotany.common.item.equipment.SpaceBladeItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -49,6 +51,20 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.PLAYING_BOARD.get());
                 output.accept(ModItems.FATE_PLAYING_BOARD.get());
                 output.accept(ModItems.LEBETHRON_NATURAL_CORE.get());
+                output.accept(ModItems.MATERIAL_DESTROYER.get());
+                output.accept(ModItems.TERRA_HOE.get());
+                output.accept(ModItems.AQUA_SWORD.get());
+                output.accept(ModItems.BLACK_HOLE_BOX.get());
+                output.accept(ModItems.ROD_OF_SPRAWL.get());
+                output.accept(ModItems.BLADE_OF_SPACE.get());
+                for (int mana : AdvancedBotanyEquipment.SPACE_BLADE_CREATIVE_MANA) {
+                    ItemStack blade = new ItemStack(ModItems.BLADE_OF_SPACE.get());
+                    SpaceBladeItem.setMana(blade, mana);
+                    output.accept(blade);
+                }
+                output.accept(ModItems.ROD_OF_NEBULA.get());
+                output.accept(ModItems.NEBULA_BLAZE.get());
+                output.accept(ModItems.SUPERCONDUCTIVE_SPARK.get());
                 ModFlowers.addToCreativeTab(output);
             })
             .build());
