@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "advancedbotany:items/itemMithrillSword_mode_1",
+    "layer1": "advancedbotany:items/itemMithrillSword_gem"
+  }
+}

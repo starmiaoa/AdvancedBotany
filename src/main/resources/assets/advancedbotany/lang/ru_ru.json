@@ -44,5 +44,16 @@
   "block.advancedbotany.aspecolus": "Аспеколус",
   "block.advancedbotany.floating_aspecolus": "Парящий Аспеколус",
   "block.advancedbotany.pure_gladiolus": "Чистый Гладиулос",
-  "block.advancedbotany.floating_pure_gladiolus": "Парящий Чистый Гладиулос"
+  "block.advancedbotany.floating_pure_gladiolus": "Парящий Чистый Гладиулос",
+  "item.advancedbotany.material_destroyer": "Разрушитель материи",
+  "item.advancedbotany.terra_hoe": "Террамотыга",
+  "item.advancedbotany.aqua_sword": "Водный меч",
+  "item.advancedbotany.black_hole_box": "Коробка черной дыры",
+  "item.advancedbotany.rod_of_sprawl": "Жезл разрастания",
+  "item.advancedbotany.blade_of_space": "Клинок пространства",
+  "item.advancedbotany.rod_of_nebula": "Жезл туманности",
+  "item.advancedbotany.nebula_blaze": "Пламя туманности",
+  "item.advancedbotany.superconductive_spark": "Сверхпроводящая искра",
+  "ab.nebulaRod.notTeleporting": "Безопасная точка приземления не найдена",
+  "ab.nebulaRod.notTeleportingEvent": "Телепортация была предотвращена"
 }

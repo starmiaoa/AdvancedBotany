@@ -12,6 +12,10 @@ public final class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, AdvancedBotany.MOD_ID);
 
     public static final RegistryObject<SoundEvent> BOARD_CUBE = register("board_cube");
+    public static final RegistryObject<SoundEvent> AQUA_SWORD = register("aqua_sword");
+    public static final RegistryObject<SoundEvent> BLADE_SPACE = register("blade_space");
+    public static final RegistryObject<SoundEvent> NEBULA_ROD = register("nebula_rod");
+    public static final RegistryObject<SoundEvent> NEBULA_BLAZE = register("nebula_blaze");
 
     private ModSounds() {
     }

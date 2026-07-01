@@ -44,5 +44,16 @@
   "block.advancedbotany.aspecolus": "Aspecolus",
   "block.advancedbotany.floating_aspecolus": "Floating Aspecolus",
   "block.advancedbotany.pure_gladiolus": "Pure Gladiolus",
-  "block.advancedbotany.floating_pure_gladiolus": "Floating Pure Gladiolus"
+  "block.advancedbotany.floating_pure_gladiolus": "Floating Pure Gladiolus",
+  "item.advancedbotany.material_destroyer": "Material Destroyer",
+  "item.advancedbotany.terra_hoe": "Terrahoe",
+  "item.advancedbotany.aqua_sword": "Aqua Sword",
+  "item.advancedbotany.black_hole_box": "Black Hole Box",
+  "item.advancedbotany.rod_of_sprawl": "Rod of Sprawl",
+  "item.advancedbotany.blade_of_space": "Blade of Space",
+  "item.advancedbotany.rod_of_nebula": "Rod of Nebula",
+  "item.advancedbotany.nebula_blaze": "Nebula Blaze",
+  "item.advancedbotany.superconductive_spark": "Superconductive Spark",
+  "ab.nebulaRod.notTeleporting": "No safe landing point found",
+  "ab.nebulaRod.notTeleportingEvent": "Teleportation was prevented"
 }

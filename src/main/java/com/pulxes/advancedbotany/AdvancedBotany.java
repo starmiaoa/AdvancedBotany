@@ -2,6 +2,7 @@ package com.pulxes.advancedbotany;
 
 import com.mojang.logging.LogUtils;
 import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
+import com.pulxes.advancedbotany.common.network.ModNetwork;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import com.pulxes.advancedbotany.registry.ModBlocks;
 import com.pulxes.advancedbotany.registry.ModCreativeTabs;
@@ -36,6 +37,7 @@ public class AdvancedBotany {
 
         modBus.addListener(ModCreativeTabs::addCreativeTabItems);
 
+        ModNetwork.register();
         MinecraftForge.EVENT_BUS.register(ModForgeEvents.class);
         AdvancedBotanyAPI.registerDefaultBoardEntries();
     }
