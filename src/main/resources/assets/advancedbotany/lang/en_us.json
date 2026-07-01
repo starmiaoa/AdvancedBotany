@@ -58,6 +58,9 @@
   "item.advancedbotany.rod_of_nebula": "Rod of Nebula",
   "item.advancedbotany.nebula_blaze": "Nebula Blaze",
   "item.advancedbotany.superconductive_spark": "Superconductive Spark",
+  "entity.advancedbotany.mana_vine": "Mana Vine",
+  "entity.advancedbotany.anonymous_steve": "Anonymous Steve",
+  "entity.advancedbotany.alphirine_portal": "Portal from the past",
   "ab.nebulaRod.notTeleporting": "No safe landing point found",
   "ab.nebulaRod.notTeleportingEvent": "Teleportation was prevented"
 }

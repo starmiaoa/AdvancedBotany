@@ -58,6 +58,9 @@
   "item.advancedbotany.rod_of_nebula": "Жезл туманности",
   "item.advancedbotany.nebula_blaze": "Пламя туманности",
   "item.advancedbotany.superconductive_spark": "Сверхпроводящая искра",
+  "entity.advancedbotany.mana_vine": "Лоза маны",
+  "entity.advancedbotany.anonymous_steve": "Анонимный Стив",
+  "entity.advancedbotany.alphirine_portal": "Портал из прошлого",
   "ab.nebulaRod.notTeleporting": "Безопасная точка приземления не найдена",
   "ab.nebulaRod.notTeleportingEvent": "Телепортация была предотвращена"
 }

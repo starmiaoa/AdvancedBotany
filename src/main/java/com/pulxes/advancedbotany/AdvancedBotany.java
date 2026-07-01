@@ -38,6 +38,7 @@ public class AdvancedBotany {
 
         modBus.addListener(ModCreativeTabs::addCreativeTabItems);
         modBus.addListener(ModCurios::enqueueIMC);
+        modBus.addListener(ModEntities::registerAttributes);
 
         ModNetwork.register();
         MinecraftForge.EVENT_BUS.register(ModForgeEvents.class);

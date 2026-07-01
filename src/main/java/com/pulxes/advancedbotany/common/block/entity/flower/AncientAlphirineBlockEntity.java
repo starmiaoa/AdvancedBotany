@@ -1,9 +1,11 @@
 package com.pulxes.advancedbotany.common.block.entity.flower;
 
+import com.pulxes.advancedbotany.common.entity.EntityAlphirinePortal;
 import com.pulxes.advancedbotany.registry.ModFlowers;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,8 +41,25 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 item -> !item.isRemoved() && !item.getItem().isEmpty());
 
         if (!nearbyItems.isEmpty()) {
-            // TODO Batch 8: consume matching RecipeAncientAlphirine inputs and spawn EntityAlphirinePortal.
+            // TODO Batch 8: consume matching RecipeAncientAlphirine inputs, then call spawnPortal(output).
         }
+    }
+
+    private void spawnPortal(ItemStack stack) {
+        Level level = getLevel();
+        if (level == null || level.isClientSide || stack.isEmpty()) {
+            return;
+        }
+
+        BlockPos pos = getEffectivePos();
+        double x = pos.getX() + 0.5D + (level.random.nextDouble() * 2.0D - 1.0D);
+        double y = pos.getY() + 1.2D + (level.random.nextDouble() - 0.5D);
+        double z = pos.getZ() + 0.5D + (level.random.nextDouble() * 2.0D - 1.0D);
+
+        EntityAlphirinePortal portal = new EntityAlphirinePortal(level);
+        portal.setPos(x, y, z);
+        portal.setStack(stack.copy());
+        level.addFreshEntity(portal);
     }
 
     @Override
