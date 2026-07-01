@@ -31,9 +31,33 @@ public final class ModNetwork {
                 SpaceBladeDashPacket::decode,
                 SpaceBladeDashPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(
+                nextId++,
+                HornChargeHudPacket.class,
+                HornChargeHudPacket::encode,
+                HornChargeHudPacket::decode,
+                HornChargeHudPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(
+                nextId++,
+                FindNearBlocksPacket.class,
+                FindNearBlocksPacket::encode,
+                FindNearBlocksPacket::decode,
+                FindNearBlocksPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendSpaceBladeDash(ServerPlayer player) {
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SpaceBladeDashPacket());
+    }
+
+    public static void sendHornChargeHud(ServerPlayer player, short chargeLoot) {
+        CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new HornChargeHudPacket(chargeLoot));
+    }
+
+    public static void sendFindNearBlocks(ServerPlayer player, ResourceLocation blockId, int stateId) {
+        if (blockId != null) {
+            CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new FindNearBlocksPacket(blockId, stateId));
+        }
     }
 }

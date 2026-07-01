@@ -1,0 +1,22 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "advancedbotany:items/sphereNavigation_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "advancedbotany:target": 1.0,
+        "advancedbotany:active": 1.0
+      },
+      "model": "advancedbotany:item/sphere_of_navigation_active"
+    },
+    {
+      "predicate": {
+        "advancedbotany:target": 1.0,
+        "advancedbotany:active": 0.0
+      },
+      "model": "advancedbotany:item/sphere_of_navigation_inactive"
+    }
+  ]
+}

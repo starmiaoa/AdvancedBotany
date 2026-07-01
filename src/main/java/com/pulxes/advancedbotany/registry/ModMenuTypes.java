@@ -3,6 +3,7 @@ package com.pulxes.advancedbotany.registry;
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.common.menu.MagicCraftCrateMenu;
 import com.pulxes.advancedbotany.common.menu.NidavellirForgeMenu;
+import com.pulxes.advancedbotany.common.menu.TalismanHiddenRichesMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +18,8 @@ public final class ModMenuTypes {
             MENU_TYPES.register("nidavellir_forge", () -> IForgeMenuType.create(NidavellirForgeMenu::new));
     public static final RegistryObject<MenuType<MagicCraftCrateMenu>> MAGIC_CRAFT_CRATE =
             MENU_TYPES.register("magic_craft_crate", () -> IForgeMenuType.create(MagicCraftCrateMenu::new));
+    public static final RegistryObject<MenuType<TalismanHiddenRichesMenu>> TALISMAN_HIDDEN_RICHES =
+            MENU_TYPES.register("talisman_hidden_riches", () -> IForgeMenuType.create(TalismanHiddenRichesMenu::new));
 
     private ModMenuTypes() {
     }

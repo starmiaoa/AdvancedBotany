@@ -1,5 +1,6 @@
 package com.pulxes.advancedbotany.common.item.equipment;
 
+import com.pulxes.advancedbotany.common.entity.EntitySeed;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -38,7 +39,12 @@ public class SprawlRodItem extends Item {
         }
         int useTime = getUseDuration(rod) - timeLeft;
         if (!level.isClientSide()) {
-            // EntitySeed is intentionally left for Batch 7; keep the original charge/cost path intact.
+            ItemStack seedStack = player.getInventory().getItem(seedSlot);
+            EntitySeed seed = new EntitySeed(level, player);
+            seed.setSeed(seedStack);
+            seed.setRadius((int) (Math.min((float) useTime, 128.0F) / 128.0F * AdvancedBotanyEquipment.SPRAWL_ROD_MAX_AREA));
+            seed.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            level.addFreshEntity(seed);
         }
         ItemStack seed = player.getInventory().getItem(seedSlot);
         if (!player.getAbilities().instabuild) {
