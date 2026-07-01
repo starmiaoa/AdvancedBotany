@@ -131,6 +131,7 @@ processResources {
     inputs.property 'mod_authors', mod_authors
     inputs.property 'mod_description', mod_description
     inputs.property 'botania_version_range', botania_version_range
+    inputs.property 'curios_version_range', curios_version_range
 
     filesMatching('META-INF/mods.toml') {
         expand project.properties

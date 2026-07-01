@@ -5,6 +5,7 @@ import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import com.pulxes.advancedbotany.registry.ModBlocks;
 import com.pulxes.advancedbotany.registry.ModCreativeTabs;
+import com.pulxes.advancedbotany.registry.ModCurios;
 import com.pulxes.advancedbotany.registry.ModEntities;
 import com.pulxes.advancedbotany.registry.ModFlowers;
 import com.pulxes.advancedbotany.registry.ModItems;
@@ -35,6 +36,7 @@ public class AdvancedBotany {
         ModCreativeTabs.register(modBus);
 
         modBus.addListener(ModCreativeTabs::addCreativeTabItems);
+        modBus.addListener(ModCurios::enqueueIMC);
 
         MinecraftForge.EVENT_BUS.register(ModForgeEvents.class);
         AdvancedBotanyAPI.registerDefaultBoardEntries();

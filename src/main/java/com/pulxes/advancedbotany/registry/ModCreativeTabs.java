@@ -24,6 +24,10 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NATURES_GIFT.get());
                 output.accept(ModItems.NEBULA_FRAGMENT.get());
                 output.accept(ModItems.PIECE_OF_NEBULA.get());
+                output.accept(ModItems.MITHRIL_MANA_RING.get());
+                output.accept(ModItems.NEBULA_MANA_RING.get());
+                output.accept(ModItems.SPHERE_OF_ATTRACTION.get());
+                output.accept(ModItems.MANA_FLOWER.get());
                 output.accept(ModItems.MITHRIL_BLOCK.get());
                 output.accept(ModItems.LEBETHRON_WOOD.get());
                 output.accept(ModItems.LEBETHRON_PLANKS.get());
