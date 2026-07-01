@@ -1,0 +1,151 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+version = "${minecraft_version}-${mod_version}"
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+minecraft {
+    mappings channel: mapping_channel, version: "${mapping_version}-${minecraft_version}"
+    copyIdeResources = true
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                advancedbotany {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--nogui'
+
+            mods {
+                advancedbotany {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                advancedbotany {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'MinecraftForge'
+        url = 'https://maven.minecraftforge.net/'
+    }
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com/'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com/'
+    }
+    maven {
+        name = 'TheIllusiveC4'
+        url = 'https://maven.theillusivec4.top/'
+    }
+    maven {
+        name = 'Vazkii'
+        url = 'https://maven.blamejared.com/'
+    }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("vazkii.botania:Botania:${botania_version}-FORGE")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}-FORGE")
+
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 17
+}
+
+processResources {
+    inputs.property 'minecraft_version', minecraft_version
+    inputs.property 'minecraft_version_range', minecraft_version_range
+    inputs.property 'forge_version', forge_version
+    inputs.property 'forge_version_range', forge_version_range
+    inputs.property 'loader_version_range', loader_version_range
+    inputs.property 'mod_id', mod_id
+    inputs.property 'mod_name', mod_name
+    inputs.property 'mod_license', mod_license
+    inputs.property 'mod_version', mod_version
+    inputs.property 'mod_authors', mod_authors
+    inputs.property 'mod_description', mod_description
+    inputs.property 'botania_version_range', botania_version_range
+
+    filesMatching('META-INF/mods.toml') {
+        expand project.properties
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : 'Pulxes, Liapel',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : mod_name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : 'Pulxes, Liapel'
+        ])
+    }
+}
