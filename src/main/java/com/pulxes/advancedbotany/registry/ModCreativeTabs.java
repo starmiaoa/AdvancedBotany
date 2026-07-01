@@ -39,6 +39,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.DILUTED_MANA_CONTAINER.get());
                 output.accept(ModItems.FABULOUS_MANA_CONTAINER.get());
                 output.accept(ModItems.MANA_CHARGER.get());
+                ModFlowers.addToCreativeTab(output);
             })
             .build());
 

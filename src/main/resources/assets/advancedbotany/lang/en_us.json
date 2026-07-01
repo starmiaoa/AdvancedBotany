@@ -21,5 +21,15 @@
   "block.advancedbotany.mana_container": "Mana Container",
   "block.advancedbotany.diluted_mana_container": "Diluted Mana Container",
   "block.advancedbotany.fabulous_mana_container": "Fabulous Mana Container",
-  "block.advancedbotany.mana_charger": "Mana Charger"
+  "block.advancedbotany.mana_charger": "Mana Charger",
+  "block.advancedbotany.ancient_alphirine": "Ancient Alphirine",
+  "block.advancedbotany.floating_ancient_alphirine": "Floating Ancient Alphirine",
+  "block.advancedbotany.ardent_azarcissus": "Ardent Azarcissus",
+  "block.advancedbotany.floating_ardent_azarcissus": "Floating Ardent Azarcissus",
+  "block.advancedbotany.dictarius": "Dictarius",
+  "block.advancedbotany.floating_dictarius": "Floating Dictarius",
+  "block.advancedbotany.aspecolus": "Aspecolus",
+  "block.advancedbotany.floating_aspecolus": "Floating Aspecolus",
+  "block.advancedbotany.pure_gladiolus": "Pure Gladiolus",
+  "block.advancedbotany.floating_pure_gladiolus": "Floating Pure Gladiolus"
 }

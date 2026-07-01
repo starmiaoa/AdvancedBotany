@@ -21,5 +21,15 @@
   "block.advancedbotany.mana_container": "Контейнер маны",
   "block.advancedbotany.diluted_mana_container": "Контейнер разбавленной маны",
   "block.advancedbotany.fabulous_mana_container": "Мифический контейнер маны",
-  "block.advancedbotany.mana_charger": "Зарядник маны"
+  "block.advancedbotany.mana_charger": "Зарядник маны",
+  "block.advancedbotany.ancient_alphirine": "Древний Альфирин",
+  "block.advancedbotany.floating_ancient_alphirine": "Парящий Древний Альфирин",
+  "block.advancedbotany.ardent_azarcissus": "Пылкий Азарцисс",
+  "block.advancedbotany.floating_ardent_azarcissus": "Парящий Пылкий Азарцисс",
+  "block.advancedbotany.dictarius": "Диктариус",
+  "block.advancedbotany.floating_dictarius": "Парящий Диктариус",
+  "block.advancedbotany.aspecolus": "Аспеколус",
+  "block.advancedbotany.floating_aspecolus": "Парящий Аспеколус",
+  "block.advancedbotany.pure_gladiolus": "Чистый Гладиулос",
+  "block.advancedbotany.floating_pure_gladiolus": "Парящий Чистый Гладиулос"
 }
