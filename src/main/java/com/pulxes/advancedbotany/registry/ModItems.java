@@ -17,6 +17,10 @@ import com.pulxes.advancedbotany.common.item.equipment.NebulaRodItem;
 import com.pulxes.advancedbotany.common.item.equipment.SpaceBladeItem;
 import com.pulxes.advancedbotany.common.item.equipment.SprawlRodItem;
 import com.pulxes.advancedbotany.common.item.equipment.TerraHoeItem;
+import com.pulxes.advancedbotany.common.item.equipment.armor.NebulaArmorItem;
+import com.pulxes.advancedbotany.common.item.equipment.armor.NebulaHelmetItem;
+import com.pulxes.advancedbotany.common.item.equipment.armor.WildHuntArmorItem;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -70,6 +74,24 @@ public final class ModItems {
     public static final RegistryObject<Item> ROD_OF_NEBULA = ITEMS.register("rod_of_nebula", () -> new NebulaRodItem(defaultProperties()));
     public static final RegistryObject<Item> NEBULA_BLAZE = ITEMS.register("nebula_blaze", () -> new NebulaBlazeItem(defaultProperties()));
     public static final RegistryObject<Item> SUPERCONDUCTIVE_SPARK = ITEMS.register("superconductive_spark", () -> new AdvancedSparkItem(defaultProperties()));
+    public static final RegistryObject<Item> NEBULA_HELMET = ITEMS.register("nebula_helmet",
+            () -> new NebulaHelmetItem(false, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
+    public static final RegistryObject<Item> NEBULA_HELMET_OF_REVEALING = ITEMS.register("nebula_helmet_of_revealing",
+            () -> new NebulaHelmetItem(true, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
+    public static final RegistryObject<Item> NEBULA_CHESTPLATE = ITEMS.register("nebula_chestplate",
+            () -> new NebulaArmorItem(ArmorItem.Type.CHESTPLATE, false, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
+    public static final RegistryObject<Item> NEBULA_LEGGINGS = ITEMS.register("nebula_leggings",
+            () -> new NebulaArmorItem(ArmorItem.Type.LEGGINGS, false, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
+    public static final RegistryObject<Item> NEBULA_BOOTS = ITEMS.register("nebula_boots",
+            () -> new NebulaArmorItem(ArmorItem.Type.BOOTS, false, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
+    public static final RegistryObject<Item> WILD_HUNT_HELMET = ITEMS.register("wild_hunt_helmet",
+            () -> new WildHuntArmorItem(ArmorItem.Type.HELMET, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
+    public static final RegistryObject<Item> WILD_HUNT_CHESTPLATE = ITEMS.register("wild_hunt_chestplate",
+            () -> new WildHuntArmorItem(ArmorItem.Type.CHESTPLATE, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
+    public static final RegistryObject<Item> WILD_HUNT_LEGGINGS = ITEMS.register("wild_hunt_leggings",
+            () -> new WildHuntArmorItem(ArmorItem.Type.LEGGINGS, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
+    public static final RegistryObject<Item> WILD_HUNT_BOOTS = ITEMS.register("wild_hunt_boots",
+            () -> new WildHuntArmorItem(ArmorItem.Type.BOOTS, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
 
     private ModItems() {
     }

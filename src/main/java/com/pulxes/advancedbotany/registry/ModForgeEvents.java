@@ -1,9 +1,12 @@
 package com.pulxes.advancedbotany.registry;
 
 import com.pulxes.advancedbotany.AdvancedBotany;
+import com.pulxes.advancedbotany.common.item.equipment.armor.NebulaArmorItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.api.BotaniaForgeCapabilities;
@@ -38,4 +41,20 @@ public final class ModForgeEvents {
             event.addCapability(WANDABLE, CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE, wandable));
         }
     }
+
+    @SubscribeEvent
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
+        NebulaArmorItem.handlePlayerTick(event);
+    }
+
+    @SubscribeEvent
+    public static void livingTick(LivingEvent.LivingTickEvent event) {
+        NebulaArmorItem.handleLivingTick(event);
+    }
+
+    @SubscribeEvent
+    public static void livingJump(LivingEvent.LivingJumpEvent event) {
+        NebulaArmorItem.handleLivingJump(event);
+    }
+
 }

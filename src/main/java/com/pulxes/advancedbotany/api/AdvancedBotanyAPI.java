@@ -11,6 +11,7 @@ import vazkii.botania.common.item.BotaniaItems;
 
 public final class AdvancedBotanyAPI {
     public static final Rarity RARITY_NEBULA = Rarity.create("NEBULA", ChatFormatting.LIGHT_PURPLE);
+    public static final Rarity RARITY_WILD_HUNT = Rarity.create("WILD_HUNT", ChatFormatting.AQUA);
     public static final List<TerraFarmlandList> farmlandList = new ArrayList<>();
     public static final List<ItemStack> relicList = new ArrayList<>();
     public static final List<ItemStack> diceList = new ArrayList<>();
