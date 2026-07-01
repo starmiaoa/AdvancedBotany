@@ -17,6 +17,12 @@ import com.pulxes.advancedbotany.common.item.equipment.NebulaRodItem;
 import com.pulxes.advancedbotany.common.item.equipment.SpaceBladeItem;
 import com.pulxes.advancedbotany.common.item.equipment.SprawlRodItem;
 import com.pulxes.advancedbotany.common.item.equipment.TerraHoeItem;
+import com.pulxes.advancedbotany.common.item.relic.FreyrSlingshotItem;
+import com.pulxes.advancedbotany.common.item.relic.HornOfPlentyItem;
+import com.pulxes.advancedbotany.common.item.relic.PocketWardrobeItem;
+import com.pulxes.advancedbotany.common.item.relic.SphereNavigationItem;
+import com.pulxes.advancedbotany.common.item.relic.TalismanHiddenRichesItem;
+import com.pulxes.advancedbotany.common.item.relic.WildHuntWhipItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -70,6 +76,12 @@ public final class ModItems {
     public static final RegistryObject<Item> ROD_OF_NEBULA = ITEMS.register("rod_of_nebula", () -> new NebulaRodItem(defaultProperties()));
     public static final RegistryObject<Item> NEBULA_BLAZE = ITEMS.register("nebula_blaze", () -> new NebulaBlazeItem(defaultProperties()));
     public static final RegistryObject<Item> SUPERCONDUCTIVE_SPARK = ITEMS.register("superconductive_spark", () -> new AdvancedSparkItem(defaultProperties()));
+    public static final RegistryObject<Item> FREYR_SLINGSHOT = ITEMS.register("freyr_slingshot", () -> new FreyrSlingshotItem(defaultProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> HORN_OF_PLENTY = ITEMS.register("horn_of_plenty", () -> new HornOfPlentyItem(defaultProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> NIMBLE_CUBE = ITEMS.register("nimble_cube", () -> new PocketWardrobeItem(defaultProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SPHERE_OF_NAVIGATION = ITEMS.register("sphere_of_navigation", () -> new SphereNavigationItem(defaultProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> KEY_TO_HIDDEN_WEALTH = ITEMS.register("key_to_hidden_wealth", () -> new TalismanHiddenRichesItem(defaultProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> WILD_HUNT_WHIP = ITEMS.register("wild_hunt_whip", () -> new WildHuntWhipItem(defaultProperties().rarity(Rarity.EPIC)));
 
     private ModItems() {
     }

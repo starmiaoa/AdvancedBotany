@@ -16,6 +16,9 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> BLADE_SPACE = register("blade_space");
     public static final RegistryObject<SoundEvent> NEBULA_ROD = register("nebula_rod");
     public static final RegistryObject<SoundEvent> NEBULA_BLAZE = register("nebula_blaze");
+    public static final RegistryObject<SoundEvent> FREYR_SLINGSHOT = register("freyr_slingshot");
+    public static final RegistryObject<SoundEvent> HORN_PLENTY_USING = register("horn_plenty_using");
+    public static final RegistryObject<SoundEvent> LOKI_CUBE_ARMOR = register("loki_cube_armor");
 
     private ModSounds() {
     }

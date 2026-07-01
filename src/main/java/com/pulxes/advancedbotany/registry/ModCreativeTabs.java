@@ -65,6 +65,12 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.ROD_OF_NEBULA.get());
                 output.accept(ModItems.NEBULA_BLAZE.get());
                 output.accept(ModItems.SUPERCONDUCTIVE_SPARK.get());
+                output.accept(ModItems.FREYR_SLINGSHOT.get());
+                output.accept(ModItems.HORN_OF_PLENTY.get());
+                output.accept(ModItems.NIMBLE_CUBE.get());
+                output.accept(ModItems.SPHERE_OF_NAVIGATION.get());
+                output.accept(ModItems.KEY_TO_HIDDEN_WEALTH.get());
+                output.accept(ModItems.WILD_HUNT_WHIP.get());
                 ModFlowers.addToCreativeTab(output);
             })
             .build());

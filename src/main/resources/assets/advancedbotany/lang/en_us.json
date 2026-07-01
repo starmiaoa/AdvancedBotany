@@ -58,6 +58,14 @@
   "item.advancedbotany.rod_of_nebula": "Rod of Nebula",
   "item.advancedbotany.nebula_blaze": "Nebula Blaze",
   "item.advancedbotany.superconductive_spark": "Superconductive Spark",
+  "item.advancedbotany.freyr_slingshot": "Freyr Slingshot",
+  "item.advancedbotany.horn_of_plenty": "Horn of Plenty",
+  "item.advancedbotany.nimble_cube": "Nimble Cube",
+  "item.advancedbotany.sphere_of_navigation": "Sphere of Navigation",
+  "item.advancedbotany.key_to_hidden_wealth": "Key to Hidden Wealth",
+  "item.advancedbotany.wild_hunt_whip": "Wild Hunt Whip",
+  "container.advancedbotany.talisman_hidden_riches": "Key to Hidden Wealth",
+  "ab.sphereNavigation.founded": "Found",
   "ab.nebulaRod.notTeleporting": "No safe landing point found",
   "ab.nebulaRod.notTeleportingEvent": "Teleportation was prevented"
 }

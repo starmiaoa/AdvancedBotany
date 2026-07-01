@@ -8,8 +8,11 @@
 	"nebulaRod": { "category": "player", "sounds":["nebulaRod"] },
 	"nebula_rod": { "category": "player", "sounds":["nebula_rod"] },
 	"hornPlentyUsing": { "category": "player", "sounds":["hornPlentyUsing"] },
+	"horn_plenty_using": { "category": "player", "sounds":["horn_plenty_using"] },
 	"freyrSlingshot": { "category": "player", "sounds":["freyrSlingshot"] },
+	"freyr_slingshot": { "category": "player", "sounds":["freyr_slingshot"] },
 	"lokiCubeArmor": { "category": "player", "sounds":["lokiCubeArmor"] },
+	"loki_cube_armor": { "category": "player", "sounds":["loki_cube_armor"] },
 	"aquaSword": { "category": "player", "sounds":["aquaSword"] },
 	"aqua_sword": { "category": "player", "sounds":["aqua_sword"] }
 }

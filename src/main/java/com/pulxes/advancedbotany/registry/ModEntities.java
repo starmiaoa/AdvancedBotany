@@ -3,6 +3,7 @@ package com.pulxes.advancedbotany.registry;
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.common.entity.EntityAdvancedSpark;
 import com.pulxes.advancedbotany.common.entity.EntityNebulaBlaze;
+import com.pulxes.advancedbotany.common.entity.EntitySeed;
 import com.pulxes.advancedbotany.common.entity.EntitySword;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -39,6 +40,15 @@ public final class ModEntities {
                     .setTrackingRange(64)
                     .setUpdateInterval(10)
                     .build(new ResourceLocation(AdvancedBotany.MOD_ID, "sword").toString()));
+
+    public static final RegistryObject<EntityType<EntitySeed>> SEED = ENTITIES.register("seed",
+            () -> EntityType.Builder.<EntitySeed>of(EntitySeed::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(64)
+                    .updateInterval(10)
+                    .setTrackingRange(64)
+                    .setUpdateInterval(10)
+                    .build(new ResourceLocation(AdvancedBotany.MOD_ID, "seed").toString()));
 
     private ModEntities() {
     }

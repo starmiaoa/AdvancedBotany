@@ -58,6 +58,14 @@
   "item.advancedbotany.rod_of_nebula": "Жезл туманности",
   "item.advancedbotany.nebula_blaze": "Пламя туманности",
   "item.advancedbotany.superconductive_spark": "Сверхпроводящая искра",
+  "item.advancedbotany.freyr_slingshot": "Рогатка Фрейра",
+  "item.advancedbotany.horn_of_plenty": "Рог изобилия",
+  "item.advancedbotany.nimble_cube": "Куб Проворства",
+  "item.advancedbotany.sphere_of_navigation": "Шар навигации",
+  "item.advancedbotany.key_to_hidden_wealth": "Ключ от Скрытых Богатств",
+  "item.advancedbotany.wild_hunt_whip": "Кнут Дикой Охоты",
+  "container.advancedbotany.talisman_hidden_riches": "Ключ от Скрытых Богатств",
+  "ab.sphereNavigation.founded": "Найдено:",
   "ab.nebulaRod.notTeleporting": "Безопасная точка приземления не найдена",
   "ab.nebulaRod.notTeleportingEvent": "Телепортация была предотвращена"
 }

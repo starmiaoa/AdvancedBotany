@@ -3,7 +3,9 @@ package com.pulxes.advancedbotany.client;
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.client.gui.MagicCraftCrateScreen;
 import com.pulxes.advancedbotany.client.gui.NidavellirForgeScreen;
+import com.pulxes.advancedbotany.client.gui.TalismanHiddenRichesScreen;
 import com.pulxes.advancedbotany.common.item.SphereOfAttractionItem;
+import com.pulxes.advancedbotany.common.item.relic.SphereNavigationItem;
 import com.pulxes.advancedbotany.client.renderer.entity.EmptyEntityRenderer;
 import com.pulxes.advancedbotany.common.item.equipment.MaterialDestroyerItem;
 import com.pulxes.advancedbotany.common.item.equipment.SpaceBladeItem;
@@ -30,12 +32,17 @@ public final class ModClientEvents {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.NIDAVELLIR_FORGE.get(), NidavellirForgeScreen::new);
             MenuScreens.register(ModMenuTypes.MAGIC_CRAFT_CRATE.get(), MagicCraftCrateScreen::new);
+            MenuScreens.register(ModMenuTypes.TALISMAN_HIDDEN_RICHES.get(), TalismanHiddenRichesScreen::new);
             ItemProperties.register(ModItems.SPHERE_OF_ATTRACTION.get(), new ResourceLocation(AdvancedBotany.MOD_ID, "active"),
                     (stack, level, entity, seed) -> SphereOfAttractionItem.isActive(stack) ? 1.0F : 0.0F);
             ItemProperties.register(ModItems.MATERIAL_DESTROYER.get(), new ResourceLocation(AdvancedBotany.MOD_ID, "enabled"),
                     (stack, level, entity, seed) -> MaterialDestroyerItem.isEnabled(stack) ? 1.0F : 0.0F);
             ItemProperties.register(ModItems.BLADE_OF_SPACE.get(), new ResourceLocation(AdvancedBotany.MOD_ID, "enabled_mode"),
                     (stack, level, entity, seed) -> SpaceBladeItem.isEnabledMode(stack) ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.SPHERE_OF_NAVIGATION.get(), new ResourceLocation(AdvancedBotany.MOD_ID, "active"),
+                    (stack, level, entity, seed) -> SphereNavigationItem.isActive(stack) ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.SPHERE_OF_NAVIGATION.get(), new ResourceLocation(AdvancedBotany.MOD_ID, "target"),
+                    (stack, level, entity, seed) -> SphereNavigationItem.hasTarget(stack) ? 1.0F : 0.0F);
         });
     }
 
@@ -44,5 +51,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ModEntities.SWORD.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.NEBULA_BLAZE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.ADVANCED_SPARK.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(ModEntities.SEED.get(), EmptyEntityRenderer::new);
     }
 }
