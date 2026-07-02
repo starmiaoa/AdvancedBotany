@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.item.GrassSeedsItem;
 
 public class SprawlRodItem extends Item {
     public SprawlRodItem(Properties properties) {
@@ -47,11 +47,11 @@ public class SprawlRodItem extends Item {
             level.addFreshEntity(seed);
         }
         ItemStack seed = player.getInventory().getItem(seedSlot);
+        seed.shrink(1);
         if (!player.getAbilities().instabuild) {
-            seed.shrink(1);
+            rod.setDamageValue(Math.min(AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE,
+                    (int) ((float) useTime / 128.0F * AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE)));
         }
-        rod.setDamageValue(Math.min(AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE,
-                (int) ((float) useTime / 128.0F * AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE)));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class SprawlRodItem extends Item {
 
     private static int findGrassSeed(Player player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (player.getInventory().getItem(i).is(BotaniaItems.grassSeeds)) {
+            if (player.getInventory().getItem(i).getItem() instanceof GrassSeedsItem) {
                 return i;
             }
         }

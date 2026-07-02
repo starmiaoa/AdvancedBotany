@@ -50,7 +50,7 @@ public class PureGladiolusBlockEntity extends FunctionalFlowerBlockEntity {
             int decrement = level.getBlockState(getBlockPos().below()).is(BotaniaBlocks.enchantedSoil) ? 2 : 1;
             cooldown = Math.max(0, cooldown - decrement);
         }
-        // TODO Thaumcraft removal: original effect consumed mana and spawned primal EntityAspectOrb instances.
+        // Original 1.7.10 aspect orb integration was removed with the unsupported dependency.
     }
 
     @Override

@@ -2,7 +2,7 @@
   "textures": {
     "particle": "minecraft:block/dirt",
     "dirt": "minecraft:block/dirt",
-    "top": "advancedbotany:block/terra_farmland"
+    "top": "advancedbotany:blocks/terra_farmland"
   },
   "elements": [
     {

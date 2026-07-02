@@ -1,6 +1,6 @@
 package com.pulxes.advancedbotany.common.item.relic;
 
-import com.pulxes.advancedbotany.common.entity.EntitySeed;
+import com.pulxes.advancedbotany.common.entity.EntityManaVine;
 import com.pulxes.advancedbotany.registry.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,12 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.common.item.BotaniaItems;
 
 public class FreyrSlingshotItem extends ModRelicItem {
     private static final int MANA_COST = 5_000;
     private static final int USE_DURATION = 42_000;
-    private static final int SEED_RADIUS = 7;
 
     public FreyrSlingshotItem(Properties properties) {
         super(properties);
@@ -45,11 +43,8 @@ public class FreyrSlingshotItem extends ModRelicItem {
             return;
         }
         if (!level.isClientSide() && ManaItemHandler.instance().requestManaExactForTool(stack, player, MANA_COST, true)) {
-            EntitySeed seed = new EntitySeed(level, player);
-            seed.setSeed(new ItemStack(BotaniaItems.grassSeeds));
-            seed.setRadius(SEED_RADIUS);
-            seed.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.35F, 1.0F);
-            level.addFreshEntity(seed);
+            EntityManaVine vine = new EntityManaVine(level, player);
+            level.addFreshEntity(vine);
             level.playSound(null, player.blockPosition(), ModSounds.FREYR_SLINGSHOT.get(), SoundSource.PLAYERS, 0.4F, 2.8F);
         }
     }

@@ -37,7 +37,7 @@ public class AspecolusBlockEntity extends FunctionalFlowerBlockEntity {
         if (cooldown > 0) {
             cooldown--;
         }
-        // TODO Thaumcraft removal: original effect split non-primal aspects in nearby player research pools.
+        // Original 1.7.10 aspect research integration was removed with the unsupported dependency.
     }
 
     @Override

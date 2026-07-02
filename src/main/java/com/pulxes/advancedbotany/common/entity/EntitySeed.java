@@ -188,7 +188,7 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
     }
 
     public void setRadius(int radius) {
-        entityData.set(RADIUS, Math.max(1, radius));
+        entityData.set(RADIUS, Math.max(0, radius));
     }
 
     public ItemStack getSeed() {

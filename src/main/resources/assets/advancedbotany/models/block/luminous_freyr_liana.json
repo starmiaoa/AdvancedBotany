@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cross",
   "render_type": "minecraft:cutout",
   "textures": {
-    "cross": "advancedbotany:block/freyr_luminous_liana"
+    "cross": "advancedbotany:blocks/freyr_luminous_liana"
   }
 }

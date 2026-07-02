@@ -3,6 +3,7 @@ package com.pulxes.advancedbotany.client;
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.client.gui.MagicCraftCrateScreen;
 import com.pulxes.advancedbotany.client.gui.NidavellirForgeScreen;
+import com.pulxes.advancedbotany.client.renderer.entity.AdvancedSparkRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AlphirinePortalRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AnonymousSteveRenderer;
 import com.pulxes.advancedbotany.client.gui.TalismanHiddenRichesScreen;
@@ -51,7 +52,7 @@ public final class ModClientEvents {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.SWORD.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.NEBULA_BLAZE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(ModEntities.ADVANCED_SPARK.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(ModEntities.ADVANCED_SPARK.get(), AdvancedSparkRenderer::new);
         event.registerEntityRenderer(ModEntities.MANA_VINE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.ANONYMOUS_STEVE.get(), AnonymousSteveRenderer::new);
         event.registerEntityRenderer(ModEntities.ALPHIRINE_PORTAL.get(), AlphirinePortalRenderer::new);
