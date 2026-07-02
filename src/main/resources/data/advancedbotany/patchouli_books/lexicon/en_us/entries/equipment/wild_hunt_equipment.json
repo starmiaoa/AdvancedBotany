@@ -1,0 +1,12 @@
+{
+  "name": "patchouli.advancedbotany.entry.wild_hunt",
+  "icon": "advancedbotany:wild_hunt_chestplate",
+  "category": "advancedbotany:equipment",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "patchouli.advancedbotany.page.wild_hunt0"
+    }
+  ]
+}

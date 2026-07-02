@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.gameBoard",
+  "icon": "advancedbotany:playing_board",
+  "category": "advancedbotany:devices",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.gameBoard0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:playing_board",
+      "title": "botania.page.gameBoard.craft"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.antigravityCharm",
+  "icon": "advancedbotany:sphere_of_attraction",
+  "category": "advancedbotany:equipment",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.antigravityCharm0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:sphere_of_attraction",
+      "title": "botania.page.antigravityCharm.craft"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "botania.entry.nebulaArmor",
+  "icon": "advancedbotany:nebula_chestplate",
+  "category": "advancedbotany:equipment",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.nebulaArmor0"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.nebulaArmor1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_helmet",
+      "title": "botania.page.nebulaArmor.craft0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_chestplate",
+      "title": "botania.page.nebulaArmor.craft1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_leggings",
+      "title": "botania.page.nebulaArmor.craft2"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_boots",
+      "title": "botania.page.nebulaArmor.craft3"
+    }
+  ]
+}

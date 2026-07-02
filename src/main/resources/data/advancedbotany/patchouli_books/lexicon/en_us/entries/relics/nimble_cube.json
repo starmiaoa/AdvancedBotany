@@ -1,0 +1,12 @@
+{
+  "name": "botania.entry.cubeWardrobe",
+  "icon": "advancedbotany:nimble_cube",
+  "category": "advancedbotany:relics",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.cubeWardrobe0"
+    }
+  ]
+}

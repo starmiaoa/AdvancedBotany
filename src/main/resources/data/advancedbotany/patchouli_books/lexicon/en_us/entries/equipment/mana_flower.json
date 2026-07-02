@@ -1,0 +1,23 @@
+{
+  "name": "botania.entry.manaFlower",
+  "icon": "advancedbotany:mana_flower",
+  "category": "advancedbotany:equipment",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.manaFlower0"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:natures_gift",
+      "title": "patchouli.advancedbotany.recipe.alphirine",
+      "text": "patchouli.advancedbotany.recipe.alphirine.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mana_flower",
+      "title": "botania.page.manaFlower.craft"
+    }
+  ]
+}

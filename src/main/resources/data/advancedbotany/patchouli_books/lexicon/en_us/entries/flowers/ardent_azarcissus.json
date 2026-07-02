@@ -1,0 +1,18 @@
+{
+  "name": "botania.entry.azartFlower",
+  "icon": "advancedbotany:ardent_azarcissus",
+  "category": "advancedbotany:flowers",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.azartFlower0"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:ardent_azarcissus",
+      "title": "patchouli.advancedbotany.recipe.petal",
+      "text": "patchouli.advancedbotany.recipe.petal.text"
+    }
+  ]
+}

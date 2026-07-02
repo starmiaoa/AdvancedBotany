@@ -38,3 +38,10 @@ description='''${mod_description}'''
     versionRange="${curios_version_range}"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="patchouli"
+    mandatory=true
+    versionRange="${patchouli_version_range}"
+    ordering="AFTER"
+    side="BOTH"

@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.aquaSword",
+  "icon": "advancedbotany:aqua_sword",
+  "category": "advancedbotany:equipment",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.aquaSword0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:aqua_sword",
+      "title": "botania.page.aquaSword.craft"
+    }
+  ]
+}

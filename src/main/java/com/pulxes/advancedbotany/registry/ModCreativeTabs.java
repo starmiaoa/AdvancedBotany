@@ -30,6 +30,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NEBULA_MANA_RING.get());
                 output.accept(ModItems.SPHERE_OF_ATTRACTION.get());
                 output.accept(ModItems.MANA_FLOWER.get());
+                output.accept(ModItems.LEXICON.get());
                 output.accept(ModItems.MITHRIL_BLOCK.get());
                 output.accept(ModItems.LEBETHRON_WOOD.get());
                 output.accept(ModItems.LEBETHRON_PLANKS.get());

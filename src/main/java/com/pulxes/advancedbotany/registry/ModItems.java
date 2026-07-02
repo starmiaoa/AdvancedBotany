@@ -2,6 +2,7 @@ package com.pulxes.advancedbotany.registry;
 
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
+import com.pulxes.advancedbotany.common.item.AdvancedBotanyGuideItem;
 import com.pulxes.advancedbotany.common.item.AirOfForgottenLandsItem;
 import com.pulxes.advancedbotany.common.item.ApothecaryResourceItem;
 import com.pulxes.advancedbotany.common.item.FoilResourceItem;
@@ -50,6 +51,7 @@ public final class ModItems {
     public static final RegistryObject<Item> NEBULA_MANA_RING = ITEMS.register("nebula_mana_ring", () -> new ManaRingItem(defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA).fireResistant(), 48_000_000));
     public static final RegistryObject<Item> SPHERE_OF_ATTRACTION = ITEMS.register("sphere_of_attraction", () -> new SphereOfAttractionItem(defaultProperties()));
     public static final RegistryObject<Item> MANA_FLOWER = ITEMS.register("mana_flower", () -> new ManaFlowerItem(defaultProperties()));
+    public static final RegistryObject<Item> LEXICON = ITEMS.register("lexicon", () -> new AdvancedBotanyGuideItem(defaultProperties().stacksTo(1)));
     public static final RegistryObject<Item> MITHRIL_BLOCK = blockItem("mithril_block", ModBlocks.MITHRIL_BLOCK);
     public static final RegistryObject<Item> LEBETHRON_WOOD = blockItem("lebethron_wood", ModBlocks.LEBETHRON_WOOD);
     public static final RegistryObject<Item> LEBETHRON_PLANKS = blockItem("lebethron_planks", ModBlocks.LEBETHRON_PLANKS);
