@@ -3,8 +3,10 @@ package com.pulxes.advancedbotany.common.item.equipment.armor;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.pulxes.advancedbotany.AdvancedBotany;
+import com.pulxes.advancedbotany.client.model.armor.AdvancedBotanyArmorModels;
 import com.pulxes.advancedbotany.common.item.equipment.SimpleCapabilityProvider;
 import com.pulxes.advancedbotany.registry.ModItems;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -109,6 +112,18 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     @Override
     public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlot slot) {
         return TEXTURE;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack,
+                                                          EquipmentSlot slot, HumanoidModel<?> defaultModel) {
+                HumanoidModel<LivingEntity> model = AdvancedBotanyArmorModels.nebula(getEquipmentSlot());
+                return model == null ? defaultModel : model;
+            }
+        });
     }
 
     @Override
