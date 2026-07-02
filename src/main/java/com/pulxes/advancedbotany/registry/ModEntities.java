@@ -32,8 +32,6 @@ public final class ModEntities {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
                     .updateInterval(10)
-                    .setTrackingRange(64)
-                    .setUpdateInterval(10)
                     .build(ResourceLocation.fromNamespaceAndPath(AdvancedBotany.MOD_ID, "nebula_blaze").toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<EntitySword>> SWORD = ENTITIES.register("sword",
@@ -41,8 +39,6 @@ public final class ModEntities {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
                     .updateInterval(10)
-                    .setTrackingRange(64)
-                    .setUpdateInterval(10)
                     .build(ResourceLocation.fromNamespaceAndPath(AdvancedBotany.MOD_ID, "sword").toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<EntityManaVine>> MANA_VINE = ENTITIES.register("mana_vine",
@@ -71,8 +67,6 @@ public final class ModEntities {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
                     .updateInterval(10)
-                    .setTrackingRange(64)
-                    .setUpdateInterval(10)
                     .build(ResourceLocation.fromNamespaceAndPath(AdvancedBotany.MOD_ID, "seed").toString()));
 
     private ModEntities() {

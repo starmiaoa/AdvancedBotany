@@ -126,7 +126,7 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
                             ItemStack seedCopy = seed.copy();
                             seedCopy.setCount(1);
                             grassSeeds.useOn(new UseOnContext(level(), player, InteractionHand.MAIN_HAND, seedCopy,
-                                    new BlockHitResult(Vec3.atCenterOf(target), Direction.UP, target, false)));
+                                    new BlockHitResult(Vec3.atCenterOf(target), result.getDirection(), target, false)));
                         }
                     } else if ((Math.random() < 0.15D || getRadius() < 3) && isDirt(target)) {
                         spawnGrowParticles(target);

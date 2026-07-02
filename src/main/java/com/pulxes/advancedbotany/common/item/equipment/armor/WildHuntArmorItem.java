@@ -1,17 +1,22 @@
 package com.pulxes.advancedbotany.common.item.equipment.armor;
 
 import com.pulxes.advancedbotany.AdvancedBotany;
+import com.pulxes.advancedbotany.client.model.armor.AdvancedBotanyArmorModels;
 import com.pulxes.advancedbotany.registry.ModItems;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import vazkii.botania.common.item.equipment.armor.manasteel.ManasteelArmorItem;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class WildHuntArmorItem extends ManasteelArmorItem {
     private static final ResourceLocation TEXTURE =
@@ -24,6 +29,18 @@ public class WildHuntArmorItem extends ManasteelArmorItem {
     @Override
     public ResourceLocation getArmorTextureAfterInk(ItemStack stack, EquipmentSlot slot) {
         return TEXTURE;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack,
+                                                          EquipmentSlot slot, HumanoidModel<?> defaultModel) {
+                HumanoidModel<LivingEntity> model = AdvancedBotanyArmorModels.wildHunt(type.getSlot());
+                return model == null ? defaultModel : model;
+            }
+        });
     }
 
     @Override

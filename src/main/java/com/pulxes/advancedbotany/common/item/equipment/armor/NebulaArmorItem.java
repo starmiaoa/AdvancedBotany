@@ -1,8 +1,10 @@
 package com.pulxes.advancedbotany.common.item.equipment.armor;
 
 import com.pulxes.advancedbotany.AdvancedBotany;
+import com.pulxes.advancedbotany.client.model.armor.AdvancedBotanyArmorModels;
 import com.pulxes.advancedbotany.common.item.ItemComponentData;
 import com.pulxes.advancedbotany.registry.ModItems;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,8 +28,10 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.mana.ManaBarTooltip;
 import vazkii.botania.api.mana.ManaItem;
@@ -57,10 +61,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     private static final float MAX_BOOT_SPEED = 0.275F;
     private static final Set<UUID> PLAYERS_WITH_FLIGHT = new HashSet<>();
     private static final Set<UUID> PLAYERS_WITH_STEP_UP = new HashSet<>();
-    private static final ResourceLocation HELM_ARMOR_ID = id("nebula_helmet_armor");
-    private static final ResourceLocation CHEST_ARMOR_ID = id("nebula_chestplate_armor");
-    private static final ResourceLocation LEGS_ARMOR_ID = id("nebula_leggings_armor");
-    private static final ResourceLocation BOOTS_ARMOR_ID = id("nebula_boots_armor");
     private static final ResourceLocation HELM_HEALTH_ID = id("nebula_helmet_health");
     private static final ResourceLocation CHEST_KNOCKBACK_ID = id("nebula_chest_knockback");
     private static final ResourceLocation STEP_HEIGHT_ID = id("nebula_boots_step_height");
@@ -115,6 +115,18 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack,
+                                                          EquipmentSlot slot, HumanoidModel<?> defaultModel) {
+                HumanoidModel<LivingEntity> model = AdvancedBotanyArmorModels.nebula(type.getSlot());
+                return model == null ? defaultModel : model;
+            }
+        });
+    }
+
+    @Override
     public ItemStack[] getArmorSetStacks() {
         return new ItemStack[]{
                 new ItemStack(ModItems.NEBULA_HELMET.get()),
@@ -144,9 +156,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     private void updateAttributeModifiers(ItemStack stack) {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         float fraction = getManaFraction(stack);
-        EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(type.getSlot());
-        builder.add(Attributes.ARMOR, new AttributeModifier(armorId(type),
-                getMaterial().value().getDefense(type) * getProtectionScale(stack), AttributeModifier.Operation.ADD_VALUE), slotGroup);
         if (type == ArmorItem.Type.HELMET) {
             builder.add(Attributes.MAX_HEALTH, new AttributeModifier(HELM_HEALTH_ID,
                     20.0D * fraction, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD);
@@ -159,7 +168,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     @Override
     public int getDamage(ItemStack stack) {
-        return MAX_DISPLAY_DAMAGE - Math.round(getManaFraction(stack) * MAX_DISPLAY_DAMAGE);
+        return displayDamage(stack);
     }
 
     @Override
@@ -295,6 +304,24 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         }
     }
 
+    public static void handleIncomingDamage(LivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player) || event.getAmount() <= 0.0F) {
+            return;
+        }
+
+        float protection = 0.0F;
+        for (EquipmentSlot slot : List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
+            ItemStack stack = player.getItemBySlot(slot);
+            if (stack.getItem() instanceof NebulaArmorItem armor && armor.type.getSlot() == slot) {
+                protection += armor.getMaterial().value().getDefense(armor.type)
+                        * (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR * armor.getManaFraction(stack));
+            }
+        }
+        if (protection > 0.0F) {
+            event.setAmount(event.getAmount() * (1.0F - Math.min(protection, 1.0F)));
+        }
+    }
+
     private static float getJumpBoost(ItemStack stack) {
         return 0.3F * (1.0F - (float) displayDamage(stack) / MAX_DISPLAY_DAMAGE);
     }
@@ -305,11 +332,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static float getBootSpeed(ItemStack stack) {
         return MAX_BOOT_SPEED * (1.0F - (float) displayDamage(stack) / MAX_DISPLAY_DAMAGE);
-    }
-
-    private static float getProtectionScale(ItemStack stack) {
-        return (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR * ((float) getMana(stack) / MAX_MANA))
-                / (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR);
     }
 
     private static void healFromFood(Player player) {
@@ -364,7 +386,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     private static int displayDamage(ItemStack stack) {
-        return MAX_DISPLAY_DAMAGE - Math.round(((float) getMana(stack) / MAX_MANA) * MAX_DISPLAY_DAMAGE);
+        return MAX_DISPLAY_DAMAGE - (int) (((float) getMana(stack) / MAX_MANA) * MAX_DISPLAY_DAMAGE);
     }
 
     private static void syncDisplayDamage(ItemStack stack) {
@@ -380,16 +402,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static ResourceLocation id(String name) {
         return ResourceLocation.fromNamespaceAndPath(AdvancedBotany.MOD_ID, name);
-    }
-
-    private static ResourceLocation armorId(ArmorItem.Type type) {
-        return switch (type) {
-            case HELMET -> HELM_ARMOR_ID;
-            case CHESTPLATE -> CHEST_ARMOR_ID;
-            case LEGGINGS -> LEGS_ARMOR_ID;
-            case BOOTS -> BOOTS_ARMOR_ID;
-            default -> BOOTS_ARMOR_ID;
-        };
     }
 
     private static void setStepHeight(Player player, double value) {

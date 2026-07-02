@@ -53,8 +53,8 @@ public class LebethronNaturalCoreBlock extends BaseEntityBlock {
         if (!(heldItem.getItem() instanceof BlockItem blockItem)) {
             return InteractionResult.PASS;
         }
-        Block block = blockItem.getBlock();
-        if (!block.defaultBlockState().is(BlockTags.LEAVES)) {
+        BlockState leafState = blockItem.getBlock().defaultBlockState();
+        if (!leafState.is(BlockTags.LEAVES)) {
             return InteractionResult.PASS;
         }
         if (heldItem.has(DataComponents.BLOCK_ENTITY_DATA)) {
@@ -63,7 +63,7 @@ public class LebethronNaturalCoreBlock extends BaseEntityBlock {
 
         if (!level.isClientSide()) {
             core.updateStructure();
-            if (core.getValidTree() && core.setLeafBlock(player, block)) {
+            if (core.getValidTree() && core.setLeafBlock(player, leafState)) {
                 heldItem.shrink(1);
             }
         }

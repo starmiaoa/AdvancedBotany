@@ -56,12 +56,22 @@ public class NaturalManaSpreaderBlock extends BaseEntityBlock {
 
         Direction direction = Direction.orderedByNearest(placer)[0];
         switch (direction) {
-            case DOWN -> spreader.setRotationY(-90.0F);
-            case UP -> spreader.setRotationY(90.0F);
-            case NORTH -> spreader.setRotationX(270.0F);
-            case SOUTH -> spreader.setRotationX(90.0F);
-            case EAST -> spreader.setRotationX(180.0F);
-            case WEST -> spreader.setRotationX(0.0F);
+            case DOWN, UP -> {
+                spreader.setRotationX(90.0F);
+                spreader.setRotationY(90.0F);
+            }
+            case NORTH, SOUTH -> {
+                spreader.setRotationX(90.0F);
+                spreader.setRotationY(0.0F);
+            }
+            case EAST -> {
+                spreader.setRotationX(180.0F);
+                spreader.setRotationY(0.0F);
+            }
+            case WEST -> {
+                spreader.setRotationX(180.0F);
+                spreader.setRotationY(0.0F);
+            }
         }
         spreader.commitRedirection();
     }

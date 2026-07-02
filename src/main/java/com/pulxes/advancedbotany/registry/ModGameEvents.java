@@ -2,6 +2,7 @@ package com.pulxes.advancedbotany.registry;
 
 import com.pulxes.advancedbotany.common.item.equipment.armor.NebulaArmorItem;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -23,5 +24,10 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void livingJump(LivingEvent.LivingJumpEvent event) {
         NebulaArmorItem.handleLivingJump(event);
+    }
+
+    @SubscribeEvent
+    public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
+        NebulaArmorItem.handleIncomingDamage(event);
     }
 }

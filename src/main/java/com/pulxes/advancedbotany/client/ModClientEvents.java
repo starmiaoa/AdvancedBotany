@@ -3,6 +3,9 @@ package com.pulxes.advancedbotany.client;
 import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.client.gui.MagicCraftCrateScreen;
 import com.pulxes.advancedbotany.client.gui.NidavellirForgeScreen;
+import com.pulxes.advancedbotany.client.model.armor.AdvancedBotanyArmorModels;
+import com.pulxes.advancedbotany.client.model.armor.NebulaArmorModel;
+import com.pulxes.advancedbotany.client.model.armor.WildHuntArmorModel;
 import com.pulxes.advancedbotany.client.renderer.entity.AdvancedSparkRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AlphirinePortalRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AnonymousSteveRenderer;
@@ -62,5 +65,16 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ModEntities.ANONYMOUS_STEVE.get(), AnonymousSteveRenderer::new);
         event.registerEntityRenderer(ModEntities.ALPHIRINE_PORTAL.get(), AlphirinePortalRenderer::new);
         event.registerEntityRenderer(ModEntities.SEED.get(), EmptyEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(AdvancedBotanyArmorModels.NEBULA_ARMOR, NebulaArmorModel::createLayer);
+        event.registerLayerDefinition(AdvancedBotanyArmorModels.WILD_HUNT_ARMOR, WildHuntArmorModel::createLayer);
+    }
+
+    @SubscribeEvent
+    public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        AdvancedBotanyArmorModels.init(event.getContext());
     }
 }

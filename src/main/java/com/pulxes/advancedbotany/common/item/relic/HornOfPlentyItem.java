@@ -3,24 +3,32 @@ package com.pulxes.advancedbotany.common.item.relic;
 import com.pulxes.advancedbotany.common.network.ModNetwork;
 import com.pulxes.advancedbotany.common.item.ItemComponentData;
 import com.pulxes.advancedbotany.registry.ModSounds;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -33,7 +41,6 @@ public class HornOfPlentyItem extends ModRelicItem {
     private static final int MANA_COST = 64_000;
     private static final int USE_DURATION = 42_000;
     private static final int USE_THRESHOLD = 48;
-    private static final Method DROP_FROM_LOOT_TABLE = findDropFromLootTable();
 
     public HornOfPlentyItem(Properties properties) {
         super(properties);
@@ -99,7 +106,7 @@ public class HornOfPlentyItem extends ModRelicItem {
         if (player.level().random.nextInt(100) >= 20) {
             return;
         }
-        if (dropExtraLoot(victim, event)) {
+        if (dropExtraLoot(player, victim, event)) {
             setChargeLoot(horn, (short) (getChargeLoot(horn) - 1));
             player.level().playSound(null, player.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.9F, 0.8F);
         }
@@ -115,32 +122,56 @@ public class HornOfPlentyItem extends ModRelicItem {
         return ItemStack.EMPTY;
     }
 
-    private static boolean dropExtraLoot(LivingEntity victim, LivingDropsEvent event) {
-        if (DROP_FROM_LOOT_TABLE != null) {
-            try {
-                DROP_FROM_LOOT_TABLE.invoke(victim, event.getSource(), true);
-                return true;
-            } catch (ReflectiveOperationException ignored) {
-            }
+    private static boolean dropExtraLoot(Player player, LivingEntity victim, LivingDropsEvent event) {
+        if (!(victim.level() instanceof ServerLevel serverLevel)) {
+            return false;
         }
-        List<ItemEntity> extraDrops = new ArrayList<>();
-        for (ItemEntity drop : event.getDrops()) {
-            extraDrops.add(new ItemEntity(victim.level(), drop.getX(), drop.getY(), drop.getZ(), drop.getItem().copy()));
+        int lootingLevel = (int) (getLootingLevel(serverLevel, player) * 1.5F);
+        LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(victim.getLootTable());
+        Entity killer = event.getSource().getEntity();
+        Entity directKiller = event.getSource().getDirectEntity();
+        LootParams.Builder builder = new LootParams.Builder(serverLevel)
+                .withParameter(LootContextParams.THIS_ENTITY, victim)
+                .withParameter(LootContextParams.ORIGIN, victim.position())
+                .withParameter(LootContextParams.DAMAGE_SOURCE, event.getSource())
+                .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, killer)
+                .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, directKiller)
+                .withLuck(killer instanceof Player killerPlayer ? killerPlayer.getLuck() : 0.0F);
+        List<ItemStack> drops = getRandomItemsWithLooting(player, serverLevel, lootingLevel, lootTable, builder);
+        for (ItemStack drop : drops) {
+            victim.spawnAtLocation(drop);
         }
-        event.getDrops().addAll(extraDrops);
-        return !extraDrops.isEmpty();
+        return !drops.isEmpty();
     }
 
-    private static Method findDropFromLootTable() {
-        for (String name : List.of("dropFromLootTable", "m_6668_")) {
-            try {
-                Method method = LivingEntity.class.getDeclaredMethod(name, DamageSource.class, boolean.class);
-                method.setAccessible(true);
-                return method;
-            } catch (ReflectiveOperationException ignored) {
+    private static List<ItemStack> getRandomItemsWithLooting(Player player, ServerLevel level, int lootingLevel,
+                                                            LootTable lootTable, LootParams.Builder builder) {
+        ItemStack originalMainHand = player.getMainHandItem();
+        ItemStack lootingStack = originalMainHand.isEmpty() ? new ItemStack(Items.DIAMOND_SWORD) : originalMainHand.copy();
+        Optional<Holder.Reference<Enchantment>> looting = level.registryAccess()
+                .registryOrThrow(Registries.ENCHANTMENT)
+                .getHolder(Enchantments.LOOTING);
+        looting.ifPresent(holder -> EnchantmentHelper.updateEnchantments(lootingStack, enchantments -> {
+            if (lootingLevel > 0) {
+                enchantments.set(holder, lootingLevel);
+            } else {
+                enchantments.removeIf(enchantment -> enchantment.is(Enchantments.LOOTING));
             }
+        }));
+        player.setItemInHand(InteractionHand.MAIN_HAND, lootingStack);
+        try {
+            return lootTable.getRandomItems(builder.create(LootContextParamSets.ENTITY));
+        } finally {
+            player.setItemInHand(InteractionHand.MAIN_HAND, originalMainHand);
         }
-        return null;
+    }
+
+    private static int getLootingLevel(ServerLevel level, Player player) {
+        return level.registryAccess()
+                .registryOrThrow(Registries.ENCHANTMENT)
+                .getHolder(Enchantments.LOOTING)
+                .map(holder -> EnchantmentHelper.getItemEnchantmentLevel(holder, player.getMainHandItem()))
+                .orElse(0);
     }
 
     public static boolean isValidEntity(LivingEntity entity) {

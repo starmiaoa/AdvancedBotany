@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.pulxes.advancedbotany.common.block.entity.ManaCrystalCubeBlockEntity;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.InteractionHand;
@@ -60,8 +61,8 @@ public class ManaCrystalCubeBlock extends BaseEntityBlock {
     private ItemInteractionResult use(Level level, BlockPos pos, Player player) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof ManaCrystalCubeBlockEntity cube) {
-            if (!level.isClientSide()) {
-                cube.updateKnownMana();
+            if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+                cube.updateKnownMana(serverPlayer);
             }
             level.playSound(player, pos, BotaniaSounds.ding, SoundSource.BLOCKS, 0.11F, 1.0F);
             return ItemInteractionResult.sidedSuccess(level.isClientSide());
