@@ -1,0 +1,12 @@
+{
+  "name": "botania.entry.hornPlenty",
+  "icon": "advancedbotany:horn_of_plenty",
+  "category": "advancedbotany:relics",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.hornPlenty0"
+    }
+  ]
+}

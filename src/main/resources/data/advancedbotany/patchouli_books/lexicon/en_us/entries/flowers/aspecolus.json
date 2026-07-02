@@ -1,0 +1,18 @@
+{
+  "name": "botania.entry.aspecolus",
+  "icon": "advancedbotany:aspecolus",
+  "category": "advancedbotany:flowers",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.aspecolus0"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:aspecolus",
+      "title": "patchouli.advancedbotany.recipe.petal",
+      "text": "patchouli.advancedbotany.recipe.petal.text"
+    }
+  ]
+}

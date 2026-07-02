@@ -1,0 +1,21 @@
+{
+  "name": "botania.entry.mithrillSword",
+  "icon": "advancedbotany:blade_of_space",
+  "category": "advancedbotany:equipment",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.mithrillSword0"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.mithrillSword1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:blade_of_space",
+      "title": "botania.page.mithrillSword.craft"
+    }
+  ]
+}

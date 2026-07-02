@@ -1,0 +1,12 @@
+{
+  "name": "botania.knowledge.ab_forgotten",
+  "icon": "advancedbotany:lexicon",
+  "category": "advancedbotany:forgotten",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "patchouli.advancedbotany.page.overview0"
+    }
+  ]
+}

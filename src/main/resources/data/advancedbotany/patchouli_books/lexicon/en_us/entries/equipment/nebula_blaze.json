@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.nebulaBlaze",
+  "icon": "advancedbotany:nebula_blaze",
+  "category": "advancedbotany:equipment",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.nebulaBlaze0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_blaze",
+      "title": "botania.page.nebulaBlaze.craft"
+    }
+  ]
+}

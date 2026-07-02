@@ -1,0 +1,22 @@
+{
+  "name": "botania.entry.dictarius",
+  "icon": "advancedbotany:dictarius",
+  "category": "advancedbotany:flowers",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.dictarius0"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.dictarius1"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:dictarius",
+      "title": "patchouli.advancedbotany.recipe.petal",
+      "text": "patchouli.advancedbotany.recipe.petal.text"
+    }
+  ]
+}

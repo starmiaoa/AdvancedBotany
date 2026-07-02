@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.nebulaRod",
+  "icon": "advancedbotany:rod_of_nebula",
+  "category": "advancedbotany:equipment",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.nebulaRod0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:rod_of_nebula",
+      "title": "botania.page.nebulaRod.craft"
+    }
+  ]
+}
