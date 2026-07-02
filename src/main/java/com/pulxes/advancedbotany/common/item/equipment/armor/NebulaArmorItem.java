@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.BotaniaAPI;
@@ -58,10 +59,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     private static final float MAX_BOOT_SPEED = 0.275F;
     private static final Set<UUID> PLAYERS_WITH_FLIGHT = new HashSet<>();
     private static final Set<UUID> PLAYERS_WITH_STEP_UP = new HashSet<>();
-    private static final UUID HELM_ARMOR_UUID = uuid("nebula_helmet_armor");
-    private static final UUID CHEST_ARMOR_UUID = uuid("nebula_chestplate_armor");
-    private static final UUID LEGS_ARMOR_UUID = uuid("nebula_leggings_armor");
-    private static final UUID BOOTS_ARMOR_UUID = uuid("nebula_boots_armor");
     private static final UUID HELM_HEALTH_UUID = uuid("nebula_helmet_health");
     private static final UUID CHEST_KNOCKBACK_UUID = uuid("nebula_chest_knockback");
 
@@ -145,10 +142,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         float fraction = getManaFraction(stack);
-        if (slot == type.getSlot()) {
-            builder.put(Attributes.ARMOR, new AttributeModifier(armorUuid(type), "Nebula armor modifier",
-                    getMaterial().getDefenseForType(type) * getProtectionScale(stack), AttributeModifier.Operation.ADDITION));
-        }
         if (slot == EquipmentSlot.HEAD && type == ArmorItem.Type.HELMET) {
             builder.put(Attributes.MAX_HEALTH, new AttributeModifier(HELM_HEALTH_UUID,
                     "Nebula helmet modifier", 20.0D * fraction, AttributeModifier.Operation.ADDITION));
@@ -161,7 +154,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     @Override
     public int getDamage(ItemStack stack) {
-        return MAX_DISPLAY_DAMAGE - Math.round(getManaFraction(stack) * MAX_DISPLAY_DAMAGE);
+        return displayDamage(stack);
     }
 
     @Override
@@ -299,6 +292,20 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         }
     }
 
+    public static void handleLivingHurt(LivingHurtEvent event) {
+        LivingEntity entity = event.getEntity();
+        float ratio = 0.0F;
+        for (ItemStack stack : entity.getArmorSlots()) {
+            if (stack.getItem() instanceof NebulaArmorItem armor) {
+                ratio += armor.getMaterial().getDefenseForType(armor.type)
+                        * (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR * armor.getManaFraction(stack));
+            }
+        }
+        if (ratio > 0.0F) {
+            event.setAmount(event.getAmount() * Math.max(0.0F, 1.0F - Math.min(1.0F, ratio)));
+        }
+    }
+
     private static float getJumpBoost(ItemStack stack) {
         return 0.3F * (1.0F - (float) displayDamage(stack) / MAX_DISPLAY_DAMAGE);
     }
@@ -309,11 +316,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static float getBootSpeed(ItemStack stack) {
         return MAX_BOOT_SPEED * (1.0F - (float) displayDamage(stack) / MAX_DISPLAY_DAMAGE);
-    }
-
-    private static float getProtectionScale(ItemStack stack) {
-        return (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR * ((float) getMana(stack) / MAX_MANA))
-                / (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR);
     }
 
     private static void healFromFood(Player player) {
@@ -368,7 +370,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     private static int displayDamage(ItemStack stack) {
-        return MAX_DISPLAY_DAMAGE - Math.round(((float) getMana(stack) / MAX_MANA) * MAX_DISPLAY_DAMAGE);
+        return MAX_DISPLAY_DAMAGE - (int) (((float) getMana(stack) / MAX_MANA) * MAX_DISPLAY_DAMAGE);
     }
 
     private static void syncDisplayDamage(ItemStack stack) {
@@ -384,15 +386,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static UUID uuid(String name) {
         return UUID.nameUUIDFromBytes((AdvancedBotany.MOD_ID + ":" + name).getBytes(StandardCharsets.UTF_8));
-    }
-
-    private static UUID armorUuid(ArmorItem.Type type) {
-        return switch (type) {
-            case HELMET -> HELM_ARMOR_UUID;
-            case CHESTPLATE -> CHEST_ARMOR_UUID;
-            case LEGGINGS -> LEGS_ARMOR_UUID;
-            case BOOTS -> BOOTS_ARMOR_UUID;
-        };
     }
 
     private class NebulaManaItem implements ManaItem {

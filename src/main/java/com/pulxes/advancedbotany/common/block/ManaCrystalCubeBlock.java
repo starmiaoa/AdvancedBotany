@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -46,8 +47,8 @@ public class ManaCrystalCubeBlock extends BaseEntityBlock {
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof ManaCrystalCubeBlockEntity cube) {
-            if (!level.isClientSide()) {
-                cube.updateKnownMana();
+            if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+                cube.updateKnownMana(serverPlayer);
             }
             level.playSound(player, pos, BotaniaSounds.ding, SoundSource.BLOCKS, 0.11F, 1.0F);
             return InteractionResult.sidedSuccess(level.isClientSide());

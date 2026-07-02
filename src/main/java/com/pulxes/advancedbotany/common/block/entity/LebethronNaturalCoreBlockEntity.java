@@ -4,7 +4,8 @@ import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import com.pulxes.advancedbotany.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public class LebethronNaturalCoreBlockEntity extends BlockEntity {
@@ -23,7 +23,7 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     private static final String TAG_VALID_TREE = "validTree";
 
     private int tick;
-    private Block leafBlock;
+    private BlockState leafState;
     private boolean validTree;
 
     public LebethronNaturalCoreBlockEntity(BlockPos pos, BlockState state) {
@@ -33,7 +33,7 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     public static void serverTick(Level level, BlockPos pos, BlockState state, LebethronNaturalCoreBlockEntity core) {
         if (core.tick <= 0) {
             core.updateStructure();
-            if (core.validTree && core.getLeafBlock() != null) {
+            if (core.validTree && core.getLeafState() != null) {
                 core.spawnLeaves();
                 core.tick = 40;
             }
@@ -58,28 +58,33 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
         }
     }
 
-    public boolean setLeafBlock(Player player, Block block) {
-        if (leafBlock == null || leafBlock == Blocks.AIR) {
-            leafBlock = block;
+    public boolean setLeafBlock(Player player, BlockState state) {
+        if (leafState == null || leafState.isAir()) {
+            leafState = state;
             sync();
             return true;
         }
-        if (leafBlock == block) {
+        if (leafState.equals(state)) {
             return false;
         }
         if (level != null && !level.isClientSide()) {
             Vec3 look = player.getLookAngle();
-            ItemEntity entity = new ItemEntity(level, player.getX() + look.x, player.getY() + 1.2D, player.getZ() + look.z, new ItemStack(leafBlock));
+            ItemEntity entity = new ItemEntity(level, player.getX() + look.x, player.getY() + 1.2D, player.getZ() + look.z, new ItemStack(leafState.getBlock()));
             level.addFreshEntity(entity);
         }
-        leafBlock = block;
+        leafState = state;
         sync();
         return true;
     }
 
     @Nullable
     public Block getLeafBlock() {
-        return leafBlock != null && leafBlock != Blocks.AIR ? leafBlock : null;
+        return leafState != null && !leafState.isAir() ? leafState.getBlock() : null;
+    }
+
+    @Nullable
+    public BlockState getLeafState() {
+        return leafState != null && !leafState.isAir() ? leafState : null;
     }
 
     public boolean hasValidTree() {
@@ -147,11 +152,11 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     }
 
     private void tryPlaceLeaf(BlockPos pos) {
-        if (level == null || leafBlock == null || level.random.nextInt(10) <= 8) {
+        if (level == null || leafState == null || level.random.nextInt(10) <= 8) {
             return;
         }
         if (pos.getY() < level.getMaxBuildHeight() && level.getBlockState(pos).isAir()) {
-            level.setBlock(pos, leafBlock.defaultBlockState(), 3);
+            level.setBlock(pos, leafState, 3);
         }
     }
 
@@ -165,11 +170,8 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        if (leafBlock != null) {
-            ResourceLocation key = ForgeRegistries.BLOCKS.getKey(leafBlock);
-            if (key != null) {
-                tag.putString(TAG_BLOCK, key.toString());
-            }
+        if (leafState != null) {
+            tag.put(TAG_BLOCK, NbtUtils.writeBlockState(leafState));
         }
         tag.putInt(TAG_TICK, tick);
         tag.putBoolean(TAG_VALID_TREE, validTree);
@@ -179,7 +181,7 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     public void load(CompoundTag tag) {
         super.load(tag);
         if (tag.contains(TAG_BLOCK)) {
-            leafBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(tag.getString(TAG_BLOCK)));
+            leafState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound(TAG_BLOCK));
         }
         tick = tag.getInt(TAG_TICK);
         validTree = tag.getBoolean(TAG_VALID_TREE);

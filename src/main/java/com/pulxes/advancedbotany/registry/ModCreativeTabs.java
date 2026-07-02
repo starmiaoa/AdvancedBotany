@@ -57,7 +57,6 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.AQUA_SWORD.get());
                 output.accept(ModItems.BLACK_HOLE_BOX.get());
                 output.accept(ModItems.ROD_OF_SPRAWL.get());
-                output.accept(ModItems.BLADE_OF_SPACE.get());
                 for (int mana : AdvancedBotanyEquipment.SPACE_BLADE_CREATIVE_MANA) {
                     ItemStack blade = new ItemStack(ModItems.BLADE_OF_SPACE.get());
                     SpaceBladeItem.setMana(blade, mana);

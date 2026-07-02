@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "advancedbotany:mana_flower"
+    "advancedbotany:mana_flower",
+    "advancedbotany:sphere_of_attraction"
   ]
 }

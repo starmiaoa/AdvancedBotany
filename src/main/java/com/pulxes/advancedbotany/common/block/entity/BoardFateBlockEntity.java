@@ -1,6 +1,7 @@
 package com.pulxes.advancedbotany.common.block.entity;
 
 import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
+import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import com.pulxes.advancedbotany.registry.ModSounds;
 import java.util.List;
@@ -8,6 +9,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.xplat.XplatAbstractions;
@@ -29,6 +34,8 @@ import vazkii.botania.xplat.XplatAbstractions;
 public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
     private static final String TAG_SLOT_CHANCE = "slotChance";
     private static final String TAG_REQUEST_UPDATE = "requestUpdate";
+    private static final String TAG_PLAYER_ROOT = AdvancedBotany.MOD_ID + ":fate_board";
+    private static final String TAG_GRANTED_RELICS = "granted_relics";
 
     public byte[] slotChance = new byte[] {0, 0};
     public final int[] clientTick = new int[] {0, 0};
@@ -121,10 +128,11 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
                     0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
 
             ItemStack relic = getRelicForRoll(relicCount);
-            if (relic.isEmpty() || hasRelicAdvancement(player, relic)) {
+            if (relic.isEmpty() || hasRelic(player, relic)) {
                 player.displayClientMessage(Component.translatable("botaniamisc.dudDiceRoll", relicCount).withStyle(ChatFormatting.DARK_GREEN), false);
             } else {
                 bindRelicToPlayer(relic, player);
+                markRelicGranted(player, relic);
                 ItemEntity entityItem = new ItemEntity(level, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, relic);
                 level.addFreshEntity(entityItem);
                 player.displayClientMessage(Component.translatable("botaniamisc.diceRoll", relicCount).withStyle(ChatFormatting.DARK_GREEN), false);
@@ -240,6 +248,43 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
         }
         Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(advancementId);
         return advancement != null && serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone();
+    }
+
+    private static boolean hasRelic(Player player, ItemStack stack) {
+        return hasRelicAdvancement(player, stack) || hasPersistentRelicGrant(player, stack);
+    }
+
+    private static boolean hasPersistentRelicGrant(Player player, ItemStack stack) {
+        String id = relicId(stack);
+        if (id.isEmpty()) {
+            return false;
+        }
+        CompoundTag root = player.getPersistentData().getCompound(TAG_PLAYER_ROOT);
+        ListTag granted = root.getList(TAG_GRANTED_RELICS, Tag.TAG_STRING);
+        for (int i = 0; i < granted.size(); i++) {
+            if (id.equals(granted.getString(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void markRelicGranted(Player player, ItemStack stack) {
+        String id = relicId(stack);
+        if (id.isEmpty() || hasPersistentRelicGrant(player, stack)) {
+            return;
+        }
+        CompoundTag persistent = player.getPersistentData();
+        CompoundTag root = persistent.getCompound(TAG_PLAYER_ROOT);
+        ListTag granted = root.getList(TAG_GRANTED_RELICS, Tag.TAG_STRING);
+        granted.add(StringTag.valueOf(id));
+        root.put(TAG_GRANTED_RELICS, granted);
+        persistent.put(TAG_PLAYER_ROOT, root);
+    }
+
+    private static String relicId(ItemStack stack) {
+        ResourceLocation id = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        return id == null ? "" : id.toString();
     }
 
     @Override

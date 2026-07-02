@@ -25,8 +25,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
+import top.theillusivec4.curios.api.CuriosApi;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.mana.ManaItem;
+import vazkii.botania.api.mana.ManaPool;
 import vazkii.botania.api.mana.ManaReceiver;
 import vazkii.botania.api.mana.spark.ManaSpark;
 import vazkii.botania.api.mana.spark.SparkAttachable;
@@ -102,7 +104,7 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
         if (upgrade == SparkUpgradeType.DOMINANT) {
             List<ManaSpark> valid = new ArrayList<>();
             for (ManaSpark spark : nearby) {
-                if (spark != this && spark.getUpgrade() == SparkUpgradeType.NONE && spark.getAttachedManaReceiver() != null) {
+                if (spark != this && spark.getUpgrade() == SparkUpgradeType.NONE && spark.getAttachedManaReceiver() instanceof ManaPool) {
                     valid.add(spark);
                 }
             }
@@ -127,9 +129,7 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
         List<Player> players = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(SparkHelper.SPARK_SCAN_RANGE));
         Collections.shuffle(players);
         for (Player player : players) {
-            Inventory inventory = player.getInventory();
-            for (int i = 0; i < inventory.getContainerSize(); i++) {
-                ItemStack stack = inventory.getItem(i);
+            for (ItemStack stack : getPlayerManaStacks(player)) {
                 ManaItem manaItem = stack.getCapability(BotaniaForgeCapabilities.MANA_ITEM).orElse(null);
                 if (manaItem == null || !manaItem.canReceiveManaFromItem(new ItemStack(ModItems.SUPERCONDUCTIVE_SPARK.get()))) {
                     continue;
@@ -205,9 +205,6 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
         if (stack.is(BotaniaItems.phantomInk)) {
             if (!level().isClientSide()) {
                 entityData.set(INVISIBLE, !entityData.get(INVISIBLE));
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
             }
             return InteractionResult.sidedSuccess(level().isClientSide());
         }
@@ -282,8 +279,7 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
                     || spark.areIncomingTransfersDone()
                     || attached == null
                     || attached.getAvailableSpaceForMana() <= 0
-                    || (upgrade == SparkUpgradeType.NONE && otherUpgrade != SparkUpgradeType.DOMINANT)
-                    || (upgrade == SparkUpgradeType.RECESSIVE && otherUpgrade != SparkUpgradeType.NONE && otherUpgrade != SparkUpgradeType.DISPERSIVE);
+                    || !isValidTransferTarget(upgrade, otherUpgrade, spark.getAttachedManaReceiver());
         });
     }
 
@@ -300,11 +296,12 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
 
     @Override
     public boolean areIncomingTransfersDone() {
+        SparkAttachable attached = getAttachedTile();
         ManaReceiver receiver = getAttachedManaReceiver();
-        if (receiver == null) {
-            return true;
+        if (receiver instanceof ManaPool) {
+            return removeTransferants > 0;
         }
-        return removeTransferants > 0 || receiver.isFull();
+        return attached != null && attached.areIncomingTranfersDone();
     }
 
     @Override
@@ -358,6 +355,29 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
     private static ItemStack upgradeStack(SparkUpgradeType upgrade) {
         Item item = UPGRADE_ITEMS.get(upgrade);
         return item == null ? ItemStack.EMPTY : new ItemStack(item);
+    }
+
+    private static List<ItemStack> getPlayerManaStacks(Player player) {
+        List<ItemStack> stacks = new ArrayList<>();
+        Inventory inventory = player.getInventory();
+        stacks.addAll(inventory.items);
+        stacks.addAll(inventory.armor);
+        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+            for (var slotResult : handler.findCurios(stack -> true)) {
+                stacks.add(slotResult.stack());
+            }
+        });
+        return stacks;
+    }
+
+    private static boolean isValidTransferTarget(SparkUpgradeType upgrade, SparkUpgradeType targetUpgrade, ManaReceiver targetReceiver) {
+        if (upgrade == SparkUpgradeType.NONE && targetUpgrade == SparkUpgradeType.DOMINANT) {
+            return true;
+        }
+        if (upgrade == SparkUpgradeType.RECESSIVE && (targetUpgrade == SparkUpgradeType.NONE || targetUpgrade == SparkUpgradeType.DISPERSIVE)) {
+            return true;
+        }
+        return !(targetReceiver instanceof ManaPool);
     }
 
     static {

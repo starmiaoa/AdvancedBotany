@@ -9,6 +9,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -87,13 +89,13 @@ public class TerraFarmlandBlock extends Block {
         }
 
         Block plantBlock = plantState.getBlock();
-        Object originalSeedMarker = plantBlock;
+        Item originalSeedItem = plantBlock.asItem();
         List<ItemStack> drops = Block.getDrops(plantState, level, plantPos, null);
         for (ItemStack stack : drops) {
             if (stack.isEmpty()) {
                 continue;
             }
-            if (stack.getItem() == originalSeedMarker) {
+            if (isSeedDrop(stack, plantBlock, originalSeedItem)) {
                 if (stack.getCount() > 1) {
                     stack.shrink(1);
                 }
@@ -122,6 +124,14 @@ public class TerraFarmlandBlock extends Block {
             return cropBlock.getStateForAge(0);
         }
         return plantBlock.defaultBlockState();
+    }
+
+    private static boolean isSeedDrop(ItemStack stack, Block plantBlock, Item originalSeedItem) {
+        Item item = stack.getItem();
+        if (item == originalSeedItem) {
+            return true;
+        }
+        return item instanceof BlockItem blockItem && blockItem.getBlock() == plantBlock;
     }
 
     @Override

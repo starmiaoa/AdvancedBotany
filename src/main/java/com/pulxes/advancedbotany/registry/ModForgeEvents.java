@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.api.BotaniaForgeCapabilities;
@@ -55,6 +56,11 @@ public final class ModForgeEvents {
     @SubscribeEvent
     public static void livingJump(LivingEvent.LivingJumpEvent event) {
         NebulaArmorItem.handleLivingJump(event);
+    }
+
+    @SubscribeEvent
+    public static void livingHurt(LivingHurtEvent event) {
+        NebulaArmorItem.handleLivingHurt(event);
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,6 +33,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.ForgeEventFactory;
 import vazkii.botania.api.BotaniaAPI;
 
@@ -130,7 +132,7 @@ public class EntityManaVine extends ThrowableProjectile {
                     if (block instanceof BonemealableBlock bonemealable && !(block instanceof GrassBlock)) {
                         fertilize(serverLevel, pos, state, bonemealable, player);
                     } else {
-                        growLianaBelow(serverLevel, pos, center);
+                    growLianaBelow(serverLevel, pos, center, player);
                     }
                 }
             }
@@ -165,7 +167,7 @@ public class EntityManaVine extends ThrowableProjectile {
         level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos, 6 + level.random.nextInt(4));
     }
 
-    private void growLianaBelow(ServerLevel level, BlockPos supportPos, BlockPos center) {
+    private void growLianaBelow(ServerLevel level, BlockPos supportPos, BlockPos center, Player player) {
         BlockPos currentPos = supportPos.below();
         if (!level.getBlockState(currentPos).isAir()) {
             return;
@@ -186,6 +188,10 @@ public class EntityManaVine extends ThrowableProjectile {
                     ? ModBlocks.FREYR_LIANA.get().defaultBlockState()
                     : ModBlocks.LUMINOUS_FREYR_LIANA.get().defaultBlockState();
             if (!liana.canSurvive(level, currentPos)) {
+                return;
+            }
+            BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, currentPos, Block.UPDATE_ALL);
+            if (ForgeEventFactory.onBlockPlace(player, snapshot, Direction.DOWN)) {
                 return;
             }
             level.setBlock(currentPos, liana, Block.UPDATE_ALL);

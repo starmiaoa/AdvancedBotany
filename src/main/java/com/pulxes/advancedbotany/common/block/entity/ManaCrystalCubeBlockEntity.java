@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,14 +33,10 @@ public class ManaCrystalCubeBlockEntity extends BlockEntity implements Wandable 
         // The original cube is passive; values are refreshed on right click/wand interaction.
     }
 
-    public void updateKnownMana() {
+    public void updateKnownMana(ServerPlayer player) {
         int[] mana = getManaAround();
-        knownMana = mana[0];
-        knownMaxMana = mana[1];
-        setChanged();
-        if (level != null) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        }
+        CompoundTag tag = getTransientUpdateTag(mana[0], mana[1]);
+        player.connection.send(ClientboundBlockEntityDataPacket.create(this, blockEntity -> tag));
     }
 
     public int[] getManaAround() {
@@ -71,8 +68,8 @@ public class ManaCrystalCubeBlockEntity extends BlockEntity implements Wandable 
 
     @Override
     public boolean onUsedByWand(net.minecraft.world.entity.player.Player player, net.minecraft.world.item.ItemStack stack, net.minecraft.core.Direction side) {
-        if (level != null && !level.isClientSide()) {
-            updateKnownMana();
+        if (level != null && !level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            updateKnownMana(serverPlayer);
         }
         return true;
     }
@@ -80,8 +77,6 @@ public class ManaCrystalCubeBlockEntity extends BlockEntity implements Wandable 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putInt(TAG_KNOWN_MANA, knownMana);
-        tag.putInt(TAG_KNOWN_MAX_MANA, knownMaxMana);
     }
 
     @Override
@@ -93,14 +88,18 @@ public class ManaCrystalCubeBlockEntity extends BlockEntity implements Wandable 
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        tag.putInt(TAG_KNOWN_MANA, knownMana);
-        tag.putInt(TAG_KNOWN_MAX_MANA, knownMaxMana);
-        return tag;
+        return getTransientUpdateTag(knownMana, knownMaxMana);
     }
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    private CompoundTag getTransientUpdateTag(int mana, int maxMana) {
+        CompoundTag tag = super.getUpdateTag();
+        tag.putInt(TAG_KNOWN_MANA, mana);
+        tag.putInt(TAG_KNOWN_MAX_MANA, maxMana);
+        return tag;
     }
 }

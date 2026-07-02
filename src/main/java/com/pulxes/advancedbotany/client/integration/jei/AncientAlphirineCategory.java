@@ -13,6 +13,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +47,7 @@ public class AncientAlphirineCategory implements IRecipeCategory<AncientAlphirin
 
     @Override
     public int getHeight() {
-        return 44;
+        return 58;
     }
 
     @Override
@@ -57,6 +58,17 @@ public class AncientAlphirineCategory implements IRecipeCategory<AncientAlphirin
     @Override
     public void draw(AncientAlphirineRecipe recipe, IRecipeSlotsView slotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         overlay.draw(guiGraphics, 17, 0);
+        int barX = 9;
+        int barY = 43;
+        int barWidth = 78;
+        guiGraphics.fill(barX, barY, barX + barWidth, barY + 4, 0xFF2F2F2F);
+        guiGraphics.fill(barX, barY, barX + Math.max(1, barWidth * recipe.getChance() / 100), barY + 4, 0xFF48B84A);
+        guiGraphics.drawString(Minecraft.getInstance().font,
+                Component.translatable("jei." + AdvancedBotany.MOD_ID + ".chance", recipe.getChance()),
+                9, 49, 0x3F7F3F, false);
+        guiGraphics.drawString(Minecraft.getInstance().font,
+                Component.translatable("jei." + AdvancedBotany.MOD_ID + ".mana", recipe.getManaUsage()),
+                52, 49, 0x3150C8, false);
     }
 
     @Override
@@ -65,11 +77,7 @@ public class AncientAlphirineCategory implements IRecipeCategory<AncientAlphirin
                 .addIngredients(recipe.getInput());
 
         builder.addSlot(RecipeIngredientRole.CATALYST, 39, 12)
-                .addItemStack(new ItemStack(ModFlowers.ANCIENT_ALPHIRINE_ITEM.get()))
-                .addRichTooltipCallback((slotView, tooltip) -> {
-                    tooltip.add(Component.translatable("jei." + AdvancedBotany.MOD_ID + ".chance", recipe.getChance()));
-                    tooltip.add(Component.translatable("jei." + AdvancedBotany.MOD_ID + ".mana", recipe.getManaUsage()));
-                });
+                .addItemStack(new ItemStack(ModFlowers.ANCIENT_ALPHIRINE_ITEM.get()));
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 68, 12)
                 .addItemStack(recipe.getOutput());

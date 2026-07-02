@@ -1,9 +1,7 @@
 package com.pulxes.advancedbotany.common.block.entity.flower;
 
 import com.pulxes.advancedbotany.registry.ModFlowers;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import com.pulxes.advancedbotany.common.block.entity.GameBoardBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -64,52 +62,39 @@ public class ArdentAzarcissusBlockEntity extends GeneratingFlowerBlockEntity {
     }
 
     private boolean tryUseGameBoard(BlockEntity blockEntity) {
-        if (findField(blockEntity.getClass(), "isSingleGame") == null) {
+        if (!(blockEntity instanceof GameBoardBlockEntity board) || !board.isSingleGame) {
             return false;
         }
 
-        try {
-            if (!getBooleanField(blockEntity, "isSingleGame")) {
-                return false;
+        boolean gainedMana = false;
+        if (!board.hasGame()) {
+            board.setPlayer(PLAYER_NAME, true);
+            cooldown = COOLDOWN_TIME;
+        } else {
+            if (!PLAYER_NAME.equals(board.playersName[0])) {
+                board.playersName[0] = PLAYER_NAME;
+            }
+            if (!board.isCustomGame) {
+                board.isCustomGame = true;
             }
 
-            boolean gainedMana = false;
-            if (!invokeBoolean(blockEntity, "hasGame")) {
-                invoke(blockEntity, "setPlayer", new Class<?>[] {String.class, boolean.class}, PLAYER_NAME, true);
-                cooldown = COOLDOWN_TIME;
-            } else {
-                String[] playersName = (String[]) getField(blockEntity, "playersName");
-                if (playersName != null && playersName.length > 0 && !PLAYER_NAME.equals(playersName[0])) {
-                    playersName[0] = PLAYER_NAME;
-                }
-
-                if (!getBooleanField(blockEntity, "isCustomGame")) {
-                    setBooleanField(blockEntity, "isCustomGame", true);
-                }
-
-                if (getIntField(blockEntity, "endGameTick") == 0) {
-                    int[] slotChance = (int[]) getField(blockEntity, "slotChance");
-                    if (slotChance != null && slotChance.length >= 4) {
-                        int winCount = slotChance[0] + slotChance[1] - (slotChance[2] + slotChance[3]);
-                        if (winCount > 0) {
-                            int manaGain = Math.min(WORK_MANA * winCount, getMaxMana() - getMana());
-                            if (manaGain > 0) {
-                                addMana(manaGain);
-                                gainedMana = true;
-                            }
-                        }
+            if (board.endGameTick == 0) {
+                int winCount = board.slotChance[0] + board.slotChance[1] - (board.slotChance[2] + board.slotChance[3]);
+                if (winCount > 0) {
+                    int manaGain = Math.min(WORK_MANA * winCount, getMaxMana() - getMana());
+                    if (manaGain > 0) {
+                        addMana(manaGain);
+                        gainedMana = true;
                     }
-                    invoke(blockEntity, "finishGame", new Class<?>[] {boolean.class}, false);
-                } else {
-                    invoke(blockEntity, "dropDice", new Class<?>[] {String.class}, PLAYER_NAME);
                 }
-                cooldown = COOLDOWN_TIME;
+                board.finishGame(false);
+            } else {
+                board.dropDice(PLAYER_NAME);
             }
-            tryInvoke(blockEntity, "changeCustomStack", new Class<?>[] {ItemStack.class}, getFlowerStack());
-            return gainedMana;
-        } catch (ClassCastException | ReflectiveOperationException ignored) {
-            return false;
+            cooldown = COOLDOWN_TIME;
         }
+        board.changeCustomStack(getFlowerStack());
+        return gainedMana;
     }
 
     private ItemStack getFlowerStack() {
@@ -141,84 +126,5 @@ public class ArdentAzarcissusBlockEntity extends GeneratingFlowerBlockEntity {
     public void readFromPacketNBT(CompoundTag tag) {
         super.readFromPacketNBT(tag);
         cooldown = tag.getInt(TAG_COOLDOWN);
-    }
-
-    private static Object getField(Object target, String name) throws ReflectiveOperationException {
-        Field field = findField(target.getClass(), name);
-        if (field == null) {
-            throw new NoSuchFieldException(name);
-        }
-        return field.get(target);
-    }
-
-    private static boolean getBooleanField(Object target, String name) throws ReflectiveOperationException {
-        return (boolean) getField(target, name);
-    }
-
-    private static void setBooleanField(Object target, String name, boolean value) throws ReflectiveOperationException {
-        Field field = findField(target.getClass(), name);
-        if (field == null) {
-            throw new NoSuchFieldException(name);
-        }
-        field.setBoolean(target, value);
-    }
-
-    private static int getIntField(Object target, String name) throws ReflectiveOperationException {
-        return (int) getField(target, name);
-    }
-
-    private static boolean invokeBoolean(Object target, String name) throws ReflectiveOperationException {
-        return (boolean) invoke(target, name, new Class<?>[0]);
-    }
-
-    private static Object invoke(Object target, String name, Class<?>[] parameterTypes, Object... args) throws ReflectiveOperationException {
-        Method method = findMethod(target.getClass(), name, parameterTypes);
-        if (method == null) {
-            throw new NoSuchMethodException(name);
-        }
-        try {
-            return method.invoke(target, args);
-        } catch (InvocationTargetException exception) {
-            Throwable cause = exception.getCause();
-            if (cause instanceof ReflectiveOperationException reflectiveOperationException) {
-                throw reflectiveOperationException;
-            }
-            throw exception;
-        }
-    }
-
-    private static void tryInvoke(Object target, String name, Class<?>[] parameterTypes, Object... args) {
-        try {
-            invoke(target, name, parameterTypes, args);
-        } catch (ReflectiveOperationException ignored) {
-        }
-    }
-
-    private static Field findField(Class<?> type, String name) {
-        Class<?> current = type;
-        while (current != null) {
-            try {
-                Field field = current.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            } catch (NoSuchFieldException ignored) {
-                current = current.getSuperclass();
-            }
-        }
-        return null;
-    }
-
-    private static Method findMethod(Class<?> type, String name, Class<?>... parameterTypes) {
-        Class<?> current = type;
-        while (current != null) {
-            try {
-                Method method = current.getDeclaredMethod(name, parameterTypes);
-                method.setAccessible(true);
-                return method;
-            } catch (NoSuchMethodException ignored) {
-                current = current.getSuperclass();
-            }
-        }
-        return null;
     }
 }
