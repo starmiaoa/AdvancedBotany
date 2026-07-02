@@ -3,11 +3,13 @@ package com.pulxes.advancedbotany.api;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.botania.common.item.BotaniaItems;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public final class AdvancedBotanyAPI {
     public static final Rarity RARITY_NEBULA = Rarity.create("NEBULA", ChatFormatting.LIGHT_PURPLE);
@@ -31,15 +33,26 @@ public final class AdvancedBotanyAPI {
 
     public static void registerDefaultBoardEntries() {
         if (diceList.isEmpty()) {
-            diceList.add(new ItemStack(BotaniaItems.dice));
+            addBotaniaItem(diceList, "dice");
         }
         if (relicList.isEmpty()) {
-            relicList.add(new ItemStack(BotaniaItems.infiniteFruit));
-            relicList.add(new ItemStack(BotaniaItems.kingKey));
-            relicList.add(new ItemStack(BotaniaItems.flugelEye));
-            relicList.add(new ItemStack(BotaniaItems.thorRing));
-            relicList.add(new ItemStack(BotaniaItems.odinRing));
-            relicList.add(new ItemStack(BotaniaItems.lokiRing));
+            addBotaniaItem(relicList, "infinite_fruit");
+            addBotaniaItem(relicList, "king_key");
+            addBotaniaItem(relicList, "flugel_eye");
+            addBotaniaItem(relicList, "thor_ring");
+            addBotaniaItem(relicList, "odin_ring");
+            addBotaniaItem(relicList, "loki_ring");
+        }
+    }
+
+    public static void registerFateBoardRelic(Item item) {
+        relicList.add(new ItemStack(item));
+    }
+
+    private static void addBotaniaItem(List<ItemStack> list, String name) {
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation("botania", name));
+        if (item != null) {
+            list.add(new ItemStack(item));
         }
     }
 }

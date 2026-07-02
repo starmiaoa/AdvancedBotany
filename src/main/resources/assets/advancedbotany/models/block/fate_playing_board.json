@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "advancedbotany:blocks/board_fate_1",
-    "bottom": "advancedbotany:blocks/board_fate_0",
-    "top": "advancedbotany:blocks/board_fate_1",
-    "side": "advancedbotany:blocks/board_fate_2"
+    "particle": "advancedbotany:block/board_fate_1",
+    "bottom": "advancedbotany:block/board_fate_0",
+    "top": "advancedbotany:block/board_fate_1",
+    "side": "advancedbotany:block/board_fate_2"
   },
   "elements": [
     {

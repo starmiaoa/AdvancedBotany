@@ -16,6 +16,7 @@ import com.pulxes.advancedbotany.registry.ModRecipes;
 import com.pulxes.advancedbotany.registry.ModSounds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.eventbus.api.IEventBus;
 import org.slf4j.Logger;
@@ -41,9 +42,16 @@ public class AdvancedBotany {
         modBus.addListener(ModCreativeTabs::addCreativeTabItems);
         modBus.addListener(ModCurios::enqueueIMC);
         modBus.addListener(ModEntities::registerAttributes);
+        modBus.addListener(this::commonSetup);
 
         ModNetwork.register();
         MinecraftForge.EVENT_BUS.register(ModForgeEvents.class);
-        AdvancedBotanyAPI.registerDefaultBoardEntries();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            AdvancedBotanyAPI.registerDefaultBoardEntries();
+            ModItems.registerFateBoardRelics();
+        });
     }
 }

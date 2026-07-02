@@ -48,7 +48,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     public static final int MAX_MANA = 250_000;
     public static final int MAX_DISPLAY_DAMAGE = 1_000;
     public static final String TAG_MANA = "mana";
-    protected static final String TEXTURE = AdvancedBotany.MOD_ID + ":textures/model/nebulaArmor.png";
+    protected static final String TEXTURE = AdvancedBotany.MOD_ID + ":textures/model/nebulaarmor.png";
 
     private static final int MANA_PER_ARMOR_DAMAGE = 15;
     private static final int MANA_PER_TICK_CHARGE = 1_000;
@@ -373,7 +373,12 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static void syncDisplayDamage(ItemStack stack) {
         if (stack.isDamageableItem()) {
-            stack.setDamageValue(displayDamage(stack));
+            int damage = displayDamage(stack);
+            if (damage > 0) {
+                stack.getOrCreateTag().putInt("Damage", damage);
+            } else if (stack.hasTag()) {
+                stack.getTag().remove("Damage");
+            }
         }
     }
 

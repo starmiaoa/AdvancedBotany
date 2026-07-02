@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedbotany:items/nebulaHelmRevealing"
+    "layer0": "advancedbotany:item/nebulahelmrevealing"
   }
 }

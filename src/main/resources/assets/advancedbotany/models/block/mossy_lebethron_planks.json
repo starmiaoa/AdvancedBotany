@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "advancedbotany:blocks/lebethron_wood_2"
+    "all": "advancedbotany:block/lebethron_wood_2"
   }
 }

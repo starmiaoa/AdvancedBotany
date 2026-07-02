@@ -1,6 +1,6 @@
 {
   "parent": "botania:block/shapes/cross",
   "textures": {
-    "cross": "advancedbotany:blocks/flower_pureGladiolus"
+    "cross": "advancedbotany:block/flower_puregladiolus"
   }
 }

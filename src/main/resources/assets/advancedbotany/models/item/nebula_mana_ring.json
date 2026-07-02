@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedbotany:items/nebulaManaRing"
+    "layer0": "advancedbotany:item/nebulamanaring"
   }
 }

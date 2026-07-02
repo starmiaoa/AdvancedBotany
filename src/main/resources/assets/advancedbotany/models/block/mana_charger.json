@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "advancedbotany:model/mana_charger"
+    "all": "advancedbotany:block/model/mana_charger"
   }
 }

@@ -1,6 +1,5 @@
 package com.pulxes.advancedbotany.common.item.relic;
 
-import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
 import com.pulxes.advancedbotany.common.item.equipment.SimpleCapabilityProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -28,9 +27,6 @@ public class ModRelicItem extends RelicItem {
     public ModRelicItem(Properties properties, @Nullable ResourceLocation advancement, boolean fateBoardRelic) {
         super(properties.stacksTo(1).fireResistant());
         this.advancement = advancement;
-        if (fateBoardRelic) {
-            AdvancedBotanyAPI.relicList.add(new ItemStack(this));
-        }
     }
 
     @Override

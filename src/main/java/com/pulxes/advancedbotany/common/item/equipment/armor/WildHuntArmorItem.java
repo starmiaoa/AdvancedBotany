@@ -13,7 +13,7 @@ import vazkii.botania.common.item.equipment.armor.manasteel.ManasteelArmorItem;
 import java.util.List;
 
 public class WildHuntArmorItem extends ManasteelArmorItem {
-    private static final String TEXTURE = AdvancedBotany.MOD_ID + ":textures/model/wildHuntArmor.png";
+    private static final String TEXTURE = AdvancedBotany.MOD_ID + ":textures/model/wildhuntarmor.png";
 
     public WildHuntArmorItem(ArmorItem.Type type, Properties properties) {
         super(type, AdvancedBotanyArmorMaterials.WILD_HUNT, properties.stacksTo(1));

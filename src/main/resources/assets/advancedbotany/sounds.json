@@ -1,18 +1,50 @@
 {
-	"boardCube": { "category": "block", "sounds":["boardCube"] },
-	"board_cube": { "category": "block", "sounds":["board_cube"] },
-	"nebulaBlaze": { "category": "player", "sounds":["nebulaBlaze"] },
-	"nebula_blaze": { "category": "player", "sounds":["nebula_blaze"] },
-	"bladeSpace": { "category": "player", "sounds":["bladeSpace"] },
-	"blade_space": { "category": "player", "sounds":["blade_space"] },
-	"nebulaRod": { "category": "player", "sounds":["nebulaRod"] },
-	"nebula_rod": { "category": "player", "sounds":["nebula_rod"] },
-	"hornPlentyUsing": { "category": "player", "sounds":["hornPlentyUsing"] },
-	"horn_plenty_using": { "category": "player", "sounds":["horn_plenty_using"] },
-	"freyrSlingshot": { "category": "player", "sounds":["freyrSlingshot"] },
-	"freyr_slingshot": { "category": "player", "sounds":["freyr_slingshot"] },
-	"lokiCubeArmor": { "category": "player", "sounds":["lokiCubeArmor"] },
-	"loki_cube_armor": { "category": "player", "sounds":["loki_cube_armor"] },
-	"aquaSword": { "category": "player", "sounds":["aquaSword"] },
-	"aqua_sword": { "category": "player", "sounds":["aqua_sword"] }
+  "board_cube": {
+    "category": "block",
+    "sounds": [
+      "advancedbotany:board_cube"
+    ]
+  },
+  "nebula_blaze": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:nebula_blaze"
+    ]
+  },
+  "blade_space": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:blade_space"
+    ]
+  },
+  "nebula_rod": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:nebula_rod"
+    ]
+  },
+  "horn_plenty_using": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:horn_plenty_using"
+    ]
+  },
+  "freyr_slingshot": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:freyr_slingshot"
+    ]
+  },
+  "loki_cube_armor": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:loki_cube_armor"
+    ]
+  },
+  "aqua_sword": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:aqua_sword"
+    ]
+  }
 }

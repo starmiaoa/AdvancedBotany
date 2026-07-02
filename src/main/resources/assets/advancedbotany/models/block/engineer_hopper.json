@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "advancedbotany:model/engineer_hopper"
+    "all": "advancedbotany:block/model/engineer_hopper"
   }
 }

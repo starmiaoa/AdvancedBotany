@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedbotany:items/itemAntigravityCharm_1"
+    "layer0": "advancedbotany:item/itemantigravitycharm_1"
   },
   "overrides": [
     {

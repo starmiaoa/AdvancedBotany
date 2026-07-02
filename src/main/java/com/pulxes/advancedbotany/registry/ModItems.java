@@ -114,6 +114,15 @@ public final class ModItems {
         ITEMS.register(eventBus);
     }
 
+    public static void registerFateBoardRelics() {
+        AdvancedBotanyAPI.registerFateBoardRelic(FREYR_SLINGSHOT.get());
+        AdvancedBotanyAPI.registerFateBoardRelic(HORN_OF_PLENTY.get());
+        AdvancedBotanyAPI.registerFateBoardRelic(NIMBLE_CUBE.get());
+        AdvancedBotanyAPI.registerFateBoardRelic(SPHERE_OF_NAVIGATION.get());
+        AdvancedBotanyAPI.registerFateBoardRelic(KEY_TO_HIDDEN_WEALTH.get());
+        AdvancedBotanyAPI.registerFateBoardRelic(WILD_HUNT_WHIP.get());
+    }
+
     private static Item.Properties defaultProperties() {
         return new Item.Properties().rarity(Rarity.COMMON);
     }

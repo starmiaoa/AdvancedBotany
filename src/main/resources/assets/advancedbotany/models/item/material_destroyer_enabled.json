@@ -1,7 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "advancedbotany:items/item.mithrillMultiTool",
-    "layer1": "advancedbotany:items/item.mithrillMultiTool.overlay"
+    "layer0": "advancedbotany:item/item.mithrillmultitool",
+    "layer1": "advancedbotany:item/item.mithrillmultitool.overlay"
   }
 }

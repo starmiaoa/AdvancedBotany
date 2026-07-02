@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "advancedbotany:blocks/game_board_1",
-    "bottom": "advancedbotany:blocks/game_board_0",
-    "top": "advancedbotany:blocks/game_board_1",
-    "side": "advancedbotany:blocks/game_board_2"
+    "particle": "advancedbotany:block/game_board_1",
+    "bottom": "advancedbotany:block/game_board_0",
+    "top": "advancedbotany:block/game_board_1",
+    "side": "advancedbotany:block/game_board_2"
   },
   "elements": [
     {

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedbotany:items/itemAB.spark_0"
+    "layer0": "advancedbotany:item/itemab.spark_0"
   }
 }

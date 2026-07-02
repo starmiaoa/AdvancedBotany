@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedbotany:items/sphereNavigation_0"
+    "layer0": "advancedbotany:item/spherenavigation_0"
   },
   "overrides": [
     {

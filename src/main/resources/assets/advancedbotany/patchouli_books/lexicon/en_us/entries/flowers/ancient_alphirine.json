@@ -1,0 +1,36 @@
+{
+  "name": "botania.entry.ancientAlphirine",
+  "icon": "advancedbotany:ancient_alphirine",
+  "category": "advancedbotany:flowers",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.ancientAlphirine0"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.ancientAlphirine1"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "advancedbotany:textures/misc/ancientalphirine.png"
+      ],
+      "border": true,
+      "text": "botania.page.ancientAlphirine2"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:ancient_alphirine",
+      "title": "patchouli.advancedbotany.recipe.petal",
+      "text": "patchouli.advancedbotany.recipe.petal.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:air_of_forgotten_lands",
+      "title": "patchouli.advancedbotany.recipe.alphirine",
+      "text": "patchouli.advancedbotany.recipe.alphirine.text"
+    }
+  ]
+}

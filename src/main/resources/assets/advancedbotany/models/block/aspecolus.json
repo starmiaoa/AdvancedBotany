@@ -1,6 +1,6 @@
 {
   "parent": "botania:block/shapes/cross",
   "textures": {
-    "cross": "advancedbotany:blocks/flower_aspecolus"
+    "cross": "advancedbotany:block/flower_aspecolus"
   }
 }

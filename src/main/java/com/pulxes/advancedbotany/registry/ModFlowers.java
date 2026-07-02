@@ -12,16 +12,17 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.api.block_entity.SpecialFlowerBlockEntity;
-import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.block.FloatingSpecialFlowerBlock;
 import vazkii.botania.common.item.block.SpecialFlowerBlockItem;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
@@ -32,7 +33,11 @@ public final class ModFlowers {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, AdvancedBotany.MOD_ID);
 
     private static final BlockBehaviour.Properties FLOWER_PROPERTIES = BlockBehaviour.Properties.copy(Blocks.POPPY);
-    private static final BlockBehaviour.Properties FLOATING_PROPERTIES = BotaniaBlocks.FLOATING_PROPS;
+    private static final BlockBehaviour.Properties FLOATING_PROPERTIES = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.PLANT)
+            .strength(0.5F)
+            .sound(SoundType.GRAVEL)
+            .lightLevel(state -> 15);
 
     public static final RegistryObject<Block> ANCIENT_ALPHIRINE = specialFlower(
             "ancient_alphirine", MobEffects.REGENERATION, 0, ModFlowers::ancientAlphirineBlockEntity);
