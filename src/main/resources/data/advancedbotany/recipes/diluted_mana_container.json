@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "3": {
+      "item": "botania:rune_air"
+    },
+    "G": {
+      "item": "botania:rune_pride"
+    },
+    "L": {
+      "item": "botania:diluted_pool"
+    },
+    "M": {
+      "item": "advancedbotany:mithril_nugget"
+    },
+    "P": {
+      "item": "botania:mana_pylon"
+    }
+  },
+  "pattern": [
+    "MGM",
+    "LPL",
+    "M3M"
+  ],
+  "result": {
+    "item": "advancedbotany:diluted_mana_container"
+  },
+  "show_notification": true
+}

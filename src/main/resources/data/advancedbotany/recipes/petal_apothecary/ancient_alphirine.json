@@ -1,0 +1,44 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:rune_mana"
+    },
+    {
+      "item": "botania:rune_spring"
+    },
+    {
+      "item": "botania:rune_summer"
+    },
+    {
+      "item": "botania:rune_autumn"
+    },
+    {
+      "item": "botania:rune_winter"
+    },
+    {
+      "tag": "botania:petals/orange"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    }
+  ],
+  "output": {
+    "item": "advancedbotany:ancient_alphirine"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

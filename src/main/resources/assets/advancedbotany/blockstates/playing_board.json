@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "advancedbotany:block/playing_board"
+    }
+  }
+}

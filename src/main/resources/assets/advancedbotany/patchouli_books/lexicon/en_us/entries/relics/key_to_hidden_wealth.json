@@ -1,0 +1,12 @@
+{
+  "name": "botania.entry.richesKey",
+  "icon": "advancedbotany:key_to_hidden_wealth",
+  "category": "advancedbotany:relics",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.richesKey0"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "advancedbotany:item/item.mithrillmultitool"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "advancedbotany:enabled": 1.0
+      },
+      "model": "advancedbotany:item/material_destroyer_enabled"
+    }
+  ]
+}

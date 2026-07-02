@@ -1,0 +1,32 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "item": "advancedbotany:natures_gift"
+    },
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "item": "botania:rune_pride"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/orange"
+    }
+  ],
+  "output": {
+    "item": "advancedbotany:dictarius"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

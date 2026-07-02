@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "botania:dreamwood"
+    },
+    "G": {
+      "item": "botania:mana_glass"
+    },
+    "M": {
+      "item": "botania:manasteel_ingot"
+    },
+    "S": {
+      "item": "botania:spark"
+    },
+    "T": {
+      "item": "botania:terrasteel_nugget"
+    },
+    "W": {
+      "item": "botania:twig_wand"
+    }
+  },
+  "pattern": [
+    "TST",
+    "GWG",
+    "DMD"
+  ],
+  "result": {
+    "item": "advancedbotany:mana_crystal_cube"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,15 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "advancedbotany:item/itemmithrillsword_mode_0",
+    "layer1": "advancedbotany:item/itemmithrillsword_gem"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "advancedbotany:enabled_mode": 1.0
+      },
+      "model": "advancedbotany:item/blade_of_space_enabled"
+    }
+  ]
+}

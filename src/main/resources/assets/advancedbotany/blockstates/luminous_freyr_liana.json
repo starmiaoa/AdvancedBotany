@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "has_nuggets=false": {
+      "model": "advancedbotany:block/luminous_freyr_liana"
+    },
+    "has_nuggets=true": {
+      "model": "advancedbotany:block/luminous_freyr_liana"
+    }
+  }
+}

@@ -1,0 +1,359 @@
+package com.pulxes.advancedbotany.common.entity;
+
+import com.pulxes.advancedbotany.common.item.equipment.AdvancedBotanyEquipment;
+import com.pulxes.advancedbotany.registry.ModEntities;
+import com.pulxes.advancedbotany.registry.ModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.mana.ManaItem;
+import vazkii.botania.api.mana.ManaReceiver;
+import vazkii.botania.api.mana.spark.ManaSpark;
+import vazkii.botania.api.mana.spark.SparkAttachable;
+import vazkii.botania.api.mana.spark.SparkHelper;
+import vazkii.botania.api.mana.spark.SparkUpgradeType;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.xplat.XplatAbstractions;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
+
+public class EntityAdvancedSpark extends Entity implements ManaSpark {
+    private static final EntityDataAccessor<Integer> UPGRADE = SynchedEntityData.defineId(EntityAdvancedSpark.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> INVISIBLE = SynchedEntityData.defineId(EntityAdvancedSpark.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> NETWORK = SynchedEntityData.defineId(EntityAdvancedSpark.class, EntityDataSerializers.INT);
+    private static final SparkUpgradeType[] UPGRADE_TYPES = SparkUpgradeType.values();
+    private static final EnumMap<SparkUpgradeType, Item> UPGRADE_ITEMS = new EnumMap<>(SparkUpgradeType.class);
+
+    private final Set<ManaSpark> transfers = Collections.newSetFromMap(new WeakHashMap<>());
+    private int removeTransferants = 2;
+
+    public EntityAdvancedSpark(EntityType<? extends EntityAdvancedSpark> entityType, Level level) {
+        super(entityType, level);
+        noCulling = true;
+    }
+
+    public EntityAdvancedSpark(Level level) {
+        this(ModEntities.ADVANCED_SPARK.get(), level);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(UPGRADE, SparkUpgradeType.NONE.ordinal());
+        builder.define(INVISIBLE, false);
+        builder.define(NETWORK, DyeColor.WHITE.getId());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        setDeltaMovement(0.0D, 0.0D, 0.0D);
+        SparkAttachable attached = getAttachedTile();
+        if (attached == null) {
+            if (!level().isClientSide()) {
+                discard();
+            }
+            return;
+        }
+
+        if (!level().isClientSide()) {
+            tickUpgrade(attached);
+            distributeTransfers(attached);
+        }
+        if (removeTransferants > 0) {
+            removeTransferants--;
+        }
+        updateTransfers();
+    }
+
+    private void tickUpgrade(SparkAttachable attached) {
+        SparkUpgradeType upgrade = getUpgrade();
+        if (upgrade == SparkUpgradeType.DISPERSIVE) {
+            chargeNearbyPlayerItems(attached);
+            return;
+        }
+
+        List<ManaSpark> nearby = SparkHelper.getSparksAround(level(), getX(), getY(), getZ(), getNetwork());
+        if (upgrade == SparkUpgradeType.DOMINANT) {
+            List<ManaSpark> valid = new ArrayList<>();
+            for (ManaSpark spark : nearby) {
+                if (spark != this && spark.getUpgrade() == SparkUpgradeType.NONE && spark.getAttachedManaReceiver() != null) {
+                    valid.add(spark);
+                }
+            }
+            if (!valid.isEmpty()) {
+                valid.get(level().random.nextInt(valid.size())).registerTransfer(this);
+            }
+        } else if (upgrade == SparkUpgradeType.RECESSIVE) {
+            for (ManaSpark spark : nearby) {
+                SparkUpgradeType other = spark.getUpgrade();
+                if (spark != this && other != SparkUpgradeType.DOMINANT && other != SparkUpgradeType.RECESSIVE && other != SparkUpgradeType.ISOLATED) {
+                    transfers.add(spark);
+                }
+            }
+        }
+    }
+
+    private void chargeNearbyPlayerItems(SparkAttachable attached) {
+        ManaReceiver receiver = getAttachedManaReceiver();
+        if (receiver == null || receiver.getCurrentMana() <= 0) {
+            return;
+        }
+        List<Player> players = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(SparkHelper.SPARK_SCAN_RANGE));
+        Collections.shuffle(players);
+        for (Player player : players) {
+            Inventory inventory = player.getInventory();
+            for (int i = 0; i < inventory.getContainerSize(); i++) {
+                ItemStack stack = inventory.getItem(i);
+                ManaItem manaItem = stack.getCapability(BotaniaForgeCapabilities.getItemApiLookupById(ManaItem.LOOKUP));
+                if (manaItem == null || !manaItem.acceptDispatchedManaFromItem(new ItemStack(ModItems.SUPERCONDUCTIVE_SPARK.get()))) {
+                    continue;
+                }
+                int toSend = Math.min(receiver.getCurrentMana(), Math.min(AdvancedBotanyEquipment.ADVANCED_SPARK_TRANSFER_SPEED, manaItem.getMaxMana() - manaItem.getMana()));
+                if (toSend > 0) {
+                    manaItem.addMana(toSend);
+                    receiver.receiveMana(-toSend);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void distributeTransfers(SparkAttachable attached) {
+        ManaReceiver receiver = getAttachedManaReceiver();
+        Collection<ManaSpark> outgoing = getOutgoingTransfers();
+        if (receiver == null || outgoing.isEmpty() || receiver.getCurrentMana() <= 0) {
+            return;
+        }
+
+        int manaTotal = Math.min(AdvancedBotanyEquipment.ADVANCED_SPARK_TRANSFER_SPEED * outgoing.size(), receiver.getCurrentMana());
+        int manaEach = manaTotal / outgoing.size();
+        int spent = 0;
+        if (manaEach <= outgoing.size()) {
+            return;
+        }
+        for (ManaSpark spark : outgoing) {
+            SparkAttachable other = spark.getAttachedTile();
+            ManaReceiver targetReceiver = spark.getAttachedManaReceiver();
+            if (other == null || targetReceiver == null || other.getAvailableSpaceForMana() <= 0 || spark.areIncomingTransfersDone()) {
+                continue;
+            }
+            int spend = Math.min(other.getAvailableSpaceForMana(), manaEach);
+            targetReceiver.receiveMana(spend);
+            spent += spend;
+        }
+        receiver.receiveMana(-spent);
+    }
+
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.is(BotaniaItems.WAND_OF_THE_FOREST)) {
+            if (player.isShiftKeyDown()) {
+                SparkUpgradeType upgrade = getUpgrade();
+                if (!level().isClientSide()) {
+                    if (upgrade != SparkUpgradeType.NONE) {
+                        spawnAtLocation(upgradeStack(upgrade));
+                        setUpgrade(SparkUpgradeType.NONE);
+                        transfers.clear();
+                        removeTransferants = 2;
+                    } else {
+                        discard();
+                    }
+                }
+                return InteractionResult.sidedSuccess(level().isClientSide());
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide());
+        }
+
+        SparkUpgradeType upgrade = upgradeForItem(stack);
+        if (upgrade != SparkUpgradeType.NONE && getUpgrade() == SparkUpgradeType.NONE) {
+            if (!level().isClientSide()) {
+                setUpgrade(upgrade);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide());
+        }
+
+        if (stack.is(BotaniaItems.PHANTOM_INK)) {
+            if (!level().isClientSide()) {
+                entityData.set(INVISIBLE, !entityData.get(INVISIBLE));
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide());
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean isInvisible() {
+        return entityData.get(INVISIBLE) || super.isInvisible();
+    }
+
+    @Override
+    public boolean isPickable() {
+        return true;
+    }
+
+    @Override
+    public void move(MoverType type, net.minecraft.world.phys.Vec3 movement) {
+        super.move(type, movement);
+    }
+
+    @Override
+    public BlockPos getAttachPos() {
+        return blockPosition().below();
+    }
+
+    @Override
+    public DyeColor getNetwork() {
+        return DyeColor.byId(entityData.get(NETWORK));
+    }
+
+    @Override
+    public void setNetwork(DyeColor color) {
+        entityData.set(NETWORK, color == null ? DyeColor.WHITE.getId() : color.getId());
+    }
+
+    @Override
+    public SparkAttachable getAttachedTile() {
+        BlockPos pos = getAttachPos();
+        return level().getCapability(BotaniaForgeCapabilities.getBlockApiLookupById(SparkAttachable.LOOKUP), pos);
+    }
+
+    @Override
+    public ManaReceiver getAttachedManaReceiver() {
+        BlockPos pos = getAttachPos();
+        BlockState state = level().getBlockState(pos);
+        BlockEntity blockEntity = level().getBlockEntity(pos);
+        return XplatAbstractions.INSTANCE.findBlockApi(ManaReceiver.LOOKUP, level(), pos, state, blockEntity, null);
+    }
+
+    @Override
+    public Collection<ManaSpark> getOutgoingTransfers() {
+        return transfers;
+    }
+
+    @Override
+    public void registerTransfer(ManaSpark spark) {
+        if (spark != this) {
+            transfers.add(spark);
+        }
+    }
+
+    @Override
+    public void updateTransfers() {
+        transfers.removeIf(spark -> {
+            SparkAttachable attached = spark.getAttachedTile();
+            SparkUpgradeType upgrade = getUpgrade();
+            SparkUpgradeType otherUpgrade = spark.getUpgrade();
+            return spark == this
+                    || spark.areIncomingTransfersDone()
+                    || attached == null
+                    || attached.getAvailableSpaceForMana() <= 0
+                    || (upgrade == SparkUpgradeType.NONE && otherUpgrade != SparkUpgradeType.DOMINANT)
+                    || (upgrade == SparkUpgradeType.RECESSIVE && otherUpgrade != SparkUpgradeType.NONE && otherUpgrade != SparkUpgradeType.DISPERSIVE);
+        });
+    }
+
+    @Override
+    public SparkUpgradeType getUpgrade() {
+        int index = Mth.clamp(entityData.get(UPGRADE), 0, UPGRADE_TYPES.length - 1);
+        return UPGRADE_TYPES[index];
+    }
+
+    @Override
+    public void setUpgrade(SparkUpgradeType upgrade) {
+        entityData.set(UPGRADE, upgrade == null ? SparkUpgradeType.NONE.ordinal() : upgrade.ordinal());
+    }
+
+    @Override
+    public boolean areIncomingTransfersDone() {
+        ManaReceiver receiver = getAttachedManaReceiver();
+        if (receiver == null) {
+            return true;
+        }
+        return removeTransferants > 0 || receiver.isFull();
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        boolean drop = !level().isClientSide() && reason.shouldDestroy();
+        SparkUpgradeType upgrade = getUpgrade();
+        super.remove(reason);
+        if (drop) {
+            spawnAtLocation(new ItemStack(ModItems.SUPERCONDUCTIVE_SPARK.get()));
+            if (upgrade != SparkUpgradeType.NONE) {
+                spawnAtLocation(upgradeStack(upgrade));
+            }
+        }
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putInt("upgrade", getUpgrade().ordinal());
+        tag.putBoolean("invis", entityData.get(INVISIBLE));
+        tag.putInt("network", entityData.get(NETWORK));
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        setUpgrade(UPGRADE_TYPES[Mth.clamp(tag.getInt("upgrade"), 0, UPGRADE_TYPES.length - 1)]);
+        entityData.set(INVISIBLE, tag.getBoolean("invis"));
+        entityData.set(NETWORK, tag.contains("network") ? tag.getInt("network") : DyeColor.WHITE.getId());
+    }
+
+    private static SparkUpgradeType upgradeForItem(ItemStack stack) {
+        if (stack.is(BotaniaItems.SPARK_AUGMENT_DISPERSIVE)) {
+            return SparkUpgradeType.DISPERSIVE;
+        }
+        if (stack.is(BotaniaItems.SPARK_AUGMENT_DOMINANT)) {
+            return SparkUpgradeType.DOMINANT;
+        }
+        if (stack.is(BotaniaItems.SPARK_AUGMENT_RECESSIVE)) {
+            return SparkUpgradeType.RECESSIVE;
+        }
+        if (stack.is(BotaniaItems.SPARK_AUGMENT_ISOLATED)) {
+            return SparkUpgradeType.ISOLATED;
+        }
+        return SparkUpgradeType.NONE;
+    }
+
+    private static ItemStack upgradeStack(SparkUpgradeType upgrade) {
+        Item item = UPGRADE_ITEMS.get(upgrade);
+        return item == null ? ItemStack.EMPTY : new ItemStack(item);
+    }
+
+    static {
+        UPGRADE_ITEMS.put(SparkUpgradeType.DISPERSIVE, BotaniaItems.SPARK_AUGMENT_DISPERSIVE);
+        UPGRADE_ITEMS.put(SparkUpgradeType.DOMINANT, BotaniaItems.SPARK_AUGMENT_DOMINANT);
+        UPGRADE_ITEMS.put(SparkUpgradeType.RECESSIVE, BotaniaItems.SPARK_AUGMENT_RECESSIVE);
+        UPGRADE_ITEMS.put(SparkUpgradeType.ISOLATED, BotaniaItems.SPARK_AUGMENT_ISOLATED);
+    }
+}

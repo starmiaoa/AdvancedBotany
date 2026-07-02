@@ -1,0 +1,37 @@
+{
+  "name": "botania.entry.manaContainer",
+  "icon": "advancedbotany:mana_container",
+  "category": "advancedbotany:devices",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.manaContainer0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mana_container",
+      "title": "botania.page.manaContainer.craft0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:diluted_mana_container",
+      "title": "botania.page.manaContainer.craft1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:fabulous_mana_container",
+      "title": "botania.page.manaContainer.craft2"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.manaContainer1"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:superconductive_spark",
+      "title": "patchouli.advancedbotany.recipe.alphirine",
+      "text": "patchouli.advancedbotany.recipe.alphirine.text"
+    }
+  ]
+}

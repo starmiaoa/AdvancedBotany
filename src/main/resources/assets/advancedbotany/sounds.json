@@ -1,0 +1,50 @@
+{
+  "board_cube": {
+    "category": "block",
+    "sounds": [
+      "advancedbotany:board_cube"
+    ]
+  },
+  "nebula_blaze": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:nebula_blaze"
+    ]
+  },
+  "blade_space": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:blade_space"
+    ]
+  },
+  "nebula_rod": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:nebula_rod"
+    ]
+  },
+  "horn_plenty_using": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:horn_plenty_using"
+    ]
+  },
+  "freyr_slingshot": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:freyr_slingshot"
+    ]
+  },
+  "loki_cube_armor": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:loki_cube_armor"
+    ]
+  },
+  "aqua_sword": {
+    "category": "player",
+    "sounds": [
+      "advancedbotany:aqua_sword"
+    ]
+  }
+}

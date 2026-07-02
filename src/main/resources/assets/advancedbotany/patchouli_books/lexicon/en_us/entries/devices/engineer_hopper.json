@@ -1,0 +1,38 @@
+{
+  "name": "botania.entry.engineerHopper",
+  "icon": "advancedbotany:engineer_hopper",
+  "category": "advancedbotany:devices",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.engineerHopper0"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "advancedbotany:textures/misc/engineerhopper.png"
+      ],
+      "border": true,
+      "text": "botania.page.engineerHopper1"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.engineerHopper2"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.engineerHopper3"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.engineerHopper4"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:engineer_hopper",
+      "title": "patchouli.advancedbotany.recipe.alphirine",
+      "text": "patchouli.advancedbotany.recipe.alphirine.text"
+    }
+  ]
+}

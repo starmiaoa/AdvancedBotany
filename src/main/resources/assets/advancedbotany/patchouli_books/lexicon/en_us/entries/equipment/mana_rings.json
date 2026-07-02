@@ -1,0 +1,22 @@
+{
+  "name": "botania.entry.manaRings",
+  "icon": "advancedbotany:mithril_mana_ring",
+  "category": "advancedbotany:equipment",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.manaRings0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mithril_mana_ring",
+      "title": "botania.page.manaRings.craft0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_mana_ring",
+      "title": "botania.page.manaRings.craft1"
+    }
+  ]
+}

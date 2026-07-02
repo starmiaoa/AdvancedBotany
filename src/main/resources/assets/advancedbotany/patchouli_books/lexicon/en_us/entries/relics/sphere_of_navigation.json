@@ -1,0 +1,12 @@
+{
+  "name": "botania.entry.sphereNavigation",
+  "icon": "advancedbotany:sphere_of_navigation",
+  "category": "advancedbotany:relics",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.sphereNavigation0"
+    }
+  ]
+}

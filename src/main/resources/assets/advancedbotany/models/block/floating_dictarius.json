@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "flower": {
+    "parent": "advancedbotany:block/dictarius"
+  },
+  "loader": "botania:floating_flower"
+}

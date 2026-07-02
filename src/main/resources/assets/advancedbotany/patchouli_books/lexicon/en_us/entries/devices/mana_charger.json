@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.manaCharger",
+  "icon": "advancedbotany:mana_charger",
+  "category": "advancedbotany:devices",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.manaCharger0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mana_charger",
+      "title": "botania.page.manaCharger.craft"
+    }
+  ]
+}

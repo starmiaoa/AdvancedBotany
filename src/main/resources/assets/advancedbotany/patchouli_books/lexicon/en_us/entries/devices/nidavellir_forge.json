@@ -1,0 +1,29 @@
+{
+  "name": "botania.entry.advancedPlate",
+  "icon": "advancedbotany:nidavellir_forge",
+  "category": "advancedbotany:devices",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.advancedPlate0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nidavellir_forge",
+      "title": "botania.page.advancedPlate.craft"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "botania:terrasteel_ingot",
+      "title": "patchouli.advancedbotany.recipe.advanced_plate",
+      "text": "patchouli.advancedbotany.recipe.advanced_plate.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:mana_nether_star",
+      "title": "patchouli.advancedbotany.recipe.advanced_plate",
+      "text": "patchouli.advancedbotany.recipe.advanced_plate.text"
+    }
+  ]
+}

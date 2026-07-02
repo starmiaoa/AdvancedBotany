@@ -1,0 +1,280 @@
+package com.pulxes.advancedbotany.common.block.entity;
+
+import com.pulxes.advancedbotany.api.AdvancedBotanyAPI;
+import com.pulxes.advancedbotany.registry.ModBlockEntities;
+import com.pulxes.advancedbotany.registry.ModSounds;
+import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import vazkii.botania.api.item.Relic;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.xplat.XplatAbstractions;
+
+public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
+    private static final String TAG_SLOT_CHANCE = "slotChance";
+    private static final String TAG_REQUEST_UPDATE = "requestUpdate";
+
+    public byte[] slotChance = new byte[] {0, 0};
+    public final int[] clientTick = new int[] {0, 0};
+    public boolean requestUpdate;
+
+    public BoardFateBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.FATE_PLAYING_BOARD.get(), pos, state, 2);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, BoardFateBlockEntity board) {
+        board.updateServer();
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, BoardFateBlockEntity board) {
+        board.updateAnimationTicks();
+    }
+
+    public void updateAnimationTicks() {
+        for (int i = 0; i < getContainerSize(); i++) {
+            clientTick[i] = getItem(i).isEmpty() ? 0 : clientTick[i] + 1;
+        }
+    }
+
+    protected void updateServer() {
+        if (level == null) {
+            return;
+        }
+        boolean hasUpdate = false;
+        if (hasFreeSlot()) {
+            hasUpdate = setDiceFate();
+        }
+        if (requestUpdate || hasUpdate) {
+            requestUpdate = false;
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            setChanged();
+        }
+    }
+
+    public boolean insertDice(Player player, ItemStack heldItem) {
+        if (level == null || !isDice(heldItem)) {
+            return false;
+        }
+        for (int slot = 0; slot < getContainerSize(); slot++) {
+            if (!getItem(slot).isEmpty()) {
+                continue;
+            }
+            if (!level.isClientSide()) {
+                ItemStack copy = heldItem.copy();
+                copy.setCount(1);
+                items.set(slot, copy);
+                slotChance[slot] = (byte) (level.random.nextInt(6) + 1);
+                heldItem.shrink(1);
+                requestUpdate = true;
+                level.playSound(null, worldPosition, ModSounds.BOARD_CUBE.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                sync();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean spawnRelic(Player player) {
+        if (level == null) {
+            return false;
+        }
+
+        int relicCount = 0;
+        for (int i = 0; i < getContainerSize(); i++) {
+            ItemStack stack = getItem(i);
+            if (stack.isEmpty()) {
+                slotChance[i] = 0;
+            } else {
+                if (!isRightPlayer(player, stack)) {
+                    if (!level.isClientSide()) {
+                        dropRelic(player, i);
+                    }
+                    return true;
+                }
+                items.set(i, ItemStack.EMPTY);
+            }
+            relicCount += slotChance[i];
+        }
+
+        if (relicCount < 1) {
+            return false;
+        }
+
+        if (!level.isClientSide()) {
+            level.playSound(null, worldPosition, SoundEvents.ARROW_SHOOT, SoundSource.BLOCKS,
+                    0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
+
+            ItemStack relic = getRelicForRoll(relicCount);
+            if (relic.isEmpty() || hasRelicAdvancement(player, relic)) {
+                player.displayClientMessage(Component.translatable("botaniamisc.dudDiceRoll", relicCount).withStyle(ChatFormatting.DARK_GREEN), false);
+            } else {
+                bindRelicToPlayer(relic, player);
+                ItemEntity entityItem = new ItemEntity(level, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, relic);
+                level.addFreshEntity(entityItem);
+                player.displayClientMessage(Component.translatable("botaniamisc.diceRoll", relicCount).withStyle(ChatFormatting.DARK_GREEN), false);
+            }
+
+            for (int i = 0; i < slotChance.length; i++) {
+                slotChance[i] = 0;
+            }
+            requestUpdate = true;
+            sync();
+        }
+
+        return true;
+    }
+
+    private ItemStack getRelicForRoll(int relicCount) {
+        if (AdvancedBotanyAPI.relicList.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        int index = Math.min(relicCount - 1, AdvancedBotanyAPI.relicList.size() - 1);
+        return AdvancedBotanyAPI.relicList.get(index).copy();
+    }
+
+    private void dropRelic(Player player, int slot) {
+        if (level == null) {
+            return;
+        }
+        ItemStack stack = getItem(slot);
+        if (stack.isEmpty()) {
+            return;
+        }
+        Vec3 look = player.getLookAngle();
+        ItemEntity entityItem = new ItemEntity(level, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.8D, worldPosition.getZ() + 0.5D, stack.copy());
+        entityItem.setDeltaMovement(look.x * 0.15D, 0.25D, look.z * 0.15D);
+        items.set(slot, ItemStack.EMPTY);
+        level.addFreshEntity(entityItem);
+        requestUpdate = true;
+        sync();
+    }
+
+    protected boolean hasFreeSlot() {
+        for (int i = 0; i < getContainerSize(); i++) {
+            if (getItem(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean setDiceFate() {
+        if (level == null) {
+            return false;
+        }
+        AABB bounds = new AABB(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                worldPosition.getX() + 1.0D, worldPosition.getY() + 0.7D, worldPosition.getZ() + 1.0D);
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, bounds);
+        for (ItemEntity item : items) {
+            if (item.isRemoved() || item.getItem().isEmpty() || !isDice(item.getItem())) {
+                continue;
+            }
+            ItemStack stack = item.getItem();
+            for (int slot = 0; slot < getContainerSize(); slot++) {
+                if (!getItem(slot).isEmpty()) {
+                    continue;
+                }
+                ItemStack copy = stack.copy();
+                copy.setCount(1);
+                this.items.set(slot, copy);
+                slotChance[slot] = (byte) (level.random.nextInt(6) + 1);
+                stack.shrink(1);
+                if (stack.isEmpty()) {
+                    item.discard();
+                }
+                level.playSound(null, worldPosition, ModSounds.BOARD_CUBE.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDice(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+        for (ItemStack dice : AdvancedBotanyAPI.diceList) {
+            if (ItemStack.isSameItemSameComponents(dice, stack) || dice.getItem() == stack.getItem()) {
+                return true;
+            }
+        }
+        return stack.is(BotaniaItems.DICE_OF_FATE);
+    }
+
+    private static boolean isRightPlayer(Player player, ItemStack stack) {
+        Relic relic = XplatAbstractions.INSTANCE.findItemApi(Relic.LOOKUP, stack);
+        return relic == null || relic.isRightPlayer(player);
+    }
+
+    private static void bindRelicToPlayer(ItemStack stack, Player player) {
+        Relic relic = XplatAbstractions.INSTANCE.findItemApi(Relic.LOOKUP, stack);
+        if (relic != null) {
+            relic.bindToUUID(player.getUUID());
+        }
+    }
+
+    private static boolean hasRelicAdvancement(Player player, ItemStack stack) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return false;
+        }
+        Relic relic = XplatAbstractions.INSTANCE.findItemApi(Relic.LOOKUP, stack);
+        ResourceLocation advancementId = relic == null ? null : relic.getAdvancement();
+        if (advancementId == null || serverPlayer.server == null) {
+            return false;
+        }
+        AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(advancementId);
+        return advancement != null && serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone();
+    }
+
+    @Override
+    public int getMaxStackSize() {
+        return 1;
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return isDice(stack);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putByteArray(TAG_SLOT_CHANCE, slotChance);
+        tag.putBoolean(TAG_REQUEST_UPDATE, requestUpdate);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        byte[] chance = tag.getByteArray(TAG_SLOT_CHANCE);
+        if (chance.length == 2) {
+            slotChance = chance;
+        }
+        requestUpdate = tag.getBoolean(TAG_REQUEST_UPDATE);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        tag.putByteArray(TAG_SLOT_CHANCE, slotChance);
+        tag.putBoolean(TAG_REQUEST_UPDATE, requestUpdate);
+        return tag;
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.manaCrystalCube",
+  "icon": "advancedbotany:mana_crystal_cube",
+  "category": "advancedbotany:devices",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.manaCrystalCube0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mana_crystal_cube",
+      "title": "botania.page.manaCrystalCube.craft"
+    }
+  ]
+}

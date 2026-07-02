@@ -1,0 +1,11 @@
+{
+  "type": "advancedbotany:ancient_alphirine",
+  "chance": 15,
+  "input": {
+    "item": "botania:dreamwood"
+  },
+  "mana": 4500,
+  "output": {
+    "item": "advancedbotany:lebethron_wood"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": {
+      "item": "advancedbotany:mithril"
+    },
+    "S": {
+      "item": "advancedbotany:piece_of_nebula"
+    },
+    "W": {
+      "item": "botania:livingwood_twig"
+    }
+  },
+  "pattern": [
+    "  M",
+    "SM ",
+    "WS "
+  ],
+  "result": {
+    "item": "advancedbotany:blade_of_space"
+  },
+  "show_notification": true
+}

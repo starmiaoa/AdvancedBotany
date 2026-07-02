@@ -1,0 +1,17 @@
+{
+  "name": "botania.entry.terraHoe",
+  "icon": "advancedbotany:terra_hoe",
+  "category": "advancedbotany:equipment",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.terraHoe0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:terra_hoe",
+      "title": "botania.page.terraHoe.craft"
+    }
+  ]
+}

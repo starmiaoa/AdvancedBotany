@@ -1,0 +1,175 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.123'
+}
+
+version = "${minecraft_version}-${mod_version}"
+group = mod_group_id
+
+base {
+    archivesName = mod_id + "-neoforge"
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'Sponge / Mixin'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+    maven {
+        name = "Jared"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        name = "C4"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Shedaniel"
+        url = "https://maven.shedaniel.me/"
+    }
+    maven {
+        name = "Unascribed"
+        url = "https://repo.unascribed.com"
+        content {
+            includeGroup "com.unascribed"
+        }
+    }
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com/"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+    maven { url = "https://jitpack.io" }
+    maven {
+        name = "lounodeSnapshots"
+        url = "https://maven.lounode.top/snapshots"
+    }
+    maven {
+        name = "lounodeReleases"
+        url = "https://maven.lounode.top/releases"
+    }
+    maven {
+        url = "https://maven.architectury.dev/"
+    }
+}
+
+neoForge {
+    version = neoforge_version
+
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+
+    runs {
+        configureEach {
+            gameDirectory = file('run')
+            systemProperty('fml.earlyprogresswindow', 'false')
+            systemProperty('neoforge.logging.console.level', 'debug')
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})"
+        }
+
+        client {
+            client()
+            programArguments.addAll("--username", "Dev")
+        }
+
+        server {
+            server()
+            programArgument('--nogui')
+        }
+
+        data {
+            data()
+            programArguments.addAll '--mod', mod_id, '--all'
+            programArguments.addAll '--output', file('src/generated/resources/').getAbsolutePath()
+            programArguments.addAll '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    implementation "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE"
+    implementation "vazkii.botania:botania-neoforge-${minecraft_version}:${botania_version}"
+
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+    options.compilerArgs << "-Xmaxerrs" << "2000"
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+processResources {
+    inputs.property 'minecraft_version', minecraft_version
+    inputs.property 'minecraft_version_range', minecraft_version_range
+    inputs.property 'neoforge_version', neoforge_version
+    inputs.property 'neoforge_version_range', neoforge_version_range
+    inputs.property 'loader_version_range', loader_version_range
+    inputs.property 'mod_id', mod_id
+    inputs.property 'mod_name', mod_name
+    inputs.property 'mod_license', mod_license
+    inputs.property 'mod_version', mod_version
+    inputs.property 'mod_authors', mod_authors
+    inputs.property 'mod_description', mod_description
+    inputs.property 'botania_version_range', botania_version_range
+    inputs.property 'patchouli_version_range', patchouli_version_range
+    inputs.property 'curios_version_range', curios_version_range
+    inputs.property 'jei_version_range', jei_version_range
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand project.properties
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : 'Pulxes, Liapel',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : mod_name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : 'Pulxes, Liapel'
+        ])
+    }
+}

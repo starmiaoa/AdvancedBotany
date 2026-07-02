@@ -1,0 +1,32 @@
+{
+  "name": "botania.entry.lebethronWood",
+  "icon": "advancedbotany:lebethron_wood",
+  "category": "advancedbotany:devices",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.lebethronWood0"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:lebethron_wood",
+      "title": "patchouli.advancedbotany.recipe.alphirine",
+      "text": "patchouli.advancedbotany.recipe.alphirine.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:lebethron_planks",
+      "title": "botania.page.lebethronWood.craft0"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:lebethron_natural_core",
+      "title": "botania.page.lebethronWood.craft0"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.lebethronWood1"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "advancedbotany:block/nidavellir_forge"
+    },
+    "facing=east": {
+      "model": "advancedbotany:block/nidavellir_forge",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "advancedbotany:block/nidavellir_forge",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "advancedbotany:block/nidavellir_forge",
+      "y": 270
+    }
+  }
+}

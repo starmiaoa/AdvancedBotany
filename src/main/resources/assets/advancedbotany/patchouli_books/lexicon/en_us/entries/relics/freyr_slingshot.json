@@ -1,0 +1,16 @@
+{
+  "name": "botania.entry.freyrSlingshot",
+  "icon": "advancedbotany:freyr_slingshot",
+  "category": "advancedbotany:relics",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.freyrSlingshot0"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "botania.page.freyrSlingshot1"
+    }
+  ]
+}

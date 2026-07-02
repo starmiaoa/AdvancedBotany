@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": {
+      "item": "advancedbotany:piece_of_nebula"
+    },
+    "R": {
+      "item": "botania:rune_mana"
+    },
+    "W": {
+      "item": "botania:dreamwood_twig"
+    }
+  },
+  "pattern": [
+    " WN",
+    " RW",
+    "W  "
+  ],
+  "result": {
+    "item": "advancedbotany:rod_of_nebula"
+  },
+  "show_notification": true
+}

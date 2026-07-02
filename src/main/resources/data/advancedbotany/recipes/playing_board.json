@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "botania:mana_diamond"
+    },
+    "M": {
+      "item": "botania:manasteel_ingot"
+    },
+    "P": {
+      "item": "botania:mana_powder"
+    },
+    "Q": {
+      "item": "botania:mana_quartz"
+    }
+  },
+  "pattern": [
+    "QDQ",
+    "MPM"
+  ],
+  "result": {
+    "item": "advancedbotany:playing_board"
+  },
+  "show_notification": true
+}

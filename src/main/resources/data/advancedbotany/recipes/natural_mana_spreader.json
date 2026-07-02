@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "M": {
+      "item": "advancedbotany:mana_nether_star"
+    },
+    "P": {
+      "item": "botania:mana_pylon"
+    },
+    "S": {
+      "item": "botania:gaia_spreader"
+    },
+    "W": {
+      "item": "advancedbotany:lebethron_natural_core"
+    }
+  },
+  "pattern": [
+    "WMW",
+    "PSP",
+    "WMW"
+  ],
+  "result": {
+    "item": "advancedbotany:natural_mana_spreader"
+  },
+  "show_notification": true
+}

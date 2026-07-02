@@ -1,0 +1,14 @@
+# build
+build/
+.gradle/
+run/
+out/
+*.log
+# IDE
+.idea/
+*.iml
+.eclipse/
+# 本地工具/参考(不进公开 fork)
+PORT_BRIEF.md
+_ref/
+batch*_report.md

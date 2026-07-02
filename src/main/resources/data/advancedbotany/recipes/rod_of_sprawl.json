@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "advancedbotany:lebethron_natural_core"
+    },
+    "S": [
+      {
+        "item": "botania:grass_seeds"
+      },
+      {
+        "item": "botania:podzol_seeds"
+      },
+      {
+        "item": "botania:mycelium_seeds"
+      },
+      {
+        "item": "botania:dry_seeds"
+      },
+      {
+        "item": "botania:golden_seeds"
+      },
+      {
+        "item": "botania:vivid_seeds"
+      },
+      {
+        "item": "botania:scorched_seeds"
+      },
+      {
+        "item": "botania:infused_seeds"
+      },
+      {
+        "item": "botania:mutated_seeds"
+      }
+    ],
+    "W": {
+      "item": "botania:livingwood_twig"
+    }
+  },
+  "pattern": [
+    " SC",
+    " WS",
+    "W  "
+  ],
+  "result": {
+    "item": "advancedbotany:rod_of_sprawl"
+  },
+  "show_notification": true
+}
