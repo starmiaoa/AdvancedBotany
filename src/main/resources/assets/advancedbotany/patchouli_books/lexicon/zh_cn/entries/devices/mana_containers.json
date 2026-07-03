@@ -1,0 +1,37 @@
+{
+  "name": "魔力容器",
+  "icon": "advancedbotany:mana_container",
+  "category": "advancedbotany:devices",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "魔力容器——是悬浮的魔力储器,有几分像普通的魔力池,但容量绝非如此,而是数倍之多!$(br2)魔力容器唯一逊于魔力池之处,在于无法为魔力工具充能、也无法制造魔力物品。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mana_container",
+      "title": "64 个魔力池!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:diluted_mana_container",
+      "title": "8 个魔力池!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:fabulous_mana_container",
+      "title": "64 个绚丽魔力池!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "超导火花——号称蛮荒西部最快的火花!这可不是玩笑,精灵过去就用它从不同地点抽取魔力。$(br2)其制作配方早已失传,如今唯一的获取途径便是远古花楹。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:superconductive_spark",
+      "title": "远古花楹重现",
+      "text": "原版辞典使用了自定义的远古花楹页面。在本 Patchouli 手册中此处仅展示产物;请使用 JEI 查看完整的重现几率与投入物品。"
+    }
+  ]
+}

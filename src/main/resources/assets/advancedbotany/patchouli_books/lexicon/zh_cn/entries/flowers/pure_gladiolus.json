@@ -1,0 +1,18 @@
+{
+  "name": "纯净剑兰",
+  "icon": "advancedbotany:pure_gladiolus",
+  "category": "advancedbotany:flowers",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "纯净剑兰曾用于把神秘时代的相性能量转化为与魔力相关的碎片。神秘时代不存在于这个 1.20.1 移植版,因此这项行为已失效;本花朵仅作为高级植物学的占位花朵保留。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:pure_gladiolus",
+      "title": "花瓣药匙配方",
+      "text": "这株花在植物魔法的花瓣药匙中制作。请使用 JEI 查看当前确切的材料。"
+    }
+  ]
+}

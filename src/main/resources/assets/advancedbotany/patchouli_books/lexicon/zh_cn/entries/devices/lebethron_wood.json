@@ -1,0 +1,32 @@
+{
+  "name": "莱贝斯隆木",
+  "icon": "advancedbotany:lebethron_wood",
+  "category": "advancedbotany:devices",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "莱贝斯隆木——一种强大的魔力导体,精灵曾用我们大地的资源将其创造出来。可惜的是,当精灵被送回精灵国度时,莱贝斯隆之木也随之永远失落。$(br2)借助远古花楹与梦之木——你便能让这棵伟岸之树重获新生!"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:lebethron_wood",
+      "title": "远古花楹重现",
+      "text": "原版辞典使用了自定义的远古花楹页面。在本 Patchouli 手册中此处仅展示产物;请使用 JEI 查看完整的重现几率与投入物品。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:lebethron_planks",
+      "title": "创造的配方"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:lebethron_natural_core",
+      "title": "创造的配方"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "自然核心能够创造一棵拥有无尽枝叶的树,无论烈火还是噬咬之露都无法阻止它的生长!$(br2)核心本身不会立即长出树来,它需要被赋予任意树叶——因为它没有自己的叶子——同时还需要一根树干,详见下一页。"
+    }
+  ]
+}

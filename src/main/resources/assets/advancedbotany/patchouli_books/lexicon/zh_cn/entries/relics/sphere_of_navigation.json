@@ -1,0 +1,12 @@
+{
+  "name": "导航之球",
+  "icon": "advancedbotany:sphere_of_navigation",
+  "category": "advancedbotany:relics",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "导航之球是一件遗物,拥有穿透方块找到指定方块并标记其位置的独特性质!$(br2)享受这般便利需要付出魔力,而且长远来看数量还不少。"
+    }
+  ]
+}

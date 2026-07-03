@@ -1,0 +1,17 @@
+{
+  "name": "魔力水晶魔方",
+  "icon": "advancedbotany:mana_crystal_cube",
+  "category": "advancedbotany:devices",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "跑来跑去挨个检查每一个魔力方块、盘算最终到底还剩多少,可不总是件方便事。魔力水晶魔方正是为此而设计和创造的!$(br2)它会显示所有带有火花的魔力池或其他储器的魔力量,而魔方本身则不需要火花。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:mana_crystal_cube",
+      "title": "魔法算术"
+    }
+  ]
+}
