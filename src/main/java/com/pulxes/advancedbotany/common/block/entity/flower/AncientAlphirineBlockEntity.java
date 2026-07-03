@@ -10,6 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,12 +60,16 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 }
 
                 if (level.isClientSide) {
+                    spawnConsumeParticles(level, itemEntity, stack);
                     return;
                 }
 
-                stack.shrink(1);
-                if (stack.isEmpty()) {
+                ItemStack remaining = stack.copy();
+                remaining.shrink(1);
+                if (remaining.isEmpty()) {
                     itemEntity.discard();
+                } else {
+                    itemEntity.setItem(remaining);
                 }
 
                 if (level.random.nextInt(111) <= alphirineRecipe.getChance()) {
@@ -75,6 +81,22 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 sync();
                 return;
             }
+        }
+    }
+
+    private void spawnConsumeParticles(Level level, ItemEntity itemEntity, ItemStack stack) {
+        for (int i = 0; i < 10; i++) {
+            double mx = (level.random.nextDouble() - 0.5D) * 0.2D;
+            double my = (level.random.nextDouble() - 0.5D) * 0.2D;
+            double mz = (level.random.nextDouble() - 0.5D) * 0.2D;
+            level.addParticle(
+                    new ItemParticleOption(ParticleTypes.ITEM, stack),
+                    itemEntity.getX(),
+                    itemEntity.getY(),
+                    itemEntity.getZ(),
+                    mx,
+                    my,
+                    mz);
         }
     }
 
