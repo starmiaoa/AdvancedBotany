@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -207,6 +208,7 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
                     item.discard();
                 }
                 level.playSound(null, worldPosition, ModSounds.BOARD_CUBE.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                setChanged();
                 return true;
             }
         }
@@ -320,5 +322,15 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
         tag.putByteArray(TAG_SLOT_CHANCE, slotChance);
         tag.putBoolean(TAG_REQUEST_UPDATE, requestUpdate);
         return tag;
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
     }
 }
