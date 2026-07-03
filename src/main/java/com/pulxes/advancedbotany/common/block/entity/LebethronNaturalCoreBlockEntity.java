@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import vazkii.botania.api.BotaniaAPI;
 
 public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     private static final String TAG_BLOCK = "block";
@@ -43,7 +44,18 @@ public class LebethronNaturalCoreBlockEntity extends BlockEntity {
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, LebethronNaturalCoreBlockEntity core) {
-        // TODO Batch 7/client pass: restore Botania sparkleFX around a valid natural core.
+        if (level.random.nextBoolean()) {
+            BotaniaAPI.instance().sparkleFX(
+                    level,
+                    pos.getX() + level.random.nextDouble(),
+                    pos.getY() + level.random.nextDouble(),
+                    pos.getZ() + level.random.nextDouble(),
+                    0.5F,
+                    1.0F,
+                    0.5F,
+                    level.random.nextFloat() * 2.0F,
+                    2);
+        }
     }
 
     public boolean getValidTree() {

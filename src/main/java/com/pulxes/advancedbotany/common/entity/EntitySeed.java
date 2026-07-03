@@ -24,11 +24,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
-import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.FloatingFlowerVariant;
 import vazkii.botania.common.item.GrassSeedsItem;
@@ -66,8 +64,10 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void spawnTrailParticles() {
+        if (!level().isClientSide()) {
+            return;
+        }
         int radius = Math.max(1, getRadius());
         float spreadDivisor = 4.0F / ((float) radius / 20.0F);
         float size = 1.0F + (float) radius / 12.0F;
@@ -76,12 +76,17 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
             double x = getX() + (Math.random() - 0.5D) / spreadDivisor;
             double y = getY() + (Math.random() - 0.5D) / spreadDivisor;
             double z = getZ() + (Math.random() - 0.5D) / spreadDivisor;
-            BotaniaAPI.instance().sparkleFX(level(), x, y, z,
-                    color.getRed() / 255.0F,
-                    color.getGreen() / 255.0F,
-                    color.getBlue() / 255.0F,
-                    0.0625F * size + (float) Math.random() * 0.12F,
-                    5);
+            double mx = (Math.random() - 0.5D) * 0.02D;
+            double my = (Math.random() - 0.5D) * 0.02D;
+            double mz = (Math.random() - 0.5D) * 0.02D;
+            level().addParticle(
+                    WispParticleData.wisp(
+                            0.0625F * size + (float) Math.random() * 0.12F,
+                            color.getRed() / 255.0F,
+                            color.getGreen() / 255.0F,
+                            color.getBlue() / 255.0F,
+                            0.5F),
+                    x, y, z, mx, my, mz);
         }
     }
 
@@ -138,22 +143,27 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
         discard();
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void spawnGrowParticles(BlockPos pos) {
+        if (!level().isClientSide()) {
+            return;
+        }
         Color color = getSeedColor(getSeed());
         for (int i = 0; i < 50; i++) {
             double x = (Math.random() - 0.5D) * 3.0D;
             double y = Math.random() + 0.5D;
             double z = (Math.random() - 0.5D) * 3.0D;
-            BotaniaAPI.instance().sparkleFX(level(),
+            level().addParticle(
+                    WispParticleData.wisp(
+                            (float) Math.random() * 0.15F + 0.15F,
+                            color.getRed() / 255.0F,
+                            color.getGreen() / 255.0F,
+                            color.getBlue() / 255.0F),
                     pos.getX() + 0.5D + x,
                     pos.getY() + 0.5D + y,
                     pos.getZ() + 0.5D + z,
-                    color.getRed() / 255.0F,
-                    color.getGreen() / 255.0F,
-                    color.getBlue() / 255.0F,
-                    (float) Math.random() * 0.15F + 0.15F,
-                    5);
+                    -x * 0.025D,
+                    -y * 0.025D,
+                    -z * 0.025D);
         }
     }
 

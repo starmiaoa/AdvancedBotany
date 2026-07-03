@@ -35,7 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.ForgeEventFactory;
-import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.client.fx.WispParticleData;
 
 public class EntityManaVine extends ThrowableProjectile {
     private static final EntityDataAccessor<Optional<UUID>> ATTACKER =
@@ -201,38 +201,46 @@ public class EntityManaVine extends ThrowableProjectile {
     }
 
     private void spawnTrailParticles() {
+        if (!level().isClientSide()) {
+            return;
+        }
         for (int i = 0; i < 4; i++) {
             double spread = 6.0D;
             double x = getX() + (random.nextDouble() / spread - 0.5D / spread);
             double y = getY() + (random.nextDouble() / spread - 0.5D / spread);
             double z = getZ() + (random.nextDouble() / spread - 0.5D / spread);
+            double mx = (random.nextDouble() - 0.5D) * 0.02D;
+            double my = (random.nextDouble() - 0.5D) * 0.02D;
+            double mz = (random.nextDouble() - 0.5D) * 0.02D;
             Color color = getCorporeaRuneColor((int) x, (int) y, (int) z);
-            BotaniaAPI.instance().sparkleFX(
-                    level(),
-                    x,
-                    y,
-                    z,
-                    color.getRed() / 255.0F,
-                    color.getGreen() / 255.0F,
-                    color.getBlue() / 255.0F,
-                    0.15F + random.nextFloat() * 0.12F,
-                    3);
+            level().addParticle(
+                    WispParticleData.wisp(
+                            0.15F + random.nextFloat() * 0.12F,
+                            color.getRed() / 255.0F,
+                            color.getGreen() / 255.0F,
+                            color.getBlue() / 255.0F,
+                            0.7F),
+                    x, y, z, mx, my, mz);
         }
     }
 
     private void spawnBurstParticles() {
+        if (!level().isClientSide()) {
+            return;
+        }
         for (int i = 0; i < 32; i++) {
+            double mx = (random.nextDouble() - 0.5D) * 0.175D;
+            double my = (random.nextDouble() - 0.5D) * 0.175D;
+            double mz = (random.nextDouble() - 0.5D) * 0.175D;
             Color color = getCorporeaRuneColor(Mth.floor(getX()), Mth.floor(getY()), Mth.floor(getZ()));
-            BotaniaAPI.instance().sparkleFX(
-                    level(),
-                    getX(),
-                    getY(),
-                    getZ(),
-                    color.getRed() / 255.0F,
-                    color.getGreen() / 255.0F,
-                    color.getBlue() / 255.0F,
-                    0.2F + random.nextFloat() * 0.12F,
-                    4);
+            level().addParticle(
+                    WispParticleData.wisp(
+                            0.2F + random.nextFloat() * 0.12F,
+                            color.getRed() / 255.0F,
+                            color.getGreen() / 255.0F,
+                            color.getBlue() / 255.0F,
+                            2.0F),
+                    getX(), getY(), getZ(), mx, my, mz);
         }
     }
 

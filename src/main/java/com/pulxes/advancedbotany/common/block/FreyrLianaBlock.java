@@ -37,6 +37,10 @@ public class FreyrLianaBlock extends BushBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos abovePos = pos.above();
         BlockState above = level.getBlockState(abovePos);
+        return isOriginalSupportBlock(above);
+    }
+
+    private boolean isOriginalSupportBlock(BlockState above) {
         return above.getBlock() instanceof FreyrLianaBlock
                 || above.is(BlockTags.LEAVES)
                 || above.is(BlockTags.LOGS)
@@ -46,6 +50,8 @@ public class FreyrLianaBlock extends BushBlock {
                 || above.is(BlockTags.BASE_STONE_OVERWORLD)
                 || above.is(BlockTags.BASE_STONE_NETHER)
                 || above.is(Blocks.FARMLAND)
+                || above.is(Blocks.DIRT_PATH)
+                || above.is(Blocks.GRAVEL)
                 || above.is(Blocks.CLAY)
                 || above.is(ModBlocks.GLIMMERING_LEBETHRON_WOOD.get());
     }
