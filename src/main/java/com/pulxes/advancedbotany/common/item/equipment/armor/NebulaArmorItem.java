@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -309,6 +310,10 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     public static void handleLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
+        if (!(entity instanceof Player player) || event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
+            return;
+        }
+
         float ratio = 0.0F;
         for (ItemStack stack : entity.getArmorSlots()) {
             if (stack.getItem() instanceof NebulaArmorItem armor) {
@@ -317,8 +322,26 @@ public class NebulaArmorItem extends ManasteelArmorItem {
             }
         }
         if (ratio > 0.0F) {
+            int damage = Math.max(0, Mth.ceil(event.getAmount()));
+            for (ItemStack stack : entity.getArmorSlots()) {
+                if (stack.getItem() instanceof NebulaArmorItem armor) {
+                    armor.consumeProtectionMana(stack, player, damage);
+                }
+            }
             event.setAmount(event.getAmount() * Math.max(0.0F, 1.0F - Math.min(1.0F, ratio)));
         }
+    }
+
+    private void consumeProtectionMana(ItemStack stack, Player player, int damage) {
+        if (damage <= 0 || player.level().isClientSide()) {
+            return;
+        }
+
+        int manaCost = Math.min(damage * MANA_PER_ARMOR_DAMAGE, getMana(stack));
+        if (manaCost > 0 && !ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
+            addMana(stack, -manaCost);
+        }
+        syncDisplayDamage(stack);
     }
 
     private static float getJumpBoost(ItemStack stack) {
