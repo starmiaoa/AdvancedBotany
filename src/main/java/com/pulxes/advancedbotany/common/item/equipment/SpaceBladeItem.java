@@ -152,12 +152,15 @@ public class SpaceBladeItem extends SwordItem {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return Math.round(13.0F - (float) getCooldownTicks(stack) * 13.0F / AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN);
+        int cooldown = Mth.clamp(getCooldownTicks(stack), 0, AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN);
+        int charge = AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN - cooldown;
+        return Math.round(13.0F * charge / AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return Mth.hsvToRgb(0.836F, 1.0F - (float) getCooldownTicks(stack) / AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN, 1.0F);
+        int cooldown = Mth.clamp(getCooldownTicks(stack), 0, AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN);
+        return Mth.hsvToRgb(0.836F, 1.0F - (float) cooldown / AdvancedBotanyEquipment.SPACE_BLADE_DASH_COOLDOWN, 1.0F);
     }
 
     @Override
