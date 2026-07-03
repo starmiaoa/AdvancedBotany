@@ -10,11 +10,12 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class TalismanHiddenRichesScreen extends AbstractContainerScreen<TalismanHiddenRichesMenu> {
     private static final ResourceLocation BACKGROUND = new ResourceLocation("minecraft", "textures/gui/container/generic_54.png");
+    private static final int ROWS = 3;
 
     public TalismanHiddenRichesScreen(TalismanHiddenRichesMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        imageHeight = 168;
-        inventoryLabelY = imageHeight - 94;
+        imageHeight = 114 + ROWS * 18;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -27,6 +28,8 @@ public class TalismanHiddenRichesScreen extends AbstractContainerScreen<Talisman
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        int chestHeight = ROWS * 18 + 17;
+        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, chestHeight);
+        guiGraphics.blit(BACKGROUND, leftPos, topPos + chestHeight, 0, 126, imageWidth, 96);
     }
 }
