@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
@@ -164,12 +165,14 @@ public class GameBoardBlockEntity extends BlockEntity {
     }
 
     public boolean hasFullDice() {
+        boolean hasFull = false;
         for (byte chance : slotChance) {
             if (chance <= 0) {
                 return false;
             }
+            hasFull = true;
         }
-        return true;
+        return hasFull;
     }
 
     public boolean hasGame() {
@@ -300,7 +303,12 @@ public class GameBoardBlockEntity extends BlockEntity {
     }
 
     @Override
-    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
     }
 }
