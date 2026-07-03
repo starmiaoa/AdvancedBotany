@@ -1,0 +1,16 @@
+{
+  "name": "弗雷弹弓",
+  "icon": "advancedbotany:freyr_slingshot",
+  "category": "advancedbotany:relics",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "弗雷弹弓——万神殿的神话物品之一。这把弹弓的能力,能让自然闪光范围内各种种子或树苗加速生长,还能为牲畜营造浪漫的氛围!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "此外,当一棵树被自然闪光击中时,它会在瞬间被一种前所未见的藤蔓所缠绕!$(br2)1) 肥沃藤蔓——加速其下方种子的生长$(br2)2) 发光肥沃藤蔓是肥沃藤蔓的对应品,但还能生成金粒!"
+    }
+  ]
+}

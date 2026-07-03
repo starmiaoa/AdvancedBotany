@@ -1,0 +1,17 @@
+{
+  "name": "泰拉锄",
+  "icon": "advancedbotany:terra_hoe",
+  "category": "advancedbotany:equipment",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "标准的收割方式久而久之难免令人生厌。泰拉锄——或者说它把土壤转化为更肥沃、更自动化土壤的独特能力——正能解决这一难题。$(br2)在新土壤中,作物会在经过一段时间后自行收获!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:terra_hoe",
+      "title": "自动收割"
+    }
+  ]
+}

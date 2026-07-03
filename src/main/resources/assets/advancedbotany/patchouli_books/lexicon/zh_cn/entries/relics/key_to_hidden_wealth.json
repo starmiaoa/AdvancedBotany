@@ -1,0 +1,12 @@
+{
+  "name": "隐藏财富之钥",
+  "icon": "advancedbotany:key_to_hidden_wealth",
+  "category": "advancedbotany:relics",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "隐藏财富之钥——一件神话中的万神殿物品。一旦你将它拾起,盛放私人财物的箱子便会立刻出现。$(br2)你可以把贵重物品分别藏进每一个箱子,或者干脆在矿洞扎营时使用它——非常方便。"
+    }
+  ]
+}

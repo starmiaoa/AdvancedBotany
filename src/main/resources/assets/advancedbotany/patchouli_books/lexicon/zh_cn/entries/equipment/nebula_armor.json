@@ -1,0 +1,36 @@
+{
+  "name": "星云盔甲",
+  "icon": "advancedbotany:nebula_chestplate",
+  "category": "advancedbotany:equipment",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "星云盔甲是一套用星云碎片与泰拉钢盔甲打造的强力技术宅装备。$(br2)每一件装备都有其独特的性质,而这取决于魔力的多少——魔力越少,盔甲的防护性能就越弱。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "每件盔甲的特性:$(br2)星云头盔——提升生命值$(br2)星云胸甲——让穿戴者得以飞行,并具备击退抗性$(br2)星云护腿——提高跳跃高度$(br2)星云靴子——加速穿戴者"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_helmet",
+      "title": "星空之面"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_chestplate",
+      "title": "要飞一下吗?"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_leggings",
+      "title": "我的裤子哪去了?"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nebula_boots",
+      "title": "跑者的拖鞋!"
+    }
+  ]
+}

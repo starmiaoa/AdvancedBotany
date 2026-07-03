@@ -1,0 +1,29 @@
+{
+  "name": "尼德威阿尔锻炉",
+  "icon": "advancedbotany:nidavellir_forge",
+  "category": "advancedbotany:devices",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "尼德威阿尔锻炉——一件真正强大的矮人发明,能将不同材料熔铸为一个整体,关键在于掌握好比例!$(br2)这座锻炉曾被赠予精灵,也就是说,它在“毁灭”之时来到了我们的大地,但……好景不长——它很快便被摧毁了。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:nidavellir_forge",
+      "title": "工程革命"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "botania:terrasteel_ingot",
+      "title": "尼德威阿尔锻炉配方",
+      "text": "原版辞典使用了自定义的尼德威阿尔锻炉页面。在本 Patchouli 手册中此处仅展示产物;请使用 JEI 查看完整的魔力消耗与材料环。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:mana_nether_star",
+      "title": "尼德威阿尔锻炉配方",
+      "text": "原版辞典使用了自定义的尼德威阿尔锻炉页面。在本 Patchouli 手册中此处仅展示产物;请使用 JEI 查看完整的魔力消耗与材料环。"
+    }
+  ]
+}

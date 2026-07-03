@@ -1,0 +1,17 @@
+{
+  "name": "星云法杖",
+  "icon": "advancedbotany:rod_of_nebula",
+  "category": "advancedbotany:equipment",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "星云法杖是一件供个人使用的魔法工具,揭示了星云碎片的核心本质——移动!$(br2)当你需要紧急离开某个不快之地,或仅仅是想去旅行时,就用这根法杖吧。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:rod_of_nebula",
+      "title": "各奔东西,唯独我……"
+    }
+  ]
+}

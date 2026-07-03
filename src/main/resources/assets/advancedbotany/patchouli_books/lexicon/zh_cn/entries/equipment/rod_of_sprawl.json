@@ -1,0 +1,17 @@
+{
+  "name": "蔓延法杖",
+  "icon": "advancedbotany:rod_of_sprawl",
+  "category": "advancedbotany:equipment",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "蔓延法杖——一根能借助魔力将普通草地种子插入地面的魔法法杖,其铺展范围要大上许多倍!$(br2)攻略:如何把你周围的一切变得面目全非——尽可能造出最大的气团,把它射向天空,等它落下,然后逃离现场!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "advancedbotany:rod_of_sprawl",
+      "title": "至于怎么把这一切收回来嘛……"
+    }
+  ]
+}

@@ -39,13 +39,11 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     public static final int GRID_START = 0;
     public static final int GRID_END = 8;
     public static final int OUTPUT_SLOT = 9;
-    public static final int WAND_SLOT = 10;
-    public static final int BOOK_SLOT = 11;
-    private static final int INVENTORY_SIZE = 12;
+    private static final int INVENTORY_SIZE = 10;
     private static final String TAG_WAITING_STACK = "waitingStack";
     private static final String TAG_PATTERN = "pattern";
     private static final String TAG_SIGNAL = "signal";
-    private static final int[] ACCESSIBLE_SLOTS = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private static final int[] ACCESSIBLE_SLOTS = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     private static final AbstractContainerMenu DUMMY_MENU = new AbstractContainerMenu(null, -1) {
         @Override
         public ItemStack quickMoveStack(Player player, int index) {
@@ -241,7 +239,7 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot < 9 && !isLocked(slot) || slot == WAND_SLOT || slot == BOOK_SLOT;
+        return slot < 9 && !isLocked(slot);
     }
 
     @Override

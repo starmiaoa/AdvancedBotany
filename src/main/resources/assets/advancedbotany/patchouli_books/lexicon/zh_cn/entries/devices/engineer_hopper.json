@@ -1,0 +1,38 @@
+{
+  "name": "工程漏斗",
+  "icon": "advancedbotany:engineer_hopper",
+  "category": "advancedbotany:devices",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "工程漏斗对工程设计师而言真是一大福音!有了它——你可以安心地把机械藏起来,躲开窥探的目光,或仅仅是为了美观上的享受。$(br2)据花楹提供的初步资料——这类漏斗曾在许多先进的世界中使用,例如阿斯加德与尼德威阿尔。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "advancedbotany:textures/misc/engineerhopper.png"
+      ],
+      "border": true,
+      "text": "各物品说明详见后续页面。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "第 1 点——指定取货存储设施的位置,物品将从此处被取出运输。$(br2)第 2 点——指定物品将要送入的存储库位置。$(br2)第 3 点——森林法杖图标:显示你可以在何处绑定存储库。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "将存储库绑定到工程漏斗:$(br2)第 1 步——潜行 + 右键点击漏斗。$(br2)第 2 步——潜行 + 右键点击存储库。$(br2)右键点击漏斗——切换所指向的存储库位置。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "注意 1:将存储库绑定到工程漏斗时,会把你绑定时所选的存储库那一面纳入漏斗后续运作的考量。$(br2)注意 2:工程漏斗无法像普通漏斗那样拾取其上方的物品,这是设计上的技术差异所致。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "advancedbotany:engineer_hopper",
+      "title": "远古花楹重现",
+      "text": "原版辞典使用了自定义的远古花楹页面。在本 Patchouli 手册中此处仅展示产物;请使用 JEI 查看完整的重现几率与投入物品。"
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 {
-  "name": "botania.entry.thaumAutoCraft",
+  "name": "block.advancedbotany.magic_craft_crate",
   "icon": "advancedbotany:magic_craft_crate",
   "category": "advancedbotany:devices",
   "sortnum": 9,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "botania.page.thaumAutoCraft0"
+      "text": "patchouli.advancedbotany.entry.magic_craft_crate.text"
     },
     {
       "type": "patchouli:text",
