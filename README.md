@@ -1,6 +1,6 @@
 # Advanced Botany（移植版）
 
-把 Pulxes / Liapel 的 Botania 附属模组 **Advanced Botany** 从 1.7.10 搬到现代版本。原版一直停在 1.7.10，这个仓库把它移植到了 1.20.1 Forge 和 1.21.1 NeoForge。
+把 Pulxes / Liapel 的 Botania 附属模组 **Advanced Botany** 从 1.7.10 搬到现代版本。原版一直停在 1.7.10，这个仓库把它移植到了 1.20.1 Forge 和 1.21.1 NeoForge,并且补充了汉化
 
 ## 版本
 
@@ -14,13 +14,6 @@
 - **Botania** —— 硬依赖
 - **Curios** —— 戒指、饰品走它（原版用的 Baubles 已经没了，换成 Curios）
 - **Patchouli** —— 手册（原版塞在植物魔法辞典里的条目用它重建）
-
-## 移植时做的取舍
-
-- Thaumcraft、NEI、MineTweaker 这些当年的集成砍掉了，物品本体的功能保留
-- 手册改用 Patchouli 重做
-- 配方展示接了 JEI
-- 全物品补了简体中文，术语跟着 Botania 官方汉化走
 
 ## 说明
 
