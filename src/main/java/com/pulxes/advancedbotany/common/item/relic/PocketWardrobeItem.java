@@ -154,7 +154,7 @@ public class PocketWardrobeItem extends ModRelicItem {
         return false;
     }
 
-    protected static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
+    public static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
         float yaw = getCheckingAngle(player, getRotationBase(stack));
         int segmentAngle = 360 / MAX_SEGMENT_COUNT;
         for (int segment = 0; segment < SEGMENT_COUNT; segment++) {
