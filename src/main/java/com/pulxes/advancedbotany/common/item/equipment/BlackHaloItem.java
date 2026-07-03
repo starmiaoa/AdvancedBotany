@@ -28,7 +28,7 @@ import vazkii.botania.common.item.BlackHoleTalismanItem;
 import vazkii.botania.common.item.BotaniaItems;
 
 public class BlackHaloItem extends Item {
-    private static final int SLOT_COUNT = 12;
+    public static final int SLOT_COUNT = 12;
 
     public BlackHaloItem(Properties properties) {
         super(properties.stacksTo(1));
@@ -212,7 +212,7 @@ public class BlackHaloItem extends Item {
         return ItemStack.of(tag.getCompound("itemSlot" + slot));
     }
 
-    private static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
+    public static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
         float yaw = getCheckingAngle(player, getRotationBase(stack));
         for (int segment = 0; segment < SLOT_COUNT; segment++) {
             float start = segment * 30.0F;
