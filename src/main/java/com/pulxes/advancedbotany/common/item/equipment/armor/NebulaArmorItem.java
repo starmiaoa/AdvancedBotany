@@ -182,6 +182,9 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     public boolean isRevealingHelmet() {
+        // The original revealing helmet only exposed Thaumcraft IGoggles/IRevealer.
+        // Thaumcraft is intentionally absent in this port, so the flag is kept only
+        // for the decorative variant and is not wired to any reveal capability.
         return revealingHelmet;
     }
 
@@ -341,6 +344,11 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static boolean giftMana(ItemStack source, Player player, int manaToSend) {
         for (ItemStack target : ManaItemHandler.instance().getManaItems(player)) {
+            if (tryGiftMana(source, target, manaToSend)) {
+                return true;
+            }
+        }
+        for (ItemStack target : player.getArmorSlots()) {
             if (tryGiftMana(source, target, manaToSend)) {
                 return true;
             }

@@ -18,6 +18,8 @@ public abstract class ItemBauble extends Item implements ICurioItem {
 
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        // Curios 5 handles right-click equipping through this hook; explicit use()
+        // handling would duplicate Curios' slot selection and stack movement logic.
         return true;
     }
 

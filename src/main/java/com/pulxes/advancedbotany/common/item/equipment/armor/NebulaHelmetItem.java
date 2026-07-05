@@ -17,6 +17,8 @@ public class NebulaHelmetItem extends NebulaArmorItem implements ManaDiscountArm
     private static final String TAG_COSMIC_FACE = "enableCosmicFace";
 
     public NebulaHelmetItem(boolean revealing, Properties properties) {
+        // Thaumcraft's revealing capability has no 1.20.1 target dependency here.
+        // Revealing helmets are deliberately retained as a decorative variant only.
         super(ArmorItem.Type.HELMET, revealing, properties);
     }
 
