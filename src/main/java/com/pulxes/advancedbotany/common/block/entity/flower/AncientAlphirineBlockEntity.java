@@ -43,7 +43,7 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
 
         List<ItemEntity> nearbyItems = level.getEntitiesOfClass(
                 ItemEntity.class,
-                new AABB(getEffectivePos()).inflate(1.0D, 0.0D, 1.0D),
+                getPickupBounds(),
                 item -> !item.isRemoved() && !item.getItem().isEmpty());
 
         if (!nearbyItems.isEmpty()) {
@@ -51,6 +51,8 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 ItemStack stack = itemEntity.getItem();
                 Optional<AncientAlphirineRecipe> recipe = findMatchingRecipe(level, stack);
                 if (recipe.isEmpty()) {
+                    // The original 1.7.10 flower also unlocked Botania's forgotten Lexicon knowledge here.
+                    // Patchouli exposes this content statically in this port, so that gate is intentionally omitted.
                     continue;
                 }
 
@@ -82,6 +84,18 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 return;
             }
         }
+    }
+
+    private AABB getPickupBounds() {
+        BlockPos pos = getEffectivePos();
+        return new AABB(
+                pos.getX() + 0.5D,
+                pos.getY(),
+                pos.getZ() + 0.5D,
+                pos.getX() + 1.5D,
+                pos.getY() + 1.0D,
+                pos.getZ() + 1.5D)
+                .inflate(1.0D, 0.0D, 1.0D);
     }
 
     private void spawnConsumeParticles(Level level, ItemEntity itemEntity, ItemStack stack) {
