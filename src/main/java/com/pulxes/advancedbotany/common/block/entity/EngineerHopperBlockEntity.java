@@ -160,17 +160,10 @@ public class EngineerHopperBlockEntity extends BaseInventoryBlockEntity implemen
         }
 
         Direction side = sideFromIndex(invSide[index]);
-        IItemHandler handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).orElse(null);
+        IItemHandler handler = findItemHandler(blockEntity, side);
         if (handler != null) {
             return handler;
         }
-        if (blockEntity instanceof WorldlyContainer worldly && side != null) {
-            return new SidedInvWrapper(worldly, side);
-        }
-        if (blockEntity instanceof Container container) {
-            return new InvWrapper(container);
-        }
-
         clearBinding(index);
         return null;
     }
@@ -237,8 +230,7 @@ public class EngineerHopperBlockEntity extends BaseInventoryBlockEntity implemen
         if (blockEntity instanceof EngineerHopperBlockEntity) {
             return false;
         }
-        if (blockEntity != null && (blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).isPresent()
-                || blockEntity instanceof Container)) {
+        if (blockEntity != null && findItemHandler(blockEntity, side) != null) {
             setDistantInventory(invCount, pos.getX(), pos.getY(), pos.getZ());
             invSide[invCount] = side == null ? -1 : side.ordinal();
             sync();
@@ -248,6 +240,27 @@ public class EngineerHopperBlockEntity extends BaseInventoryBlockEntity implemen
         clearBinding(invCount);
         sync();
         return false;
+    }
+
+    @Nullable
+    private static IItemHandler findItemHandler(BlockEntity blockEntity, @Nullable Direction side) {
+        IItemHandler handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).orElse(null);
+        if (handler != null) {
+            return handler;
+        }
+        if (side != null) {
+            handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+            if (handler != null) {
+                return handler;
+            }
+        }
+        if (blockEntity instanceof WorldlyContainer worldly && side != null) {
+            return new SidedInvWrapper(worldly, side);
+        }
+        if (blockEntity instanceof Container container) {
+            return new InvWrapper(container);
+        }
+        return null;
     }
 
     @Override

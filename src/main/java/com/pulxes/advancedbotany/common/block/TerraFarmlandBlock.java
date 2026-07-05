@@ -6,10 +6,8 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -42,7 +40,7 @@ public class TerraFarmlandBlock extends Block {
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
         Block plant = plantable.getPlant(level, pos.above()).getBlock();
-        return plant != Blocks.NETHER_WART && plant != Blocks.SUGAR_CANE;
+        return plant != Blocks.SUGAR_CANE && (plant != Blocks.NETHER_WART || isRegisteredSpecialPlant(plant));
     }
 
     @Override
@@ -63,17 +61,14 @@ public class TerraFarmlandBlock extends Block {
             return;
         }
 
-        if (plantBlock instanceof IPlantable) {
-            for (TerraFarmlandList seed : AdvancedBotanyAPI.farmlandList) {
-                if (plantState.is(seed.getBlock()) && plantState.equals(seed.getBlockState())) {
-                    refreshSeed(level, pos, plantPos, plantState);
-                    return;
-                }
-            }
+        if (isRegisteredMatureSpecialPlant(plantState)) {
+            refreshSeed(level, pos, plantPos, plantState);
             return;
         }
 
-        level.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+        if (!(plantBlock instanceof IPlantable)) {
+            level.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+        }
     }
 
     private void refreshSeed(ServerLevel level, BlockPos farmlandPos, BlockPos plantPos, BlockState plantState) {
@@ -95,7 +90,7 @@ public class TerraFarmlandBlock extends Block {
             if (stack.isEmpty()) {
                 continue;
             }
-            if (isSeedDrop(stack, plantBlock, originalSeedItem)) {
+            if (isSeedDrop(stack, originalSeedItem)) {
                 if (stack.getCount() > 1) {
                     stack.shrink(1);
                 }
@@ -126,12 +121,26 @@ public class TerraFarmlandBlock extends Block {
         return plantBlock.defaultBlockState();
     }
 
-    private static boolean isSeedDrop(ItemStack stack, Block plantBlock, Item originalSeedItem) {
-        Item item = stack.getItem();
-        if (item == originalSeedItem) {
-            return true;
+    private static boolean isSeedDrop(ItemStack stack, Item originalSeedItem) {
+        return stack.getItem() == originalSeedItem;
+    }
+
+    private static boolean isRegisteredSpecialPlant(Block plant) {
+        for (TerraFarmlandList seed : AdvancedBotanyAPI.farmlandList) {
+            if (seed.getBlock() == plant) {
+                return true;
+            }
         }
-        return item instanceof BlockItem blockItem && blockItem.getBlock() == plantBlock;
+        return false;
+    }
+
+    private static boolean isRegisteredMatureSpecialPlant(BlockState plantState) {
+        for (TerraFarmlandList seed : AdvancedBotanyAPI.farmlandList) {
+            if (plantState.is(seed.getBlock()) && plantState.equals(seed.getBlockState())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

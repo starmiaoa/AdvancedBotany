@@ -14,6 +14,8 @@ import com.pulxes.advancedbotany.registry.ModForgeEvents;
 import com.pulxes.advancedbotany.registry.ModMenuTypes;
 import com.pulxes.advancedbotany.registry.ModRecipes;
 import com.pulxes.advancedbotany.registry.ModSounds;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -51,6 +53,9 @@ public class AdvancedBotany {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             AdvancedBotanyAPI.registerDefaultBoardEntries();
+            AdvancedBotanyAPI.registerFarmlandSeed(
+                    Blocks.NETHER_WART,
+                    Blocks.NETHER_WART.defaultBlockState().setValue(NetherWartBlock.AGE, 3));
             ModItems.registerFateBoardRelics();
         });
     }
