@@ -79,7 +79,6 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NIMBLE_CUBE.get());
                 output.accept(ModItems.SPHERE_OF_NAVIGATION.get());
                 output.accept(ModItems.KEY_TO_HIDDEN_WEALTH.get());
-                output.accept(ModItems.WILD_HUNT_WHIP.get());
                 ModFlowers.addToCreativeTab(output);
             })
             .build());

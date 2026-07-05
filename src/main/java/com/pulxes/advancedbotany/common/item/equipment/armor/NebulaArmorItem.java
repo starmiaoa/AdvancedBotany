@@ -75,13 +75,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
-        syncDisplayDamage(stack);
-    }
-
-    @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        syncDisplayDamage(stack);
         if (!level.isClientSide() && getMana(stack) < getMaxMana(stack)
                 && ManaItemHandler.instance().requestManaExactForTool(stack, player, MANA_PER_TICK_CHARGE, true)) {
             addMana(stack, MANA_PER_TICK_CHARGE);
@@ -97,16 +91,10 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        if (amount <= 0) {
-            return 0;
-        }
-
-        int manaCost = Math.min(amount * MANA_PER_ARMOR_DAMAGE, getMana(stack));
-        if (manaCost > 0 && entity instanceof Player player && !entity.level().isClientSide()
-                && !ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
-            addMana(stack, -manaCost);
-        }
-        syncDisplayDamage(stack);
+        // Original AB Nebula armor is ISpecialArmor: it never takes vanilla durability
+        // damage and never breaks. All mana consumption/damage reduction is handled in
+        // handleLivingHurt (the ISpecialArmor getProperties + damageArmor port). Returning
+        // 0 keeps the item from ever reaching maxDamage and shattering.
         return 0;
     }
 
@@ -166,17 +154,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
                     "Nebula chestplate modifier", 1.0D * fraction, AttributeModifier.Operation.ADDITION));
         }
         return builder.build();
-    }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        return displayDamage(stack);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        int clamped = Mth.clamp(damage, 0, MAX_DISPLAY_DAMAGE);
-        setMana(stack, Math.round((MAX_DISPLAY_DAMAGE - clamped) * ((float) MAX_MANA / MAX_DISPLAY_DAMAGE)));
     }
 
     @Override
@@ -241,7 +218,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         } else if (stack.hasTag()) {
             stack.getTag().remove(TAG_MANA);
         }
-        syncDisplayDamage(stack);
     }
 
     public static int getMaxMana(ItemStack stack) {
@@ -341,7 +317,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         if (manaCost > 0 && !ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
             addMana(stack, -manaCost);
         }
-        syncDisplayDamage(stack);
     }
 
     private static float getJumpBoost(ItemStack stack) {
@@ -409,17 +384,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static int displayDamage(ItemStack stack) {
         return MAX_DISPLAY_DAMAGE - (int) (((float) getMana(stack) / MAX_MANA) * MAX_DISPLAY_DAMAGE);
-    }
-
-    private static void syncDisplayDamage(ItemStack stack) {
-        if (stack.isDamageableItem()) {
-            int damage = displayDamage(stack);
-            if (damage > 0) {
-                stack.getOrCreateTag().putInt("Damage", damage);
-            } else if (stack.hasTag()) {
-                stack.getTag().remove("Damage");
-            }
-        }
     }
 
     private static UUID uuid(String name) {

@@ -58,7 +58,7 @@ public class TalismanHiddenRichesItem extends ModRelicItem {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             int slot = hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : TalismanHiddenRichesMenu.OFFHAND_SLOT;
             NetworkHooks.openScreen(serverPlayer,
-                    TalismanHiddenRichesMenu.provider(slot, segment, Component.translatable("container.chest")),
+                    TalismanHiddenRichesMenu.provider(slot, segment, stack.getHoverName()),
                     buffer -> {
                         buffer.writeInt(slot);
                         buffer.writeInt(segment);
