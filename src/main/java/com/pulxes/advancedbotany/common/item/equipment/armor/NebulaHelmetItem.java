@@ -40,6 +40,9 @@ public class NebulaHelmetItem extends NebulaArmorItem implements ManaDiscountArm
         if (!isCosmicFaceEnabled(stack)) {
             tooltip.add(Component.translatable("ab.nebulaHelm.mask").withStyle(ChatFormatting.GREEN));
         }
+        if (isRevealingHelmet()) {
+            tooltip.add(Component.translatable("ab.nebulaHelm.revealingDisabled").withStyle(ChatFormatting.DARK_GRAY));
+        }
     }
 
     @Override
