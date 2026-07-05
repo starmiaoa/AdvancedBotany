@@ -5,6 +5,7 @@ import com.pulxes.advancedbotany.registry.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -26,8 +27,15 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.client.fx.WispParticleData;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NebulaRodItem extends Item {
+    private static final String DIMENSION_BLACKLIST_PROPERTY = "advancedbotany.nebula_rod.dimension_blacklist";
+    private static final Set<ResourceLocation> DIMENSION_BLACKLIST =
+            parseDimensionBlacklist(System.getProperty(DIMENSION_BLACKLIST_PROPERTY, ""));
+
     public NebulaRodItem(Properties properties) {
         super(properties.stacksTo(1).durability(AdvancedBotanyEquipment.NEBULA_ROD_MAX_DAMAGE).rarity(AdvancedBotanyAPI.RARITY_NEBULA));
     }
@@ -35,7 +43,7 @@ public class NebulaRodItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.getDamageValue() == 0) {
+        if (stack.getDamageValue() == 0 && canUseInDimension(level)) {
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(stack);
         }
@@ -49,6 +57,10 @@ public class NebulaRodItem extends Item {
         }
         int useTime = getUseDuration(stack) - remainingUseDuration;
         if (useTime > 110 && !player.isShiftKeyDown()) {
+            if (!canUseInDimension(level)) {
+                player.stopUsingItem();
+                return;
+            }
             if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
                 BlockPos target = findTopBlock(level, player);
                 if (target == null) {
@@ -114,6 +126,22 @@ public class NebulaRodItem extends Item {
             }
         }
         return null;
+    }
+
+    private static boolean canUseInDimension(Level level) {
+        return !DIMENSION_BLACKLIST.contains(level.dimension().location());
+    }
+
+    private static Set<ResourceLocation> parseDimensionBlacklist(String serialized) {
+        if (serialized == null || serialized.isBlank()) {
+            return Set.of();
+        }
+        return Arrays.stream(serialized.split(","))
+                .map(String::trim)
+                .filter(value -> !value.isEmpty())
+                .map(ResourceLocation::tryParse)
+                .filter(location -> location != null)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static void spawnPortalParticle(Level level, Player player, int time, int color, float particleTime) {
