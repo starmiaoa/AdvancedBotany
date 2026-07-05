@@ -57,6 +57,8 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     };
 
     private final LazyOptional<IItemHandlerModifiable>[] sidedHandlers = SidedInvWrapper.create(this, Direction.values());
+    // Original Advanced Botany used Thaumcraft pattern, wand, vis, and thaumonomicon slots.
+    // Thaumcraft is intentionally disabled in this port; the retained pattern state is inert decoration.
     private final boolean[] pattern = new boolean[] {true, true, true, true, true, true, true, true, true};
     private int signal;
     private ItemStack waitingStack = ItemStack.EMPTY;
@@ -77,7 +79,7 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
         }
 
         boolean crafted = craft(true);
-        if (crafted && canEject() || isFull() && waitingStack.isEmpty()) {
+        if (crafted && canEject() || areCraftingSlotsBlocked() && waitingStack.isEmpty()) {
             ejectAll();
         }
 
@@ -96,7 +98,7 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     private boolean craft(boolean fullCheck) {
-        if (level == null || fullCheck && !isFull()) {
+        if (level == null || fullCheck && !hasCraftingInput()) {
             return false;
         }
         if (!(level instanceof ServerLevel serverLevel)) {
@@ -147,6 +149,19 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     public boolean isFull() {
+        return hasCraftingInput();
+    }
+
+    private boolean hasCraftingInput() {
+        for (int i = 0; i < 9; i++) {
+            if (!isLocked(i) && !getItem(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean areCraftingSlotsBlocked() {
         for (int i = 0; i < 9; i++) {
             if (!isLocked(i) && getItem(i).isEmpty()) {
                 return false;
