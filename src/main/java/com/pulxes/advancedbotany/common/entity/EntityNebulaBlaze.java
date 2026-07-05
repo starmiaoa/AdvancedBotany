@@ -94,7 +94,7 @@ public class EntityNebulaBlaze extends ThrowableProjectile {
     }
 
     private void damageNearbyEntities() {
-        AABB bounds = new AABB(position(), position().add(getDeltaMovement())).inflate(1.0D);
+        AABB bounds = new AABB(xOld, yOld, zOld, getX(), getY(), getZ()).inflate(1.0D);
         List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, bounds, this::canDamage);
         for (LivingEntity living : entities) {
             if (level().isClientSide()) {
