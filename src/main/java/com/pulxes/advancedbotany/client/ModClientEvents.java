@@ -5,6 +5,7 @@ import com.pulxes.advancedbotany.client.gui.MagicCraftCrateScreen;
 import com.pulxes.advancedbotany.client.gui.NidavellirForgeScreen;
 import com.pulxes.advancedbotany.client.model.armor.AdvancedBotanyArmorModels;
 import com.pulxes.advancedbotany.client.model.armor.NebulaArmorModel;
+import com.pulxes.advancedbotany.client.render.TalismanHiddenRichesRadialRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AdvancedSparkRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AlphirinePortalRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AnonymousSteveRenderer;
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -33,6 +35,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.addListener(TalismanHiddenRichesRadialRenderer::onRenderLevelStage);
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.NIDAVELLIR_FORGE.get(), NidavellirForgeScreen::new);
             MenuScreens.register(ModMenuTypes.MAGIC_CRAFT_CRATE.get(), MagicCraftCrateScreen::new);

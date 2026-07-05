@@ -10,6 +10,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -97,6 +98,15 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
         }
         container.save();
         return copy;
+    }
+
+    @Override
+    public void clicked(int slotId, int button, ClickType clickType, Player player) {
+        if (clickType == ClickType.SWAP && (button == talismanSlot || button == OFFHAND_SLOT && talismanSlot == OFFHAND_SLOT)) {
+            return;
+        }
+        super.clicked(slotId, button, clickType, player);
+        container.save();
     }
 
     @Override
