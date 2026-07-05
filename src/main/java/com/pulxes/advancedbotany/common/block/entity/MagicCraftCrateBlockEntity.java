@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -136,7 +137,24 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
             if (isLocked(i)) {
                 continue;
             }
-            items.set(i, remaining.get(i).copy());
+            // The original crate consumes exactly one item per slot (func_70298_a(i, 1));
+            // replacing the whole slot with the recipe remainder would void stacked inputs.
+            ItemStack slotStack = getItem(i);
+            if (!slotStack.isEmpty()) {
+                slotStack.shrink(1);
+                if (slotStack.isEmpty()) {
+                    items.set(i, ItemStack.EMPTY);
+                }
+            }
+            ItemStack leftover = remaining.get(i);
+            if (!leftover.isEmpty()) {
+                if (getItem(i).isEmpty()) {
+                    items.set(i, leftover.copy());
+                } else {
+                    Containers.dropItemStack(level, worldPosition.getX() + 0.5D, worldPosition.getY() + 1.0D,
+                            worldPosition.getZ() + 0.5D, leftover.copy());
+                }
+            }
         }
         if (output.isEmpty()) {
             items.set(OUTPUT_SLOT, result.copy());

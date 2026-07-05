@@ -182,9 +182,14 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
             ItemStack stack = item.getItem();
             int inserted = addItemStack(stack);
             if (inserted > 0) {
-                stack.shrink(inserted);
-                if (stack.isEmpty()) {
+                // Mutating the live stack does not mark the entity's synched data dirty;
+                // partial pickups desync the client count unless we setItem a fresh copy.
+                ItemStack remaining = stack.copy();
+                remaining.shrink(inserted);
+                if (remaining.isEmpty()) {
                     item.discard();
+                } else {
+                    item.setItem(remaining);
                 }
                 hasUpdate = true;
                 break;
