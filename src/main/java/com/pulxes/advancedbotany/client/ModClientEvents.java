@@ -5,7 +5,6 @@ import com.pulxes.advancedbotany.client.gui.MagicCraftCrateScreen;
 import com.pulxes.advancedbotany.client.gui.NidavellirForgeScreen;
 import com.pulxes.advancedbotany.client.model.armor.AdvancedBotanyArmorModels;
 import com.pulxes.advancedbotany.client.model.armor.NebulaArmorModel;
-import com.pulxes.advancedbotany.client.model.armor.WildHuntArmorModel;
 import com.pulxes.advancedbotany.client.renderer.entity.AdvancedSparkRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AlphirinePortalRenderer;
 import com.pulxes.advancedbotany.client.renderer.entity.AnonymousSteveRenderer;
@@ -54,7 +53,6 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(AdvancedBotanyArmorModels.NEBULA_ARMOR, NebulaArmorModel::createLayer);
-        event.registerLayerDefinition(AdvancedBotanyArmorModels.WILD_HUNT_ARMOR, WildHuntArmorModel::createLayer);
     }
 
     @SubscribeEvent

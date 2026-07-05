@@ -20,7 +20,6 @@ import com.pulxes.advancedbotany.common.item.equipment.SprawlRodItem;
 import com.pulxes.advancedbotany.common.item.equipment.TerraHoeItem;
 import com.pulxes.advancedbotany.common.item.equipment.armor.NebulaArmorItem;
 import com.pulxes.advancedbotany.common.item.equipment.armor.NebulaHelmetItem;
-import com.pulxes.advancedbotany.common.item.equipment.armor.WildHuntArmorItem;
 import net.minecraft.world.item.ArmorItem;
 import com.pulxes.advancedbotany.common.item.relic.FreyrSlingshotItem;
 import com.pulxes.advancedbotany.common.item.relic.HornOfPlentyItem;
@@ -91,14 +90,9 @@ public final class ModItems {
             () -> new NebulaArmorItem(ArmorItem.Type.LEGGINGS, false, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
     public static final RegistryObject<Item> NEBULA_BOOTS = ITEMS.register("nebula_boots",
             () -> new NebulaArmorItem(ArmorItem.Type.BOOTS, false, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_NEBULA)));
-    public static final RegistryObject<Item> WILD_HUNT_HELMET = ITEMS.register("wild_hunt_helmet",
-            () -> new WildHuntArmorItem(ArmorItem.Type.HELMET, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
-    public static final RegistryObject<Item> WILD_HUNT_CHESTPLATE = ITEMS.register("wild_hunt_chestplate",
-            () -> new WildHuntArmorItem(ArmorItem.Type.CHESTPLATE, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
-    public static final RegistryObject<Item> WILD_HUNT_LEGGINGS = ITEMS.register("wild_hunt_leggings",
-            () -> new WildHuntArmorItem(ArmorItem.Type.LEGGINGS, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
-    public static final RegistryObject<Item> WILD_HUNT_BOOTS = ITEMS.register("wild_hunt_boots",
-            () -> new WildHuntArmorItem(ArmorItem.Type.BOOTS, defaultProperties().rarity(AdvancedBotanyAPI.RARITY_WILD_HUNT)));
+    // Wild Hunt armor removed: the 1.7.10 original declares itemWildHuntHelm/Chest/Legs/Boots fields but never
+    // constructs or registers them (no `new ItemWildHunt*` anywhere), so it is unobtainable in the source mod.
+    // Faithful port excludes it, matching the already-removed Wild Hunt Whip empty stub.
     public static final RegistryObject<Item> FREYR_SLINGSHOT = ITEMS.register("freyr_slingshot", () -> new FreyrSlingshotItem(defaultProperties().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> HORN_OF_PLENTY = ITEMS.register("horn_of_plenty", () -> new HornOfPlentyItem(defaultProperties().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> NIMBLE_CUBE = ITEMS.register("nimble_cube", () -> new PocketWardrobeItem(defaultProperties().rarity(Rarity.EPIC)));

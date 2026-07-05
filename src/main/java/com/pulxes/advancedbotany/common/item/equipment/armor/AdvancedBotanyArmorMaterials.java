@@ -11,7 +11,6 @@ import java.util.EnumMap;
 
 public final class AdvancedBotanyArmorMaterials {
     public static final ArmorMaterial NEBULA = new Material("nebula", 0, defenses(3, 8, 6, 3), 26);
-    public static final ArmorMaterial WILD_HUNT = new Material("wild_hunt", 34, defenses(7, 8, 3, 2), 26);
 
     private static final EnumMap<ArmorItem.Type, Integer> BASE_DURABILITY = new EnumMap<>(ArmorItem.Type.class);
 
