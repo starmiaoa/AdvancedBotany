@@ -20,7 +20,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +79,7 @@ public class EntitySword extends ThrowableProjectile {
     }
 
     private void damageNearbyEntities() {
-        AABB bounds = new AABB(position(), position().add(getDeltaMovement())).inflate(1.0D);
+        AABB bounds = new AABB(xOld, yOld, zOld, getX(), getY(), getZ()).inflate(1.0D);
         List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, bounds, this::canDamage);
         for (LivingEntity living : entities) {
             if (level().isClientSide()) {

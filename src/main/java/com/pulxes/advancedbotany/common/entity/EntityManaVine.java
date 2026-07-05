@@ -33,6 +33,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.ForgeEventFactory;
 import vazkii.botania.client.fx.WispParticleData;
@@ -104,17 +105,18 @@ public class EntityManaVine extends ThrowableProjectile {
     }
 
     private void makeAnimalsLove(BlockPos center, Player player) {
+        if (!(level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
         AABB bounds = new AABB(center).inflate(10.0D);
         List<Animal> animals = level().getEntitiesOfClass(Animal.class, bounds, Animal::isAlive);
         for (Animal animal : animals) {
-            if (!animal.hurt(level().damageSources().playerAttack(player), 0.0F)) {
+            if (!ForgeHooks.onLivingAttack(animal, level().damageSources().playerAttack(player), 0.0F) || !animal.isAlive()) {
                 continue;
             }
             animal.setInLove(player);
             animal.setInLoveTime(1200);
-            if (level() instanceof ServerLevel serverLevel) {
-                serverLevel.broadcastEntityEvent(animal, (byte) 18);
-            }
+            serverLevel.broadcastEntityEvent(animal, (byte) 18);
         }
     }
 

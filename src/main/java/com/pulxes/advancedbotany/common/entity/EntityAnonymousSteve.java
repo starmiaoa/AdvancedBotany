@@ -55,6 +55,11 @@ public class EntityAnonymousSteve extends PathfinderMob {
     }
 
     @Override
+    public boolean isInvisible() {
+        return true;
+    }
+
+    @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return false;
     }
