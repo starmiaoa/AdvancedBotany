@@ -1,30 +1,28 @@
 package com.pulxes.advancedbotany.common.item.relic;
 
+import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.common.network.ModNetwork;
 import com.pulxes.advancedbotany.registry.ModSounds;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -32,6 +30,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.botania.api.mana.ManaItemHandler;
 
@@ -42,6 +42,9 @@ public class HornOfPlentyItem extends ModRelicItem {
     private static final int MANA_COST = 64_000;
     private static final int USE_DURATION = 42_000;
     private static final int USE_THRESHOLD = 48;
+    private static final TagKey<EntityType<?>> HORN_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE,
+            new ResourceLocation(AdvancedBotany.MOD_ID, "horn_of_plenty_blacklist"));
+    private static final ThreadLocal<ExtraLootContext> EXTRA_LOOT_CONTEXT = new ThreadLocal<>();
 
     public HornOfPlentyItem(Properties properties) {
         super(properties);
@@ -113,6 +116,14 @@ public class HornOfPlentyItem extends ModRelicItem {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onLootingLevel(LootingLevelEvent event) {
+        ExtraLootContext context = EXTRA_LOOT_CONTEXT.get();
+        if (context != null && event.getEntity() == context.victim && event.getDamageSource() == context.damageSource) {
+            event.setLootingLevel(context.lootingLevel);
+        }
+    }
+
     private ItemStack findChargedHorn(Player player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
@@ -136,37 +147,40 @@ public class HornOfPlentyItem extends ModRelicItem {
                 .withParameter(LootContextParams.THIS_ENTITY, victim)
                 .withParameter(LootContextParams.ORIGIN, victim.position())
                 .withParameter(LootContextParams.DAMAGE_SOURCE, event.getSource())
-                .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, killer instanceof Player killerPlayer ? killerPlayer : null)
-                .withLuck(killer instanceof Player killerPlayer ? killerPlayer.getLuck() : 0.0F)
+                .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
+                .withLuck(player.getLuck())
                 .withOptionalParameter(LootContextParams.KILLER_ENTITY, killer)
                 .withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, directKiller);
-        List<ItemStack> drops = getRandomItemsWithLooting(player, lootingLevel, lootTable, builder);
+        List<ItemStack> drops = getRawEntityLootWithLooting(victim, event, lootingLevel, lootTable, builder);
         for (ItemStack drop : drops) {
             victim.spawnAtLocation(drop);
         }
         return !drops.isEmpty();
     }
 
-    private static List<ItemStack> getRandomItemsWithLooting(Player player, int lootingLevel, LootTable lootTable, LootParams.Builder builder) {
-        ItemStack originalMainHand = player.getMainHandItem();
-        ItemStack lootingStack = originalMainHand.isEmpty() ? new ItemStack(Items.DIAMOND_SWORD) : originalMainHand.copy();
-        Map<Enchantment, Integer> enchantments = new HashMap<>(EnchantmentHelper.getEnchantments(lootingStack));
-        if (lootingLevel > 0) {
-            enchantments.put(Enchantments.MOB_LOOTING, lootingLevel);
-        } else {
-            enchantments.remove(Enchantments.MOB_LOOTING);
-        }
-        EnchantmentHelper.setEnchantments(enchantments, lootingStack);
-        player.setItemInHand(InteractionHand.MAIN_HAND, lootingStack);
+    private static List<ItemStack> getRawEntityLootWithLooting(LivingEntity victim, LivingDropsEvent event,
+                                                               int lootingLevel, LootTable lootTable,
+                                                               LootParams.Builder builder) {
+        List<ItemStack> drops = new ArrayList<>();
+        EXTRA_LOOT_CONTEXT.set(new ExtraLootContext(victim, event.getSource(), lootingLevel));
         try {
-            return lootTable.getRandomItems(builder.create(LootContextParamSets.ENTITY));
+            lootTable.getRandomItemsRaw(builder.create(LootContextParamSets.ENTITY), drop -> {
+                if (!drop.isEmpty()) {
+                    drops.add(drop.copy());
+                }
+            });
         } finally {
-            player.setItemInHand(InteractionHand.MAIN_HAND, originalMainHand);
+            EXTRA_LOOT_CONTEXT.remove();
         }
+        return drops;
     }
 
     public static boolean isValidEntity(LivingEntity entity) {
-        return true;
+        return !entity.getType().is(HORN_BLACKLIST);
+    }
+
+    private record ExtraLootContext(LivingEntity victim, net.minecraft.world.damagesource.DamageSource damageSource,
+                                    int lootingLevel) {
     }
 
     @Override

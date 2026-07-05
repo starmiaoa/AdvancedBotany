@@ -75,6 +75,12 @@ public final class ClientPacketHandlers {
         }
     }
 
+    public static void handleNavigationTargetSet(BlockState state) {
+        ItemStack renderStack = new ItemStack(state.getBlock());
+        Component targetName = renderStack.isEmpty() ? state.getBlock().getName() : renderStack.getHoverName();
+        ItemsRemainingHud.set(renderStack, targetName.getString());
+    }
+
     private static void spawnNavigationParticles(Level level, BlockPos pos, int relX, int relY, int relZ) {
         float distance = Math.abs(relX) + Math.min(16, Math.abs(relY)) + Math.abs(relZ);
         float hue = 120.0F - distance / 64.0F * 120.0F;
