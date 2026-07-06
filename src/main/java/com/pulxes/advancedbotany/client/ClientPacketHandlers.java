@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.client.fx.WispParticleData;
 
 public final class ClientPacketHandlers {
     private ClientPacketHandlers() {
@@ -89,15 +89,19 @@ public final class ClientPacketHandlers {
         }
         Color color = new Color(Color.HSBtoRGB(hue / 360.0F, 0.9F + (float) (Math.random() * 0.1D), 1.0F));
         for (int i = 0; i < 11; i++) {
-            BotaniaAPI.instance().sparkleFX(level,
+            // Original: wispFX with depth test + distance limit disabled so highlights show
+            // through walls (the whole point of a block finder); /100 colours are original.
+            level.addParticle(WispParticleData.wisp(
+                            0.3F + (float) (Math.random() * 0.25D),
+                            color.getRed() / 100.0F,
+                            color.getGreen() / 100.0F,
+                            color.getBlue() / 100.0F,
+                            2.7F + 0.5F * (float) Math.random(),
+                            false),
                     pos.getX() + 0.5D + (Math.random() - 0.5D),
                     pos.getY() + 0.5D + (Math.random() - 0.5D),
                     pos.getZ() + 0.5D + (Math.random() - 0.5D),
-                    color.getRed() / 100.0F,
-                    color.getGreen() / 100.0F,
-                    color.getBlue() / 100.0F,
-                    0.3F + (float) (Math.random() * 0.25D),
-                    5);
+                    0.0D, 0.0D, 0.0D);
         }
     }
 }

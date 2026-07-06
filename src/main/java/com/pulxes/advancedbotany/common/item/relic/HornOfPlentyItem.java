@@ -29,6 +29,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -104,7 +105,10 @@ public class HornOfPlentyItem extends ModRelicItem {
             return;
         }
         LivingEntity victim = event.getEntity();
-        if (victim instanceof WitherBoss || victim instanceof EnderDragon || !isValidEntity(victim)) {
+        // The original excludes any IBossDisplayData implementor, not just vanilla bosses;
+        // forge:bosses is the modern opt-in convention for modded bosses.
+        if (victim instanceof WitherBoss || victim instanceof EnderDragon
+                || victim.getType().is(Tags.EntityTypes.BOSSES) || !isValidEntity(victim)) {
             return;
         }
         if (player.level().random.nextInt(100) >= 20) {

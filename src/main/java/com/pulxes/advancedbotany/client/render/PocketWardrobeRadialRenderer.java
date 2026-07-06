@@ -54,7 +54,9 @@ public final class PocketWardrobeRadialRenderer {
 
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
+        // AFTER_LEVEL matches the original RenderWorldLastEvent hook (same as the Black Halo
+        // ring) so weather/particles never draw over the radial ring.
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             return;
         }
 

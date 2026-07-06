@@ -40,8 +40,11 @@ public class GameBoardBlockEntityRenderer implements BlockEntityRenderer<GameBoa
             if (board.slotChance[i] == 0) {
                 continue;
             }
+            // The original accumulates the phase across rendered dice (time += i * 83.256f),
+            // not a plain multiple of i.
+            time += i * 83.256F;
             VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(i > 1 ? ENEMY_TEXTURE : TEXTURE));
-            renderDice(board.slotChance[i], board.clientTick[i], i, time + i * 83.256F, partialTick, poseStack,
+            renderDice(board.slotChance[i], board.clientTick[i], i, time, partialTick, poseStack,
                     consumer, packedLight, OverlayTexture.NO_OVERLAY);
         }
 

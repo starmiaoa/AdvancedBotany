@@ -227,7 +227,10 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
             return false;
         }
         for (ItemStack dice : AdvancedBotanyAPI.diceList) {
-            if (ItemStack.isSameItemSameTags(dice, stack)) {
+            // The original board matches dice by item only (TileBoardFate.isDice compares
+            // getItem() + wildcardable meta, never NBT). A real Dice of Fate is a soulbound
+            // relic carrying owner NBT, so tag-strict matching would reject every bound die.
+            if (stack.is(dice.getItem())) {
                 return true;
             }
         }

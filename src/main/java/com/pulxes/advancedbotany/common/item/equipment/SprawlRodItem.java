@@ -82,13 +82,15 @@ public class SprawlRodItem extends Item {
         Color color = EntitySeed.getSeedColor(player.getInventory().getItem(seedSlot));
         float size = Math.max(0.05F, 0.5F * charge - level.random.nextFloat() * 0.1F);
 
+        // Original: wispFX(..., size, gravity = 0, maxAgeMul = 0.5f) — the wisps stay still;
+        // 0.5 is the age multiplier (already passed to wisp()), not a z velocity.
         level.addParticle(WispParticleData.wisp(
                         size,
                         color.getRed() / 255.0F,
                         color.getGreen() / 255.0F,
                         color.getBlue() / 255.0F,
                         0.5F),
-                x, y, z, 0.0D, 0.0D, 0.5D);
+                x, y, z, 0.0D, 0.0D, 0.0D);
     }
 
     @Override

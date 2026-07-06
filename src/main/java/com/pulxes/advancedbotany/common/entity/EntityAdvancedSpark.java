@@ -83,7 +83,8 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
         SparkAttachable attached = getAttachedTile();
         if (attached == null) {
             if (!level().isClientSide()) {
-                dropSparkItems();
+                // remove(DISCARDED) already drops the spark + upgrade (shouldDestroy() is
+                // true for DISCARDED); dropping here as well would duplicate the items.
                 discard();
             }
             return;
@@ -191,7 +192,6 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
                         transfers.clear();
                         removeTransferants = 2;
                     } else {
-                        dropSparkItems();
                         discard();
                     }
                 }
@@ -369,14 +369,6 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
     private static ItemStack upgradeStack(SparkUpgradeType upgrade) {
         Item item = UPGRADE_ITEMS.get(upgrade);
         return item == null ? ItemStack.EMPTY : new ItemStack(item);
-    }
-
-    private void dropSparkItems() {
-        spawnAtLocation(new ItemStack(ModItems.SUPERCONDUCTIVE_SPARK.get()));
-        SparkUpgradeType upgrade = getUpgrade();
-        if (upgrade != SparkUpgradeType.NONE) {
-            spawnAtLocation(upgradeStack(upgrade));
-        }
     }
 
     private void sendManaFlowParticles(int targetEntityId) {

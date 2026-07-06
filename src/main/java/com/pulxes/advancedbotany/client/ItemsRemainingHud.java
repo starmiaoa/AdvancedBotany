@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +26,11 @@ public final class ItemsRemainingHud {
 
     @SubscribeEvent
     public static void render(RenderGuiOverlayEvent.Post event) {
+        // Post fires once per registered overlay; without this filter the HUD is
+        // drawn a dozen times per frame (the original gated on ElementType.ALL).
+        if (!event.getOverlay().id().equals(VanillaGuiOverlay.HOTBAR.id())) {
+            return;
+        }
         if (ticks <= 0 || stack.isEmpty()) {
             return;
         }
