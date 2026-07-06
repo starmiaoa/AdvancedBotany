@@ -41,7 +41,7 @@ public class TerraFarmlandBlock extends Block {
     @Override
     public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, BlockState plantState) {
         Block plant = plantState.getBlock();
-        return plant != Blocks.NETHER_WART && plant != Blocks.SUGAR_CANE ? TriState.TRUE : TriState.FALSE;
+        return plant != Blocks.SUGAR_CANE && (plant != Blocks.NETHER_WART || isRegisteredSpecialPlant(plant)) ? TriState.TRUE : TriState.FALSE;
     }
 
     @Override
@@ -131,6 +131,15 @@ public class TerraFarmlandBlock extends Block {
             return true;
         }
         return item instanceof BlockItem blockItem && blockItem.getBlock() == plantBlock;
+    }
+
+    private static boolean isRegisteredSpecialPlant(Block plant) {
+        for (TerraFarmlandList seed : AdvancedBotanyAPI.farmlandList) {
+            if (seed.getBlock() == plant) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -8,7 +8,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,8 +26,11 @@ public final class ItemsRemainingHud {
     }
 
     @SubscribeEvent
-    public static void render(RenderGuiEvent.Post event) {
+    public static void render(RenderGuiLayerEvent.Post event) {
         if (ticks <= 0 || stack.isEmpty()) {
+            return;
+        }
+        if (!event.getName().equals(VanillaGuiLayers.HOTBAR)) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();

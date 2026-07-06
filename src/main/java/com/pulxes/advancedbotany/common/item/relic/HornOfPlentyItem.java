@@ -1,5 +1,6 @@
 package com.pulxes.advancedbotany.common.item.relic;
 
+import com.pulxes.advancedbotany.AdvancedBotany;
 import com.pulxes.advancedbotany.common.network.ModNetwork;
 import com.pulxes.advancedbotany.common.item.ItemComponentData;
 import com.pulxes.advancedbotany.registry.ModSounds;
@@ -7,13 +8,16 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -30,6 +34,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import vazkii.botania.api.mana.ManaItemHandler;
@@ -41,6 +46,8 @@ public class HornOfPlentyItem extends ModRelicItem {
     private static final int MANA_COST = 64_000;
     private static final int USE_DURATION = 42_000;
     private static final int USE_THRESHOLD = 48;
+    private static final TagKey<EntityType<?>> HORN_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE,
+            ResourceLocation.fromNamespaceAndPath(AdvancedBotany.MOD_ID, "horn_of_plenty_blacklist"));
 
     public HornOfPlentyItem(Properties properties) {
         super(properties);
@@ -100,7 +107,8 @@ public class HornOfPlentyItem extends ModRelicItem {
             return;
         }
         LivingEntity victim = event.getEntity();
-        if (victim instanceof WitherBoss || victim instanceof EnderDragon || !isValidEntity(victim)) {
+        if (victim instanceof WitherBoss || victim instanceof EnderDragon
+                || victim.getType().is(Tags.EntityTypes.BOSSES) || !isValidEntity(victim)) {
             return;
         }
         if (player.level().random.nextInt(100) >= 20) {
@@ -175,7 +183,7 @@ public class HornOfPlentyItem extends ModRelicItem {
     }
 
     public static boolean isValidEntity(LivingEntity entity) {
-        return true;
+        return !entity.getType().is(HORN_BLACKLIST);
     }
 
     @Override

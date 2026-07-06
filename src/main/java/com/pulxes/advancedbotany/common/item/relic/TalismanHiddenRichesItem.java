@@ -57,17 +57,18 @@ public class TalismanHiddenRichesItem extends ModRelicItem {
         }
         setOpenChest(stack, segment);
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            int slot = hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : TalismanHiddenRichesMenu.OFFHAND_SLOT;
             serverPlayer.openMenu(
-                    TalismanHiddenRichesMenu.provider(hand, segment, stack.getHoverName()),
+                    TalismanHiddenRichesMenu.provider(slot, segment, stack.getHoverName()),
                     buffer -> {
-                        buffer.writeBoolean(hand == InteractionHand.OFF_HAND);
+                        buffer.writeInt(slot);
                         buffer.writeInt(segment);
                     });
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
-    protected static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
+    public static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
         float yaw = getCheckingAngle(player, getRotationBase(stack));
         int segmentAngle = 360 / MAX_SEGMENT_COUNT;
         for (int segment = 0; segment < CHEST_COUNT; segment++) {

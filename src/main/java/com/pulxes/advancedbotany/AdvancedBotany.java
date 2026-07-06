@@ -20,6 +20,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.NetherWartBlock;
 import org.slf4j.Logger;
 
 @Mod(AdvancedBotany.MOD_ID)
@@ -51,6 +53,9 @@ public class AdvancedBotany {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             AdvancedBotanyAPI.registerDefaultBoardEntries();
+            AdvancedBotanyAPI.registerFarmlandSeed(
+                    Blocks.NETHER_WART,
+                    Blocks.NETHER_WART.defaultBlockState().setValue(NetherWartBlock.AGE, 3));
             ModItems.registerFateBoardRelics();
         });
     }

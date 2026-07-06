@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class MagicCraftCrateMenu extends AbstractContainerMenu {
-    private static final int TILE_SLOT_COUNT = 12;
+    private static final int TILE_SLOT_COUNT = 10;
     private final Container container;
 
     public MagicCraftCrateMenu(int containerId, Inventory playerInventory, FriendlyByteBuf buffer) {
@@ -44,9 +44,6 @@ public class MagicCraftCrateMenu extends AbstractContainerMenu {
                 return false;
             }
         });
-        addSlot(new Slot(container, MagicCraftCrateBlockEntity.WAND_SLOT, 8, 18));
-        addSlot(new Slot(container, MagicCraftCrateBlockEntity.BOOK_SLOT, 8, 40));
-
         addPlayerInventory(playerInventory, 8, 86);
     }
 

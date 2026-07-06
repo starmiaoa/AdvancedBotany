@@ -5,8 +5,10 @@ import com.pulxes.advancedbotany.common.recipe.AdvancedPlateRecipe;
 import com.pulxes.advancedbotany.common.recipe.ContainerRecipeInput;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import com.pulxes.advancedbotany.registry.ModRecipes;
+import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Direction;
@@ -31,6 +33,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.Nullable;
+import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.mana.ManaPool;
 import vazkii.botania.api.mana.ManaReceiver;
 import vazkii.botania.api.mana.spark.ManaSpark;
@@ -47,14 +50,21 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
     private static final String TAG_REQUEST_UPDATE = "requestUpdate";
     private static final String TAG_RECIPE_COLOR = "recipeColor";
     private static final int[] ALL_SLOTS = new int[] {0, 1, 2, 3};
+    private static final int DATA_MANA_LOW = 0;
+    private static final int DATA_MANA_HIGH = 1;
+    private static final int DATA_MANA_TO_GET_LOW = 2;
+    private static final int DATA_MANA_TO_GET_HIGH = 3;
+    private static final int DATA_COUNT = 4;
 
     private final IItemHandlerModifiable[] sidedHandlers = createSidedHandlers();
     private final ContainerData dataAccess = new ContainerData() {
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> mana;
-                case 1 -> manaToGet;
+                case DATA_MANA_LOW -> low(mana);
+                case DATA_MANA_HIGH -> high(mana);
+                case DATA_MANA_TO_GET_LOW -> low(manaToGet);
+                case DATA_MANA_TO_GET_HIGH -> high(manaToGet);
                 default -> 0;
             };
         }
@@ -62,8 +72,10 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> mana = value;
-                case 1 -> manaToGet = value;
+                case DATA_MANA_LOW -> mana = combine(value, high(mana));
+                case DATA_MANA_HIGH -> mana = combine(low(mana), value);
+                case DATA_MANA_TO_GET_LOW -> manaToGet = combine(value, high(manaToGet));
+                case DATA_MANA_TO_GET_HIGH -> manaToGet = combine(low(manaToGet), value);
                 default -> {
                 }
             }
@@ -71,7 +83,7 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
 
         @Override
         public int getCount() {
-            return 2;
+            return DATA_COUNT;
         }
     };
 
@@ -98,7 +110,61 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, NidavellirForgeBlockEntity forge) {
-        // TODO Batch 7/client pass: restore original colored wisp progress particles.
+        if (forge.mana <= 0 || forge.manaToGet <= 0) {
+            return;
+        }
+
+        double worldTime = level.getGameTime();
+        float bob = (float) (Math.sin((worldTime + new Random(pos.asLong()).nextInt(360)) / 18.0D) / 24.0D);
+        float progress = Math.min(1.0F, forge.mana / (float) forge.manaToGet);
+        float ticks = progress * 100.0F;
+        int totalSpiritCount = 3;
+        double tickIncrement = 360.0D / totalSpiritCount;
+        double wticks = ticks * 5.0D - tickIncrement;
+        double radius = Math.sin((ticks - 100.0F) / 10.0D) * 0.5D;
+        float size = 0.4F;
+        float[] colors = progressColor(forge.recipeColor, progress);
+
+        for (int i = 0; i < totalSpiritCount; i++) {
+            double x = pos.getX() + Math.sin(wticks * Math.PI / 180.0D) * radius + 0.5D;
+            double y = pos.getY() - bob + 0.85D + Math.abs(radius) * 0.7D;
+            double z = pos.getZ() + Math.cos(wticks * Math.PI / 180.0D) * radius + 0.5D;
+            wticks += tickIncrement;
+            BotaniaAPI.instance().sparkleFX(level, x, y, z, colors[0], colors[1], colors[2], 0.85F * size, 2);
+            if (progress >= 1.0F) {
+                for (int j = 0; j < 4; j++) {
+                    BotaniaAPI.instance().sparkleFX(level,
+                            pos.getX() + 0.5D,
+                            pos.getY() + 1.1D - bob,
+                            pos.getZ() + 0.5D,
+                            colors[0], colors[1], colors[2],
+                            level.random.nextFloat() * 0.06F + 0.06F,
+                            2);
+                }
+            }
+        }
+    }
+
+    private static int low(int value) {
+        return value & 0xFFFF;
+    }
+
+    private static int high(int value) {
+        return value >>> 16 & 0xFFFF;
+    }
+
+    private static int combine(int low, int high) {
+        return (low & 0xFFFF) | (high & 0xFFFF) << 16;
+    }
+
+    private static float[] progressColor(int color, float progress) {
+        float[] hsb = Color.RGBtoHSB(color & 0xFF, color >> 8 & 0xFF, color >> 16 & 0xFF, null);
+        int rgb = Color.HSBtoRGB(hsb[0], hsb[1], progress);
+        return new float[] {
+                (rgb & 0xFF) / 255.0F,
+                (rgb >> 8 & 0xFF) / 255.0F,
+                (rgb >> 16 & 0xFF) / 255.0F
+        };
     }
 
     private void updateServer() {
@@ -107,7 +173,9 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
         }
 
         boolean hasUpdate = false;
-        List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(worldPosition));
+        List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(
+                worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                worldPosition.getX() + 1.0D, worldPosition.getY() + 1.0D, worldPosition.getZ() + 1.0D));
         for (ItemEntity item : entities) {
             if (item.isRemoved() || item.getItem().isEmpty()) {
                 continue;
@@ -115,9 +183,12 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
             ItemStack stack = item.getItem();
             int inserted = addItemStack(stack);
             if (inserted > 0) {
-                stack.shrink(inserted);
-                if (stack.isEmpty()) {
+                ItemStack remaining = stack.copy();
+                remaining.shrink(inserted);
+                if (remaining.isEmpty()) {
                     item.discard();
+                } else {
+                    item.setItem(remaining);
                 }
                 hasUpdate = true;
                 break;
@@ -304,7 +375,9 @@ public class NidavellirForgeBlockEntity extends BaseInventoryBlockEntity impleme
         if (level == null) {
             return null;
         }
-        AABB bounds = new AABB(worldPosition.above());
+        BlockPos above = worldPosition.above();
+        AABB bounds = new AABB(above.getX(), above.getY(), above.getZ(),
+                above.getX() + 1.0D, above.getY() + 1.0D, above.getZ() + 1.0D);
         List<Entity> sparks = level.getEntitiesOfClass(Entity.class, bounds, entity -> entity instanceof ManaSpark);
         return sparks.size() == 1 ? (ManaSpark) sparks.get(0) : null;
     }

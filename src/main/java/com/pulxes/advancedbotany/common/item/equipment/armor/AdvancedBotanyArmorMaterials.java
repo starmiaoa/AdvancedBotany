@@ -12,8 +12,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public final class AdvancedBotanyArmorMaterials {
-    public static final Holder<ArmorMaterial> NEBULA = Holder.direct(material("nebula", defenses(3, 8, 6, 3), 26));
-    public static final Holder<ArmorMaterial> WILD_HUNT = Holder.direct(material("wild_hunt", defenses(7, 8, 3, 2), 26));
+    public static final Holder<ArmorMaterial> NEBULA = Holder.direct(material("nebula", defenses(8, 12, 6, 3), 50));
 
     private AdvancedBotanyArmorMaterials() {
     }

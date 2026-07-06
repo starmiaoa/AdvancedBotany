@@ -85,9 +85,18 @@ public class SphereNavigationItem extends ModRelicItem {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         setFindBlock(stack, state);
         if (context.getLevel().isClientSide()) {
-            player.displayClientMessage(state.getBlock().getName(), true);
+            showNavigationTargetHud(state);
         }
         return InteractionResult.sidedSuccess(context.getLevel().isClientSide());
+    }
+
+    private static void showNavigationTargetHud(BlockState state) {
+        try {
+            Class<?> handlers = Class.forName("com.pulxes.advancedbotany.client.ClientPacketHandlers");
+            handlers.getMethod("handleNavigationTargetSet", BlockState.class).invoke(null, state);
+        } catch (ReflectiveOperationException ignored) {
+            // Client-only HUD feedback should never break target binding.
+        }
     }
 
     @Override

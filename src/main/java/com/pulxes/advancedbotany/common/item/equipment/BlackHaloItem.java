@@ -28,7 +28,7 @@ import vazkii.botania.common.item.BlackHoleTalismanItem;
 import vazkii.botania.common.item.BotaniaItems;
 
 public class BlackHaloItem extends Item {
-    private static final int SLOT_COUNT = 12;
+    public static final int SLOT_COUNT = 12;
 
     public BlackHaloItem(Properties properties) {
         super(properties.stacksTo(1));
@@ -38,6 +38,9 @@ public class BlackHaloItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack halo = player.getItemInHand(hand);
         int segment = getSegmentLookedAt(halo, player);
+        if (segment < 0) {
+            return InteractionResultHolder.pass(halo);
+        }
         ItemStack stored = getItemForSlot(halo, segment, player.registryAccess());
         if (!stored.isEmpty()) {
             if (player.isShiftKeyDown()) {
@@ -210,19 +213,22 @@ public class BlackHaloItem extends Item {
         return ItemComponentData.parseItem(ItemComponentData.getCompound(halo, "itemSlot" + slot), registries);
     }
 
-    private static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
+    public static int getSegmentLookedAt(ItemStack stack, LivingEntity player) {
         float yaw = getCheckingAngle(player, getRotationBase(stack));
+        if (!Float.isFinite(yaw)) {
+            return -1;
+        }
         for (int segment = 0; segment < SLOT_COUNT; segment++) {
             float start = segment * 30.0F;
             if (yaw >= start && yaw < start + 30.0F) {
                 return segment;
             }
         }
-        return 0;
+        return -1;
     }
 
     public static void setRotationBase(ItemStack stack, float rotation) {
-        ItemComponentData.putFloat(stack, "rotationBase", rotation);
+        ItemComponentData.putFloat(stack, "rotationBase", normalizeAngle(rotation));
     }
 
     public static float getRotationBase(ItemStack stack) {
@@ -236,8 +242,16 @@ public class BlackHaloItem extends Item {
         }
         yaw -= 360.0F - base;
         float angle = 360.0F - yaw + 15.0F;
+        return normalizeAngle(angle);
+    }
+
+    private static float normalizeAngle(float angle) {
+        if (!Float.isFinite(angle)) {
+            return Float.NaN;
+        }
+        angle %= 360.0F;
         if (angle < 0.0F) {
-            angle = 360.0F + angle;
+            angle += 360.0F;
         }
         return angle;
     }

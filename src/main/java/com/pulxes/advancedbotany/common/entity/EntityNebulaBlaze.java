@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import vazkii.botania.api.BotaniaAPI;
 
 public class EntityNebulaBlaze extends ThrowableProjectile {
     private static final EntityDataAccessor<Optional<UUID>> ATTACKER = SynchedEntityData.defineId(EntityNebulaBlaze.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -53,6 +54,25 @@ public class EntityNebulaBlaze extends ThrowableProjectile {
         damageNearbyEntities();
         super.tick();
         homeTowardNearestTarget(previous);
+        spawnTrailParticles(previous);
+    }
+
+    private void spawnTrailParticles(Vec3 previous) {
+        if (!level().isClientSide()) {
+            return;
+        }
+        for (int i = 0; i < 12; i++) {
+            BotaniaAPI.instance().sparkleFX(
+                    level(),
+                    previous.x + (random.nextDouble() - 0.5D) * 0.15D,
+                    previous.y + (random.nextDouble() - 0.5D) * 0.15D,
+                    previous.z + (random.nextDouble() - 0.5D) * 0.15D,
+                    1.0F - random.nextFloat() / 5.0F,
+                    random.nextFloat() / 5.0F,
+                    1.0F - random.nextFloat() / 5.0F,
+                    1.2F * (random.nextFloat() - 0.5F),
+                    3);
+        }
     }
 
     private void homeTowardNearestTarget(Vec3 previous) {
@@ -74,7 +94,7 @@ public class EntityNebulaBlaze extends ThrowableProjectile {
     }
 
     private void damageNearbyEntities() {
-        AABB bounds = new AABB(position(), position().add(getDeltaMovement())).inflate(1.0D);
+        AABB bounds = new AABB(xOld, yOld, zOld, getX(), getY(), getZ()).inflate(1.0D);
         List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, bounds, this::canDamage);
         for (LivingEntity living : entities) {
             if (level().isClientSide()) {

@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import vazkii.botania.api.BotaniaAPI;
 
 public class EntitySword extends ThrowableProjectile {
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(EntitySword.class, EntityDataSerializers.FLOAT);
@@ -54,10 +55,32 @@ public class EntitySword extends ThrowableProjectile {
         } else if (tickCount > 160) {
             discard();
         }
+        spawnTrailParticles();
+    }
+
+    private void spawnTrailParticles() {
+        if (!level().isClientSide()) {
+            return;
+        }
+        for (int i = 0; i < 12; i++) {
+            float r = random.nextBoolean() ? 0.88235295F : 0.39607844F;
+            float g = random.nextBoolean() ? 0.2627451F : 0.81960785F;
+            float b = random.nextBoolean() ? 0.9411765F : 0.88235295F;
+            BotaniaAPI.instance().sparkleFX(
+                    level(),
+                    getX() + (random.nextDouble() - 0.5D) * 0.25D,
+                    getY() + (random.nextDouble() - 0.5D) * 0.25D,
+                    getZ() + (random.nextDouble() - 0.5D) * 0.25D,
+                    r + (float) (random.nextDouble() / 4.0D - 0.125D),
+                    g + (float) (random.nextDouble() / 4.0D - 0.125D),
+                    b + (float) (random.nextDouble() / 4.0D - 0.125D),
+                    1.6F * (random.nextFloat() - 0.5F),
+                    2);
+        }
     }
 
     private void damageNearbyEntities() {
-        AABB bounds = new AABB(position(), position().add(getDeltaMovement())).inflate(1.0D);
+        AABB bounds = new AABB(xOld, yOld, zOld, getX(), getY(), getZ()).inflate(1.0D);
         List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, bounds, this::canDamage);
         for (LivingEntity living : entities) {
             if (level().isClientSide()) {

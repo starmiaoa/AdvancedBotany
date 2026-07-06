@@ -5,32 +5,33 @@ import com.pulxes.advancedbotany.registry.ModItems;
 import com.pulxes.advancedbotany.registry.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
     private static final int CHEST_SLOT_COUNT = TalismanHiddenRichesItem.CHEST_SIZE;
-    private final InteractionHand hand;
+    public static final int OFFHAND_SLOT = 40;
+    private final int talismanSlot;
     private final int segment;
     private final TalismanContainer container;
 
     public TalismanHiddenRichesMenu(int containerId, Inventory playerInventory, FriendlyByteBuf buffer) {
         this(containerId, playerInventory,
-                buffer.readBoolean() ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND,
+                buffer.readInt(),
                 buffer.readInt());
     }
 
-    public TalismanHiddenRichesMenu(int containerId, Inventory playerInventory, InteractionHand hand, int segment) {
+    public TalismanHiddenRichesMenu(int containerId, Inventory playerInventory, int talismanSlot, int segment) {
         super(ModMenuTypes.TALISMAN_HIDDEN_RICHES.get(), containerId);
-        this.hand = hand;
+        this.talismanSlot = talismanSlot;
         this.segment = segment;
-        this.container = new TalismanContainer(playerInventory.player, hand, segment);
+        this.container = new TalismanContainer(playerInventory.player, talismanSlot, segment);
         container.startOpen(playerInventory.player);
 
         for (int row = 0; row < 3; row++) {
@@ -41,7 +42,7 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
         addPlayerInventory(playerInventory, 8, 85);
     }
 
-    public static MenuProvider provider(InteractionHand hand, int segment, Component title) {
+    public static MenuProvider provider(int talismanSlot, int segment, Component title) {
         return new MenuProvider() {
             @Override
             public Component getDisplayName() {
@@ -50,7 +51,7 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
 
             @Override
             public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-                return new TalismanHiddenRichesMenu(containerId, playerInventory, hand, segment);
+                return new TalismanHiddenRichesMenu(containerId, playerInventory, talismanSlot, segment);
             }
         };
     }
@@ -63,7 +64,7 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
         }
         for (int column = 0; column < 9; column++) {
             int slot = column;
-            if (hand == InteractionHand.MAIN_HAND && playerInventory.selected == slot) {
+            if (talismanSlot == slot) {
                 addSlot(new LockedSlot(playerInventory, slot, left + column * 18, top + 58));
             } else {
                 addSlot(new Slot(playerInventory, slot, left + column * 18, top + 58));
@@ -80,10 +81,12 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
             copy = stack.copy();
             if (index < CHEST_SLOT_COUNT) {
                 if (!moveItemStackTo(stack, CHEST_SLOT_COUNT, slots.size(), true)) {
+                    container.save();
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (stack.is(ModItems.KEY_TO_HIDDEN_WEALTH.get()) || !moveItemStackTo(stack, 0, CHEST_SLOT_COUNT, false)) {
+                if (isTalisman(stack) || !moveItemStackTo(stack, 0, CHEST_SLOT_COUNT, false)) {
+                    container.save();
                     return ItemStack.EMPTY;
                 }
             }
@@ -93,7 +96,17 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
                 slot.setChanged();
             }
         }
+        container.save();
         return copy;
+    }
+
+    @Override
+    public void clicked(int slotId, int button, ClickType clickType, Player player) {
+        if (clickType == ClickType.SWAP && (button == talismanSlot || button == OFFHAND_SLOT && talismanSlot == OFFHAND_SLOT)) {
+            return;
+        }
+        super.clicked(slotId, button, clickType, player);
+        container.save();
     }
 
     @Override
@@ -108,50 +121,66 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
         container.save();
     }
 
+    private static boolean isTalisman(ItemStack stack) {
+        return stack.is(ModItems.KEY_TO_HIDDEN_WEALTH.get());
+    }
+
     private static class TalismanContainer extends SimpleContainer {
         private final Player player;
-        private final InteractionHand hand;
+        private final int talismanSlot;
         private final int segment;
-        private final ItemStack talisman;
-        private boolean saved;
+        private ItemStack lastKnownTalisman = ItemStack.EMPTY;
 
-        TalismanContainer(Player player, InteractionHand hand, int segment) {
+        TalismanContainer(Player player, int talismanSlot, int segment) {
             super(TalismanHiddenRichesItem.CHEST_SIZE);
             this.player = player;
-            this.hand = hand;
+            this.talismanSlot = talismanSlot;
             this.segment = segment;
-            this.talisman = player.getItemInHand(hand);
-            SimpleContainer savedLoot = TalismanHiddenRichesItem.getChestLoot(talisman, segment, player.registryAccess());
-            for (int i = 0; i < getContainerSize(); i++) {
-                setItem(i, savedLoot.getItem(i));
+            ItemStack talisman = getTalisman();
+            if (isTalisman(talisman)) {
+                SimpleContainer savedLoot = TalismanHiddenRichesItem.getChestLoot(talisman, segment, player.registryAccess());
+                for (int i = 0; i < getContainerSize(); i++) {
+                    setItem(i, savedLoot.getItem(i));
+                }
             }
         }
 
         @Override
         public boolean canPlaceItem(int slot, ItemStack stack) {
-            return !stack.is(ModItems.KEY_TO_HIDDEN_WEALTH.get());
+            return stillValid(player) && !isTalisman(stack);
         }
 
         @Override
         public boolean stillValid(Player player) {
             return segment >= 0
                     && segment < TalismanHiddenRichesItem.CHEST_COUNT
-                    && player.getItemInHand(hand).is(ModItems.KEY_TO_HIDDEN_WEALTH.get());
+                    && isTalisman(getTalisman());
         }
 
         void save() {
-            if (saved) {
-                return;
+            ItemStack target = getTalisman();
+            if (!isTalisman(target)) {
+                target = lastKnownTalisman;
             }
-            ItemStack target = player.getItemInHand(hand);
-            if (target.isEmpty() || !target.is(ModItems.KEY_TO_HIDDEN_WEALTH.get())) {
-                target = talisman;
-            }
-            if (!target.isEmpty()) {
+            if (isTalisman(target)) {
                 TalismanHiddenRichesItem.setChestLoot(target, this, segment, player.registryAccess());
                 TalismanHiddenRichesItem.setOpenChest(target, -1);
             }
-            saved = true;
+        }
+
+        private ItemStack getTalisman() {
+            ItemStack stack;
+            if (talismanSlot == OFFHAND_SLOT) {
+                stack = player.getOffhandItem();
+            } else if (talismanSlot >= 0 && talismanSlot < player.getInventory().getContainerSize()) {
+                stack = player.getInventory().getItem(talismanSlot);
+            } else {
+                stack = ItemStack.EMPTY;
+            }
+            if (isTalisman(stack)) {
+                lastKnownTalisman = stack;
+            }
+            return stack;
         }
     }
 
@@ -162,7 +191,7 @@ public class TalismanHiddenRichesMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return !stack.is(ModItems.KEY_TO_HIDDEN_WEALTH.get());
+            return container.canPlaceItem(getSlotIndex(), stack);
         }
     }
 

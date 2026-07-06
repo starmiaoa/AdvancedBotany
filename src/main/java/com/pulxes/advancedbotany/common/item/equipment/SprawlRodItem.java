@@ -1,6 +1,7 @@
 package com.pulxes.advancedbotany.common.item.equipment;
 
 import com.pulxes.advancedbotany.common.entity.EntitySeed;
+import java.awt.Color;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +11,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.mana.ManaItemHandler;
+import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.item.GrassSeedsItem;
 
 public class SprawlRodItem extends Item {
@@ -52,6 +55,40 @@ public class SprawlRodItem extends Item {
             rod.setDamageValue(Math.min(AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE,
                     (int) ((float) useTime / 128.0F * AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE)));
         }
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
+        if (!level.isClientSide() || !(livingEntity instanceof Player player)) {
+            return;
+        }
+
+        int useTime = getUseDuration(stack, player) - remainingUseDuration;
+        if (useTime % 2 == 0 && useTime != 0) {
+            return;
+        }
+
+        int seedSlot = findGrassSeed(player);
+        if (seedSlot < 0) {
+            return;
+        }
+
+        int ticks = Math.min(128, useTime);
+        float charge = (float) ticks / 128.0F;
+        Vec3 look = player.getLookAngle();
+        double x = player.getX() + look.x * 1.4D + (level.random.nextDouble() - 0.5D) * charge * 0.3D;
+        double y = player.getY() + look.y * 1.4D + (level.random.nextDouble() - 0.5D) * charge * 0.3D;
+        double z = player.getZ() + look.z * 1.4D + (level.random.nextDouble() - 0.5D) * charge * 0.3D;
+        Color color = EntitySeed.getSeedColor(player.getInventory().getItem(seedSlot));
+        float size = Math.max(0.05F, 0.5F * charge - level.random.nextFloat() * 0.1F);
+
+        level.addParticle(WispParticleData.wisp(
+                        size,
+                        color.getRed() / 255.0F,
+                        color.getGreen() / 255.0F,
+                        color.getBlue() / 255.0F,
+                        0.5F),
+                x, y, z, 0.0D, 0.0D, 0.0D);
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 
 public final class AdvancedBotanyAPI {
     public static final Rarity RARITY_NEBULA = Rarity.EPIC;
-    public static final Rarity RARITY_WILD_HUNT = Rarity.RARE;
     public static final List<TerraFarmlandList> farmlandList = new ArrayList<>();
     public static final List<ItemStack> relicList = new ArrayList<>();
     public static final List<ItemStack> diceList = new ArrayList<>();

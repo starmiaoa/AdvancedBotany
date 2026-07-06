@@ -84,7 +84,7 @@ public final class ModForgeEvents {
         event.registerItem(BotaniaForgeCapabilities.getItemApiLookupById(Relic.LOOKUP),
                 (stack, context) -> stack.getItem() instanceof ModRelicItem relicItem ? relicItem.createRelic(stack) : null,
                 ModItems.FREYR_SLINGSHOT.get(), ModItems.HORN_OF_PLENTY.get(), ModItems.NIMBLE_CUBE.get(),
-                ModItems.SPHERE_OF_NAVIGATION.get(), ModItems.KEY_TO_HIDDEN_WEALTH.get(), ModItems.WILD_HUNT_WHIP.get());
+                ModItems.SPHERE_OF_NAVIGATION.get(), ModItems.KEY_TO_HIDDEN_WEALTH.get());
     }
 
     private static void registerNebulaManaItem(RegisterCapabilitiesEvent event,

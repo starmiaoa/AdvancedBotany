@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -37,13 +38,11 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     public static final int GRID_START = 0;
     public static final int GRID_END = 8;
     public static final int OUTPUT_SLOT = 9;
-    public static final int WAND_SLOT = 10;
-    public static final int BOOK_SLOT = 11;
-    private static final int INVENTORY_SIZE = 12;
+    private static final int INVENTORY_SIZE = 10;
     private static final String TAG_WAITING_STACK = "waitingStack";
     private static final String TAG_PATTERN = "pattern";
     private static final String TAG_SIGNAL = "signal";
-    private static final int[] ACCESSIBLE_SLOTS = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private static final int[] ACCESSIBLE_SLOTS = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     private static final AbstractContainerMenu DUMMY_MENU = new AbstractContainerMenu(null, -1) {
         @Override
         public ItemStack quickMoveStack(Player player, int index) {
@@ -57,6 +56,8 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     };
 
     private final IItemHandlerModifiable[] sidedHandlers = createSidedHandlers();
+    // Original Advanced Botany used Thaumcraft pattern, wand, vis, and thaumonomicon slots.
+    // Thaumcraft is intentionally disabled in this port; the retained pattern state is inert decoration.
     private final boolean[] pattern = new boolean[] {true, true, true, true, true, true, true, true, true};
     private int signal;
     private ItemStack waitingStack = ItemStack.EMPTY;
@@ -77,7 +78,7 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
         }
 
         boolean crafted = craft(true);
-        if (crafted && canEject() || isFull() && waitingStack.isEmpty()) {
+        if (crafted && canEject() || areCraftingSlotsBlocked() && waitingStack.isEmpty()) {
             ejectAll();
         }
 
@@ -96,7 +97,7 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     private boolean craft(boolean fullCheck) {
-        if (level == null || fullCheck && !isFull()) {
+        if (level == null || fullCheck && !hasCraftingInput()) {
             return false;
         }
         if (!(level instanceof ServerLevel serverLevel)) {
@@ -135,7 +136,22 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
             if (isLocked(i)) {
                 continue;
             }
-            items.set(i, remaining.get(i).copy());
+            ItemStack slotStack = getItem(i);
+            if (!slotStack.isEmpty()) {
+                slotStack.shrink(1);
+                if (slotStack.isEmpty()) {
+                    items.set(i, ItemStack.EMPTY);
+                }
+            }
+            ItemStack leftover = remaining.get(i);
+            if (!leftover.isEmpty()) {
+                if (getItem(i).isEmpty()) {
+                    items.set(i, leftover.copy());
+                } else {
+                    Containers.dropItemStack(level, worldPosition.getX() + 0.5D, worldPosition.getY() + 1.0D,
+                            worldPosition.getZ() + 0.5D, leftover.copy());
+                }
+            }
         }
         if (output.isEmpty()) {
             items.set(OUTPUT_SLOT, result.copy());
@@ -148,6 +164,19 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     public boolean isFull() {
+        return hasCraftingInput();
+    }
+
+    private boolean hasCraftingInput() {
+        for (int i = 0; i < 9; i++) {
+            if (!isLocked(i) && !getItem(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean areCraftingSlotsBlocked() {
         for (int i = 0; i < 9; i++) {
             if (!isLocked(i) && getItem(i).isEmpty()) {
                 return false;
@@ -240,7 +269,7 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot < 9 && !isLocked(slot) || slot == WAND_SLOT || slot == BOOK_SLOT;
+        return slot < 9 && !isLocked(slot);
     }
 
     @Override

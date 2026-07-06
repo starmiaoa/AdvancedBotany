@@ -52,6 +52,8 @@ public class FreyrLianaBlock extends BushBlock {
                 || above.is(BlockTags.BASE_STONE_OVERWORLD)
                 || above.is(BlockTags.BASE_STONE_NETHER)
                 || above.is(Blocks.FARMLAND)
+                || above.is(Blocks.DIRT_PATH)
+                || above.is(Blocks.GRAVEL)
                 || above.is(Blocks.CLAY)
                 || above.is(ModBlocks.GLIMMERING_LEBETHRON_WOOD.get());
     }

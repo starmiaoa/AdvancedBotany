@@ -37,6 +37,9 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
     private static final String TAG_REQUEST_UPDATE = "requestUpdate";
     private static final String TAG_PLAYER_ROOT = AdvancedBotany.MOD_ID + ":fate_board";
     private static final String TAG_GRANTED_RELICS = "granted_relics";
+    private static final boolean[] FATE_BOARD_RELIC_ENABLED = new boolean[] {
+            true, true, true, true, true, true, true, true, true, true, true, true
+    };
 
     public byte[] slotChance = new byte[] {0, 0};
     public final int[] clientTick = new int[] {0, 0};
@@ -129,7 +132,7 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
                     0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
 
             ItemStack relic = getRelicForRoll(relicCount);
-            if (relic.isEmpty() || hasRelic(player, relic)) {
+            if (!isRelicRollEnabled(relicCount) || relic.isEmpty() || hasRelic(player, relic)) {
                 player.displayClientMessage(Component.translatable("botaniamisc.dudDiceRoll", relicCount).withStyle(ChatFormatting.DARK_GREEN), false);
             } else {
                 bindRelicToPlayer(relic, player);
@@ -155,6 +158,11 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
         }
         int index = Math.min(relicCount - 1, AdvancedBotanyAPI.relicList.size() - 1);
         return AdvancedBotanyAPI.relicList.get(index).copy();
+    }
+
+    private static boolean isRelicRollEnabled(int relicCount) {
+        int index = relicCount - 1;
+        return index >= 0 && (index >= FATE_BOARD_RELIC_ENABLED.length || FATE_BOARD_RELIC_ENABLED[index]);
     }
 
     private void dropRelic(Player player, int slot) {
@@ -208,6 +216,7 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
                     item.discard();
                 }
                 level.playSound(null, worldPosition, ModSounds.BOARD_CUBE.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                setChanged();
                 return true;
             }
         }
@@ -219,7 +228,7 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
             return false;
         }
         for (ItemStack dice : AdvancedBotanyAPI.diceList) {
-            if (ItemStack.isSameItemSameComponents(dice, stack) || dice.getItem() == stack.getItem()) {
+            if (stack.is(dice.getItem())) {
                 return true;
             }
         }
@@ -321,5 +330,15 @@ public class BoardFateBlockEntity extends BaseInventoryBlockEntity {
         tag.putByteArray(TAG_SLOT_CHANCE, slotChance);
         tag.putBoolean(TAG_REQUEST_UPDATE, requestUpdate);
         return tag;
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+        loadAdditional(tag, registries);
     }
 }

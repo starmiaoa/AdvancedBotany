@@ -63,9 +63,12 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                     return;
                 }
 
-                stack.shrink(1);
-                if (stack.isEmpty()) {
+                ItemStack remaining = stack.copy();
+                remaining.shrink(1);
+                if (remaining.isEmpty()) {
                     itemEntity.discard();
+                } else {
+                    itemEntity.setItem(remaining);
                 }
 
                 if (level.random.nextInt(111) <= alphirineRecipe.getChance()) {

@@ -143,6 +143,9 @@ public class NaturalManaSpreaderBlockEntity extends BlockEntity implements ManaS
         if (level == null || receiver == null || !canShootBurst || !receiver.canReceiveManaFromBursts() || receiver.isFull()) {
             return;
         }
+        if (level.hasNeighborSignal(worldPosition)) {
+            return;
+        }
         ManaBurstEntity burst = getBurst(false);
         if (burst == null || level.isClientSide()) {
             return;

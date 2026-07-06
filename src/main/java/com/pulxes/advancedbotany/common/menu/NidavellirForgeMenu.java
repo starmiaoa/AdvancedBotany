@@ -17,11 +17,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class NidavellirForgeMenu extends AbstractContainerMenu {
     private static final int TILE_SLOT_COUNT = 4;
+    private static final int DATA_COUNT = 4;
     private final Container container;
     private final ContainerData data;
 
     public NidavellirForgeMenu(int containerId, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(containerId, playerInventory, resolveContainer(playerInventory, buffer.readBlockPos()), new SimpleContainerData(2));
+        this(containerId, playerInventory, resolveContainer(playerInventory, buffer.readBlockPos()), new SimpleContainerData(DATA_COUNT));
     }
 
     public NidavellirForgeMenu(int containerId, Inventory playerInventory, Container container, ContainerData data) {
@@ -54,11 +55,15 @@ public class NidavellirForgeMenu extends AbstractContainerMenu {
     }
 
     public int getMana() {
-        return data.get(0);
+        return combine(data.get(0), data.get(1));
     }
 
     public int getManaToGet() {
-        return data.get(1);
+        return combine(data.get(2), data.get(3));
+    }
+
+    private static int combine(int low, int high) {
+        return (low & 0xFFFF) | (high & 0xFFFF) << 16;
     }
 
     private void addPlayerInventory(Inventory playerInventory, int left, int top) {

@@ -71,6 +71,14 @@ public class ManaCrystalCubeBlockEntity extends BlockEntity implements Wandable 
         return new int[] {current, max};
     }
 
+    public int getKnownMana() {
+        return knownMana;
+    }
+
+    public int getKnownMaxMana() {
+        return knownMaxMana;
+    }
+
     @Override
     public boolean onUsedByWand(net.minecraft.world.entity.player.Player player, net.minecraft.world.item.ItemStack stack, net.minecraft.core.Direction side) {
         if (level != null && !level.isClientSide() && player instanceof ServerPlayer serverPlayer) {

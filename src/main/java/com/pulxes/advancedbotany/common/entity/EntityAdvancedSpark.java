@@ -30,7 +30,9 @@ import vazkii.botania.api.mana.spark.ManaSpark;
 import vazkii.botania.api.mana.spark.SparkAttachable;
 import vazkii.botania.api.mana.spark.SparkHelper;
 import vazkii.botania.api.mana.spark.SparkUpgradeType;
+import vazkii.botania.common.entity.ManaSparkEntity;
 import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.network.clientbound.SparkManaFlowEffectPacket;
 import vazkii.botania.xplat.XplatAbstractions;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -135,6 +137,7 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
                 if (toSend > 0) {
                     manaItem.addMana(toSend);
                     receiver.receiveMana(-toSend);
+                    sendManaFlowParticles(player.getId());
                     return;
                 }
             }
@@ -162,6 +165,7 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
             }
             int spend = Math.min(other.getAvailableSpaceForMana(), manaEach);
             targetReceiver.receiveMana(spend);
+            sendManaFlowParticles(((Entity) spark).getId());
             spent += spend;
         }
         receiver.receiveMana(-spent);
@@ -184,6 +188,11 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
                     }
                 }
                 return InteractionResult.sidedSuccess(level().isClientSide());
+            }
+            if (!level().isClientSide()) {
+                for (ManaSpark spark : SparkHelper.getSparksAround(level(), getX(), getY(), getZ(), getNetwork())) {
+                    ManaSparkEntity.particleBeam(player, this, (Entity) spark);
+                }
             }
             return InteractionResult.sidedSuccess(level().isClientSide());
         }
@@ -345,6 +354,11 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
     private static ItemStack upgradeStack(SparkUpgradeType upgrade) {
         Item item = UPGRADE_ITEMS.get(upgrade);
         return item == null ? ItemStack.EMPTY : new ItemStack(item);
+    }
+
+    private void sendManaFlowParticles(int targetEntityId) {
+        XplatAbstractions.INSTANCE.sendToTracking(this,
+                new SparkManaFlowEffectPacket(getId(), targetEntityId, getNetwork()));
     }
 
     private static List<ItemStack> getPlayerManaStacks(Player player) {

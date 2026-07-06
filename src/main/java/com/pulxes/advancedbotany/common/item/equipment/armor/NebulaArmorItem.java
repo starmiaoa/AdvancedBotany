@@ -9,6 +9,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -75,12 +76,14 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
-        syncDisplayDamage(stack);
         updateAttributeModifiers(stack);
+        if (entity instanceof Player player && player.getItemBySlot(type.getSlot()) == stack) {
+            onArmorTick(stack, level, player);
+        }
     }
 
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        syncDisplayDamage(stack);
+        updateAttributeModifiers(stack);
         if (!level.isClientSide() && getMana(stack) < getMaxMana(stack)
                 && ManaItemHandler.instance().requestManaExactForTool(stack, player, MANA_PER_TICK_CHARGE, true)) {
             addMana(stack, MANA_PER_TICK_CHARGE);
@@ -96,16 +99,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
-        if (amount <= 0) {
-            return 0;
-        }
-
-        int manaCost = Math.min(amount * MANA_PER_ARMOR_DAMAGE, getMana(stack));
-        if (manaCost > 0 && entity instanceof Player player && !entity.level().isClientSide()
-                && !ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
-            addMana(stack, -manaCost);
-        }
-        syncDisplayDamage(stack);
         return 0;
     }
 
@@ -164,17 +157,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
                     1.0D * fraction, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST);
         }
         stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
-    }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        return displayDamage(stack);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        int clamped = Mth.clamp(damage, 0, MAX_DISPLAY_DAMAGE);
-        setMana(stack, Math.round((MAX_DISPLAY_DAMAGE - clamped) * ((float) MAX_MANA / MAX_DISPLAY_DAMAGE)));
     }
 
     @Override
@@ -237,7 +219,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         } else {
             ItemComponentData.remove(stack, TAG_MANA);
         }
-        syncDisplayDamage(stack);
     }
 
     public static int getMaxMana(ItemStack stack) {
@@ -305,7 +286,8 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     public static void handleIncomingDamage(LivingIncomingDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player) || event.getAmount() <= 0.0F) {
+        if (!(event.getEntity() instanceof Player player) || event.getAmount() <= 0.0F
+                || event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
             return;
         }
 
@@ -318,7 +300,25 @@ public class NebulaArmorItem extends ManasteelArmorItem {
             }
         }
         if (protection > 0.0F) {
+            int damage = Math.max(0, Mth.ceil(event.getAmount()));
+            for (EquipmentSlot slot : List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
+                ItemStack stack = player.getItemBySlot(slot);
+                if (stack.getItem() instanceof NebulaArmorItem armor && armor.type.getSlot() == slot) {
+                    armor.consumeProtectionMana(stack, player, damage);
+                }
+            }
             event.setAmount(event.getAmount() * (1.0F - Math.min(protection, 1.0F)));
+        }
+    }
+
+    private void consumeProtectionMana(ItemStack stack, Player player, int damage) {
+        if (damage <= 0 || player.level().isClientSide()) {
+            return;
+        }
+
+        int manaCost = Math.min(damage * MANA_PER_ARMOR_DAMAGE, getMana(stack));
+        if (manaCost > 0 && !ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
+            addMana(stack, -manaCost);
         }
     }
 
@@ -344,6 +344,11 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static boolean giftMana(ItemStack source, Player player, int manaToSend) {
         for (ItemStack target : ManaItemHandler.instance().getManaItems(player)) {
+            if (tryGiftMana(source, target, manaToSend)) {
+                return true;
+            }
+        }
+        for (ItemStack target : player.getArmorSlots()) {
             if (tryGiftMana(source, target, manaToSend)) {
                 return true;
             }
@@ -387,17 +392,6 @@ public class NebulaArmorItem extends ManasteelArmorItem {
 
     private static int displayDamage(ItemStack stack) {
         return MAX_DISPLAY_DAMAGE - (int) (((float) getMana(stack) / MAX_MANA) * MAX_DISPLAY_DAMAGE);
-    }
-
-    private static void syncDisplayDamage(ItemStack stack) {
-        if (stack.isDamageableItem()) {
-            int damage = displayDamage(stack);
-            if (damage > 0) {
-                stack.set(DataComponents.DAMAGE, damage);
-            } else {
-                stack.remove(DataComponents.DAMAGE);
-            }
-        }
     }
 
     private static ResourceLocation id(String name) {

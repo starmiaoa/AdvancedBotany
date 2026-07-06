@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.registries.BuiltInRegistries;
-import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.client.fx.WispParticleData;
 
 public final class ClientPacketHandlers {
     private ClientPacketHandlers() {
@@ -75,6 +75,12 @@ public final class ClientPacketHandlers {
         }
     }
 
+    public static void handleNavigationTargetSet(BlockState state) {
+        ItemStack renderStack = new ItemStack(state.getBlock());
+        Component targetName = renderStack.isEmpty() ? state.getBlock().getName() : renderStack.getHoverName();
+        ItemsRemainingHud.set(renderStack, targetName.getString());
+    }
+
     private static void spawnNavigationParticles(Level level, BlockPos pos, int relX, int relY, int relZ) {
         float distance = Math.abs(relX) + Math.min(16, Math.abs(relY)) + Math.abs(relZ);
         float hue = 120.0F - distance / 64.0F * 120.0F;
@@ -83,15 +89,17 @@ public final class ClientPacketHandlers {
         }
         Color color = new Color(Color.HSBtoRGB(hue / 360.0F, 0.9F + (float) (Math.random() * 0.1D), 1.0F));
         for (int i = 0; i < 11; i++) {
-            BotaniaAPI.instance().sparkleFX(level,
+            level.addParticle(WispParticleData.wisp(
+                            0.3F + (float) (Math.random() * 0.25D),
+                            color.getRed() / 100.0F,
+                            color.getGreen() / 100.0F,
+                            color.getBlue() / 100.0F,
+                            2.7F + 0.5F * (float) Math.random(),
+                            false),
                     pos.getX() + 0.5D + (Math.random() - 0.5D),
                     pos.getY() + 0.5D + (Math.random() - 0.5D),
                     pos.getZ() + 0.5D + (Math.random() - 0.5D),
-                    color.getRed() / 100.0F,
-                    color.getGreen() / 100.0F,
-                    color.getBlue() / 100.0F,
-                    0.3F + (float) (Math.random() * 0.25D),
-                    5);
+                    0.0D, 0.0D, 0.0D);
         }
     }
 }
