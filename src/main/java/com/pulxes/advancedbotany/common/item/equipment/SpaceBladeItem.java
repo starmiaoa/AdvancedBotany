@@ -48,6 +48,12 @@ public class SpaceBladeItem extends SwordItem {
     }
 
     @Override
+    public int getEntityLifespan(ItemStack itemStack, Level level) {
+        // The original blade never despawns as a dropped item (getEntityLifespan = MAX_VALUE).
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity target) {
         if (!player.level().isClientSide()) {
             ItemComponentData.putInt(stack, TAG_POST_ATTACK_TICK, 3);

@@ -148,7 +148,8 @@ public class EntityNebulaBlaze extends ThrowableProjectile {
         }
     }
 
-    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps, boolean teleport) {
+    @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps) {
         // Original client entity ignores server interpolation corrections.
     }
 

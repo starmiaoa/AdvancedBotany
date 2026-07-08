@@ -23,6 +23,20 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
     public static final int MANA_REQUIRED = 4500;
     public static final int MAX_MANA = 180000;
     public static final int COLOR = 13680472;
+
+    private AABB getPickupBounds() {
+        // Faithful to the original's skewed box: (x+0.5, y, z+0.5)..(x+1.5, y+1, z+1.5), expanded by 1 in x/z.
+        BlockPos pos = getEffectivePos();
+        return new AABB(
+                pos.getX() + 0.5D,
+                pos.getY(),
+                pos.getZ() + 0.5D,
+                pos.getX() + 1.5D,
+                pos.getY() + 1.0D,
+                pos.getZ() + 1.5D)
+                .inflate(1.0D, 0.0D, 1.0D);
+    }
+
     private static final int RANGE = 1;
 
     public AncientAlphirineBlockEntity(BlockPos pos, BlockState state) {
@@ -43,7 +57,7 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
 
         List<ItemEntity> nearbyItems = level.getEntitiesOfClass(
                 ItemEntity.class,
-                new AABB(getEffectivePos()).inflate(1.0D, 0.0D, 1.0D),
+                getPickupBounds(),
                 item -> !item.isRemoved() && !item.getItem().isEmpty());
 
         if (!nearbyItems.isEmpty()) {

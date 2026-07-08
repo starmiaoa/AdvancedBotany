@@ -222,6 +222,7 @@ public class PocketWardrobeItem extends ModRelicItem {
 
     public static int getPrioritySet(ItemStack stack) {
         CompoundTag tag = ItemComponentData.copy(stack);
-        return tag.isEmpty() ? 2 : Mth.clamp(tag.getInt("prioritySet"), 0, SEGMENT_COUNT - 1);
+        // Original default is segment 2 whenever the key is absent, even if other data exists.
+        return tag.contains("prioritySet") ? Mth.clamp(tag.getInt("prioritySet"), 0, SEGMENT_COUNT - 1) : 2;
     }
 }

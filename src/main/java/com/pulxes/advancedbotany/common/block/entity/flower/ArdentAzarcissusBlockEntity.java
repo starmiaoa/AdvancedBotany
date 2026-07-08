@@ -117,11 +117,15 @@ public class ArdentAzarcissusBlockEntity extends GeneratingFlowerBlockEntity {
         return COLOR;
     }
 
-    public void writeToPacketNBT(CompoundTag tag) {
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.putInt(TAG_COOLDOWN, cooldown);
     }
 
-    public void readFromPacketNBT(CompoundTag tag) {
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         cooldown = tag.getInt(TAG_COOLDOWN);
     }
 

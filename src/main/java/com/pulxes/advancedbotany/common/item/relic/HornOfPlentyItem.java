@@ -142,6 +142,7 @@ public class HornOfPlentyItem extends ModRelicItem {
                 .withParameter(LootContextParams.THIS_ENTITY, victim)
                 .withParameter(LootContextParams.ORIGIN, victim.position())
                 .withParameter(LootContextParams.DAMAGE_SOURCE, event.getSource())
+                .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
                 .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, killer)
                 .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, directKiller)
                 .withLuck(killer instanceof Player killerPlayer ? killerPlayer.getLuck() : 0.0F);
@@ -149,7 +150,9 @@ public class HornOfPlentyItem extends ModRelicItem {
         for (ItemStack drop : drops) {
             victim.spawnAtLocation(drop);
         }
-        return !drops.isEmpty();
+        // Faithful: the original consumed a charge whenever the 20% extra roll fired,
+        // even if the loot table yielded nothing that time.
+        return true;
     }
 
     private static List<ItemStack> getRandomItemsWithLooting(Player player, ServerLevel level, int lootingLevel,

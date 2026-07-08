@@ -36,7 +36,8 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.LEBETHRON_PLANKS.get());
                 output.accept(ModItems.MOSSY_LEBETHRON_PLANKS.get());
                 output.accept(ModItems.GLIMMERING_LEBETHRON_WOOD.get());
-                output.accept(ModItems.TERRA_FARMLAND.get());
+                // Terra Farmland is only obtainable through the Terra Hoe, exactly like the
+                // original (its 1.7.10 block never had a creative tab either).
                 output.accept(ModItems.FREYR_LIANA.get());
                 output.accept(ModItems.LUMINOUS_FREYR_LIANA.get());
                 // Antigravitation is an invisible technical block placed by the Antigravity Charm.

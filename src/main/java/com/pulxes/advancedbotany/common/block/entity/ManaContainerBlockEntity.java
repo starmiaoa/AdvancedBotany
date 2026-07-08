@@ -17,10 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.block.Wandable;
-import vazkii.botania.api.mana.ManaBlockType;
-import vazkii.botania.api.mana.ManaNetworkAction;
 import vazkii.botania.api.mana.ManaPool;
 import vazkii.botania.api.mana.spark.ManaSpark;
 import vazkii.botania.api.mana.spark.SparkAttachable;
@@ -54,18 +51,16 @@ public class ManaContainerBlockEntity extends BlockEntity implements ManaPool, S
     }
 
     private void ensureInManaNetwork() {
-        if (!addedToNetwork && level != null && !isRemoved()) {
-            BotaniaAPI.instance().getManaNetworkInstance().fireManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.ADD);
-            addedToNetwork = true;
-        }
+        // Botania 1.21 removed pool tracking from the mana network (ManaBlockType only keeps
+        // COLLECTOR, and Botania's own pools no longer fire the event). Registering this container
+        // as a COLLECTOR would make generating flora treat it like a spreader, so register nothing:
+        // sparks and bursts find it through the SparkAttachable / ManaReceiver lookups instead.
+        addedToNetwork = true;
     }
 
     @Override
     public void setRemoved() {
-        if (addedToNetwork && level != null) {
-            BotaniaAPI.instance().getManaNetworkInstance().fireManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.REMOVE);
-            addedToNetwork = false;
-        }
+        addedToNetwork = false;
         super.setRemoved();
     }
 
