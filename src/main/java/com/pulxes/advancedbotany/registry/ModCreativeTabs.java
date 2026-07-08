@@ -39,7 +39,9 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.TERRA_FARMLAND.get());
                 output.accept(ModItems.FREYR_LIANA.get());
                 output.accept(ModItems.LUMINOUS_FREYR_LIANA.get());
-                output.accept(ModItems.ANTIGRAVITATION.get());
+                // Antigravitation is an invisible technical block placed by the Antigravity Charm.
+                // The original never exposed it in a creative tab (its "nothing" texture is a blank
+                // placeholder that never renders because the block uses an invisible render type).
                 output.accept(ModItems.MANA_CRYSTAL_CUBE.get());
                 output.accept(ModItems.NATURAL_MANA_SPREADER.get());
                 output.accept(ModItems.MANA_CONTAINER.get());

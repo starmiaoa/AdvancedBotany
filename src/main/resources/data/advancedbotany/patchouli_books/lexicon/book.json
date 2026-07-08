@@ -2,6 +2,7 @@
   "name": "patchouli.advancedbotany.book.name",
   "landing_text": "patchouli.advancedbotany.book.landing",
   "use_resource_pack": true,
+  "i18n": true,
   "version": 1,
   "model": "advancedbotany:lexicon",
   "creative_tab": "advancedbotany:advancedbotany"
