@@ -1,0 +1,47 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "advancedbotany:lebethron_natural_core"
+    },
+    "S": [
+      {
+        "item": "botania:pasture_seeds"
+      },
+      {
+        "item": "botania:boreal_seeds"
+      },
+      {
+        "item": "botania:dry_pasture_seeds"
+      },
+      {
+        "item": "botania:golden_pasture_seeds"
+      },
+      {
+        "item": "botania:vivid_pasture_seeds"
+      },
+      {
+        "item": "botania:scorched_pasture_seeds"
+      },
+      {
+        "item": "botania:infused_pasture_seeds"
+      },
+      {
+        "item": "botania:mutated_pasture_seeds"
+      }
+    ],
+    "W": {
+      "item": "botania:livingwood_twig"
+    }
+  },
+  "pattern": [
+    " SC",
+    " WS",
+    "W  "
+  ],
+  "result": {
+    "id": "advancedbotany:rod_of_sprawl"
+  },
+  "show_notification": true
+}

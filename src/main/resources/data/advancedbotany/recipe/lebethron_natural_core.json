@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "4": {
+      "item": "botania:rune_of_spring"
+    },
+    "5": {
+      "item": "botania:rune_of_summer"
+    },
+    "6": {
+      "item": "botania:rune_of_autumn"
+    },
+    "7": {
+      "item": "botania:rune_of_winter"
+    },
+    "P": {
+      "item": "botania:natura_pylon"
+    },
+    "W": {
+      "item": "advancedbotany:lebethron_wood"
+    }
+  },
+  "pattern": [
+    "4W5",
+    "WPW",
+    "6W7"
+  ],
+  "result": {
+    "id": "advancedbotany:lebethron_natural_core"
+  },
+  "show_notification": true
+}

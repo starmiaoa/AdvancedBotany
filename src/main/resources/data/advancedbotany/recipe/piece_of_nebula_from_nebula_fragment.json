@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "advancedbotany:nebula_fragment"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "advancedbotany:piece_of_nebula"
+  }
+}

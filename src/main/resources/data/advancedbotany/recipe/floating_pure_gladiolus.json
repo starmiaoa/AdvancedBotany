@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "botania:floating_flower",
+  "ingredients": [
+    {
+      "tag": "botania:floating_flowers"
+    },
+    {
+      "item": "advancedbotany:pure_gladiolus"
+    }
+  ],
+  "result": {
+    "id": "advancedbotany:floating_pure_gladiolus"
+  }
+}

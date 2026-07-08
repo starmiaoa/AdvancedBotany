@@ -1,0 +1,35 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "item": "advancedbotany:natures_gift"
+    },
+    {
+      "item": "botania:rune_of_mana"
+    },
+    {
+      "tag": "botania:petals/light_gray"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/red"
+    },
+    {
+      "tag": "botania:petals/lime"
+    },
+    {
+      "tag": "botania:petals/green"
+    },
+    {
+      "tag": "botania:petals/blue"
+    }
+  ],
+  "output": {
+    "id": "advancedbotany:pure_gladiolus"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

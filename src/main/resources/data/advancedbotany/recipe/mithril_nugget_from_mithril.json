@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "advancedbotany:mithril"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "advancedbotany:mithril_nugget"
+  }
+}

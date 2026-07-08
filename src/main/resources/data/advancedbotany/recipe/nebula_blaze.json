@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "advancedbotany:air_of_forgotten_lands"
+    },
+    "M": {
+      "item": "botania:manasteel_block"
+    },
+    "N": {
+      "item": "advancedbotany:piece_of_nebula"
+    }
+  },
+  "pattern": [
+    " N ",
+    "MMN",
+    "AMN"
+  ],
+  "result": {
+    "id": "advancedbotany:nebula_blaze"
+  },
+  "show_notification": true
+}

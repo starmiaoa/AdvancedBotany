@@ -1,0 +1,11 @@
+{
+  "type": "advancedbotany:ancient_alphirine",
+  "chance": 32,
+  "input": {
+    "tag": "botania:small_mystical_flowers"
+  },
+  "mana": 4500,
+  "output": {
+    "id": "advancedbotany:natures_gift"
+  }
+}

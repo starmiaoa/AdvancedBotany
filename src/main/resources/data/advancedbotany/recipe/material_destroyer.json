@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "botania:livingwood"
+    },
+    "F": {
+      "item": "botania:livingwood_twig"
+    },
+    "M": {
+      "item": "advancedbotany:mithril"
+    }
+  },
+  "pattern": [
+    " MB",
+    " FM",
+    "F  "
+  ],
+  "result": {
+    "id": "advancedbotany:material_destroyer"
+  },
+  "show_notification": true
+}

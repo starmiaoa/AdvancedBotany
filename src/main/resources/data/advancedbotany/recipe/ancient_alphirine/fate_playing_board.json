@@ -1,0 +1,11 @@
+{
+  "type": "advancedbotany:ancient_alphirine",
+  "chance": 60,
+  "input": {
+    "item": "advancedbotany:playing_board"
+  },
+  "mana": 4500,
+  "output": {
+    "id": "advancedbotany:fate_playing_board"
+  }
+}

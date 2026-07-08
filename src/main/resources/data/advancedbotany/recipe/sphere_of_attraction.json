@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "tag": "botania:floating_flowers"
+    },
+    "E": {
+      "item": "botania:dragonstone"
+    },
+    "G": {
+      "item": "botania:alfglass"
+    },
+    "R": {
+      "item": "botania:rune_of_air"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GDG",
+    "ERE"
+  ],
+  "result": {
+    "id": "advancedbotany:sphere_of_attraction"
+  },
+  "show_notification": true
+}

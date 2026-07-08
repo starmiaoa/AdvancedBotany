@@ -1,0 +1,32 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "item": "botania:redstone_root"
+    },
+    {
+      "item": "botania:gaia_spirit"
+    },
+    {
+      "item": "botania:rune_of_fire"
+    },
+    {
+      "item": "botania:rune_of_water"
+    },
+    {
+      "item": "advancedbotany:mana_nether_star"
+    },
+    {
+      "tag": "botania:petals/purple"
+    },
+    {
+      "tag": "botania:petals/green"
+    }
+  ],
+  "output": {
+    "id": "advancedbotany:aspecolus"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

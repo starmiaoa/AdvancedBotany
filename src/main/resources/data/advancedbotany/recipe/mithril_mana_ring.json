@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "item": "advancedbotany:mithril_nugget"
+    },
+    "M": {
+      "item": "advancedbotany:mithril"
+    },
+    "R": {
+      "item": "botania:greater_band_of_mana"
+    }
+  },
+  "pattern": [
+    "LML",
+    "MRM",
+    "LML"
+  ],
+  "result": {
+    "id": "advancedbotany:mithril_mana_ring"
+  },
+  "show_notification": true
+}

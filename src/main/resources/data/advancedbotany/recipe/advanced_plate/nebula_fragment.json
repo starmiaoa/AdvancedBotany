@@ -1,0 +1,19 @@
+{
+  "type": "advancedbotany:advanced_plate",
+  "color": 9246432,
+  "ingredients": [
+    {
+      "item": "botania:pixie_dust"
+    },
+    {
+      "item": "botania:dragonstone_block"
+    },
+    {
+      "item": "advancedbotany:mithril_nugget"
+    }
+  ],
+  "mana": 25000000,
+  "output": {
+    "id": "advancedbotany:nebula_fragment"
+  }
+}

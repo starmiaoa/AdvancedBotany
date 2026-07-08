@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "botania:sojournors_sash"
+    },
+    "E": {
+      "item": "botania:pixie_dust"
+    },
+    "H": {
+      "item": "botania:terrasteel_boots"
+    },
+    "N": {
+      "item": "advancedbotany:nebula_fragment"
+    },
+    "R": {
+      "item": "botania:dragonstone"
+    }
+  },
+  "pattern": [
+    "RBR",
+    "NHN",
+    " E "
+  ],
+  "result": {
+    "id": "advancedbotany:nebula_boots"
+  },
+  "show_notification": true
+}

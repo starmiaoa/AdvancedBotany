@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "item": "botania:terrasteel_nugget"
+    },
+    "R": {
+      "item": "botania:rune_of_earth"
+    },
+    "T": {
+      "item": "botania:terrasteel_ingot"
+    },
+    "W": {
+      "item": "botania:livingwood_twig"
+    }
+  },
+  "pattern": [
+    "TTL",
+    "RW ",
+    " W "
+  ],
+  "result": {
+    "id": "advancedbotany:terra_hoe"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": {
+      "item": "botania:pixie_dust"
+    },
+    "H": {
+      "item": "botania:terrasteel_chestplate"
+    },
+    "N": {
+      "item": "advancedbotany:nebula_fragment"
+    },
+    "R": {
+      "item": "botania:dragonstone"
+    },
+    "T": {
+      "item": "botania:fluegel_tiara"
+    }
+  },
+  "pattern": [
+    "RTR",
+    "NHN",
+    "ENE"
+  ],
+  "result": {
+    "id": "advancedbotany:nebula_chestplate"
+  },
+  "show_notification": true
+}

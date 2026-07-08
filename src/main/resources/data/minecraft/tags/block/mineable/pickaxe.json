@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "advancedbotany:mithril_block",
+    "advancedbotany:engineer_hopper",
+    "advancedbotany:nidavellir_forge",
+    "advancedbotany:mana_container",
+    "advancedbotany:diluted_mana_container",
+    "advancedbotany:fabulous_mana_container",
+    "advancedbotany:mana_crystal_cube",
+    "advancedbotany:mana_charger",
+    "advancedbotany:playing_board",
+    "advancedbotany:fate_playing_board"
+  ]
+}

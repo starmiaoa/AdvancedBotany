@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "advancedbotany:air_of_forgotten_lands"
+    },
+    "F": {
+      "item": "minecraft:anvil"
+    },
+    "M": {
+      "item": "botania:manasteel_block"
+    },
+    "P": {
+      "item": "botania:terrestrial_agglomeration_plate"
+    },
+    "R": {
+      "item": "botania:rune_of_air"
+    }
+  },
+  "pattern": [
+    "MPM",
+    " F ",
+    "BRB"
+  ],
+  "result": {
+    "id": "advancedbotany:nidavellir_forge"
+  },
+  "show_notification": true
+}

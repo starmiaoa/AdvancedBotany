@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": {
+      "item": "botania:pixie_dust"
+    },
+    "H": {
+      "item": "botania:terrasteel_helmet"
+    },
+    "N": {
+      "item": "advancedbotany:nebula_fragment"
+    },
+    "R": {
+      "item": "botania:dragonstone"
+    }
+  },
+  "pattern": [
+    "RNR",
+    "NHN",
+    " E "
+  ],
+  "result": {
+    "id": "advancedbotany:nebula_helmet"
+  },
+  "show_notification": true
+}

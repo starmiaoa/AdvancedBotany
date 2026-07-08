@@ -1,0 +1,32 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "item": "advancedbotany:natures_gift"
+    },
+    {
+      "item": "botania:gaia_spirit"
+    },
+    {
+      "item": "botania:gaia_spirit"
+    },
+    {
+      "item": "botania:rune_of_pride"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/orange"
+    }
+  ],
+  "output": {
+    "id": "advancedbotany:dictarius"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

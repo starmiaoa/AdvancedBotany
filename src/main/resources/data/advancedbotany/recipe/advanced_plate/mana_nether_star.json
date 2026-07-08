@@ -1,0 +1,19 @@
+{
+  "type": "advancedbotany:advanced_plate",
+  "color": 7064044,
+  "ingredients": [
+    {
+      "item": "botania:mana_powder"
+    },
+    {
+      "item": "botania:gaia_spirit"
+    },
+    {
+      "item": "minecraft:nether_star"
+    }
+  ],
+  "mana": 250000,
+  "output": {
+    "id": "advancedbotany:mana_nether_star"
+  }
+}
