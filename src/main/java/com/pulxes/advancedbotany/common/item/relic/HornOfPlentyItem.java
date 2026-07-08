@@ -159,7 +159,9 @@ public class HornOfPlentyItem extends ModRelicItem {
         for (ItemStack drop : drops) {
             victim.spawnAtLocation(drop);
         }
-        return !drops.isEmpty();
+        // Faithful: the original consumed a charge whenever the 20% extra roll fired,
+        // even if the loot table yielded nothing that time.
+        return true;
     }
 
     private static List<ItemStack> getRawEntityLootWithLooting(LivingEntity victim, LivingDropsEvent event,

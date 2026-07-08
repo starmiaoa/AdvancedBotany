@@ -34,7 +34,7 @@ public class MaterialDestroyerItem extends DiggerItem {
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return isEnabled(stack) ? 135.0F : 0.0F;
+        return isEnabled(stack) ? super.getDestroySpeed(stack, state) + 135.0F : 0.0F;
     }
 
     @Override

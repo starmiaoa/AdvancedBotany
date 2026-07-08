@@ -85,6 +85,7 @@ public class ManaChargerBlockEntity extends BlockEntity implements WorldlyContai
                     }
                     if (!level.isClientSide()) {
                         manaItem.addMana(-manaValue);
+                        setChanged();
                         needsSync = needsSync || level.getGameTime() % SYNC_INTERVAL == 0L || manaItem.getMana() <= 0;
                     }
                     receiver.receiveMana(manaValue);
@@ -101,6 +102,7 @@ public class ManaChargerBlockEntity extends BlockEntity implements WorldlyContai
                 }
                 if (!level.isClientSide()) {
                     manaItem.addMana(manaValue);
+                        setChanged();
                     needsSync = needsSync || level.getGameTime() % SYNC_INTERVAL == 0L || manaItem.getMana() >= manaItem.getMaxMana();
                 }
                 receiver.receiveMana(-manaValue);

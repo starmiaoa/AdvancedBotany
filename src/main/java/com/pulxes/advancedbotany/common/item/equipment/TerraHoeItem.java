@@ -36,6 +36,11 @@ public class TerraHoeItem extends HoeItem {
 
         BlockState state = level.getBlockState(pos);
         if (state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT)) {
+            // Original posts UseHoeEvent and aborts when canceled; mirror via the modern tool-use event.
+            if (net.minecraftforge.event.ForgeEventFactory.onToolUse(state, context,
+                    net.minecraftforge.common.ToolActions.HOE_TILL, false) == null) {
+                return InteractionResult.PASS;
+            }
             BlockState farmland = ModBlocks.TERRA_FARMLAND.get().defaultBlockState();
             SoundType sound = farmland.getSoundType(level, pos, player);
             level.playSound(player, pos, sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);

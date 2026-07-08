@@ -10,6 +10,7 @@ public class MithrilStorageBlock extends Block {
         super(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.METAL)
                 .strength(3.0F, 10.0F)
+                .requiresCorrectToolForDrops()
                 .sound(SoundType.METAL));
     }
 }

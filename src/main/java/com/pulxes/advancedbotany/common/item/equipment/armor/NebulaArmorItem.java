@@ -289,7 +289,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         for (ItemStack stack : player.getArmorSlots()) {
             if (stack.getItem() instanceof NebulaArmorItem armor) {
                 ratio += armor.getMaterial().getDefenseForType(armor.type)
-                        * (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR * armor.getManaFraction(stack));
+                        * (MIN_PROTECTION_FACTOR + PROTECTION_MANA_FACTOR * getManaFraction(stack));
             }
         }
         if (ratio <= 0.0F) {
@@ -352,7 +352,7 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         setMana(stack, getMana(stack) + mana);
     }
 
-    public float getManaFraction(ItemStack stack) {
+    public static float getManaFraction(ItemStack stack) {
         return (float) getMana(stack) / (float) getMaxMana(stack);
     }
 
@@ -371,19 +371,15 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     }
 
     private static float getJumpBoost(ItemStack stack) {
-        return MAX_JUMP_BOOST * fraction(stack);
+        return MAX_JUMP_BOOST * getManaFraction(stack);
     }
 
     private static float getFallBuffer(ItemStack stack) {
-        return MAX_FALL_BUFFER * fraction(stack);
+        return MAX_FALL_BUFFER * getManaFraction(stack);
     }
 
     private static float getBootSpeed(ItemStack stack) {
-        return MAX_BOOT_SPEED * fraction(stack);
-    }
-
-    private static float fraction(ItemStack stack) {
-        return (float) getMana(stack) / (float) MAX_MANA;
+        return MAX_BOOT_SPEED * getManaFraction(stack);
     }
 
     private static void healFromFood(Player player) {
