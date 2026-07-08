@@ -38,9 +38,9 @@ public class AlphirinePortalRenderer extends EntityRenderer<EntityAlphirinePorta
         float scale = burn / 3.15F;
         poseStack.scale(scale, scale, scale);
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-        poseStack.mulPose(Axis.ZP.rotationDegrees((float) time * 2.0F));
+        // The original portal only billboards toward the camera - no extra spin, opaque quad.
 
-        renderQuad(poseStack, buffer, Mth.clamp(burn, 0.0F, 1.0F), time);
+        renderQuad(poseStack, buffer, 1.0F, time);
         poseStack.popPose();
 
         super.render(entity, yaw, partialTicks, poseStack, buffer, packedLight);

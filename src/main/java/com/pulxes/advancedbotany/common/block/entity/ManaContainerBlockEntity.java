@@ -38,7 +38,17 @@ public class ManaContainerBlockEntity extends BlockEntity implements ManaPool, S
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, ManaContainerBlockEntity container) {
-        // TODO Batch 7/client pass: restore the original floating vessel renderer and wisp particles.
+        // Original wisp effect, integer division preserved: the wisp only appears once the container
+        // is completely full (mana/maxMana as ints is 0 until then), color 0x00C6FF.
+        double particleChance = 1.0D - (double) (container.getCurrentMana() / container.getMaxMana()) * 0.1D;
+        if (Math.random() > particleChance) {
+            float size = (float) Math.random() / 4.2F;
+            level.addParticle(vazkii.botania.client.fx.WispParticleData.wisp(size, 0.0F, 198.0F / 255.0F, 1.0F, 2.0F),
+                    pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.4D,
+                    pos.getY() + 0.81D + Math.random() * 0.05D,
+                    pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.4D,
+                    0.0D, -Math.random() / 50.0D, 0.0D);
+        }
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ManaContainerBlockEntity container) {

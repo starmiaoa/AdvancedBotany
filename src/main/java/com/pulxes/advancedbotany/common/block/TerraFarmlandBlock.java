@@ -41,7 +41,8 @@ public class TerraFarmlandBlock extends Block {
     @Override
     public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, BlockState plantState) {
         Block plant = plantState.getBlock();
-        return plant != Blocks.SUGAR_CANE && (plant != Blocks.NETHER_WART || isRegisteredSpecialPlant(plant)) ? TriState.TRUE : TriState.FALSE;
+        // The original also refuses cactus alongside reeds (sugar cane).
+        return plant != Blocks.CACTUS && plant != Blocks.SUGAR_CANE && (plant != Blocks.NETHER_WART || isRegisteredSpecialPlant(plant)) ? TriState.TRUE : TriState.FALSE;
     }
 
     @Override
@@ -62,7 +63,11 @@ public class TerraFarmlandBlock extends Block {
             return;
         }
 
-        if (plantState.canSurvive(level, plantPos)) {
+        // The original only keeps farmland under crops/IPlantable; anything else reverts to dirt.
+        // NeoForge 1.21 dropped IPlantable, so approximate with BushBlock/SpecialPlantable.
+        boolean plantLike = plantBlock instanceof net.minecraft.world.level.block.BushBlock
+                || plantBlock instanceof net.neoforged.neoforge.common.SpecialPlantable;
+        if (plantLike && plantState.canSurvive(level, plantPos)) {
             for (TerraFarmlandList seed : AdvancedBotanyAPI.farmlandList) {
                 if (plantState.is(seed.getBlock()) && plantState.equals(seed.getBlockState())) {
                     refreshSeed(level, pos, plantPos, plantState);

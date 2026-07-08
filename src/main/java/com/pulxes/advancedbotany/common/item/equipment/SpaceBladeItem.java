@@ -81,7 +81,7 @@ public class SpaceBladeItem extends SwordItem {
                 && ManaItemHandler.instance().requestManaExactForTool(stack, player, AdvancedBotanyEquipment.SPACE_BLADE_PROJECTILE_MANA, true)) {
             EntitySword sword = new EntitySword(player.level(), player);
             sword.setDamage(getSwordDamage(stack));
-            sword.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.0F);
+            sword.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F); // vanilla throwable spread, as the original inherited
             sword.setDeltaMovement(sword.getDeltaMovement().scale(0.2D));
             player.level().addFreshEntity(sword);
             player.level().playSound(null, player.blockPosition(), ModSounds.BLADE_SPACE.get(), SoundSource.PLAYERS, 0.5F, 3.6F);
@@ -154,8 +154,42 @@ public class SpaceBladeItem extends SwordItem {
     }
 
     @Override
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext context, java.util.List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        // Original: rank line via Botania's own toolRank/rank lang keys.
+        tooltip.add(net.minecraft.network.chat.Component.translatable("botaniamisc.toolRank",
+                net.minecraft.network.chat.Component.translatable("botania.rank" + getLevel(stack))));
+    }
+
+    private static void spawnCooldownSparkles(ItemStack stack, Level level, Entity entity, boolean selected) {
+        // Original: colored sparkles around the holder while the dash cooldown is above 26 ticks.
+        int tick = ItemComponentData.getInt(stack, TAG_TICK);
+        if (tick <= 26 || !selected) {
+            return;
+        }
+        for (int i = 0; i < 14; i++) {
+            float r = level.random.nextBoolean() ? 0.88235295F : 0.39607844F;
+            float g = level.random.nextBoolean() ? 0.2627451F : 0.81960785F;
+            float b = level.random.nextBoolean() ? 0.9411765F : 0.88235295F;
+            level.addParticle(vazkii.botania.client.fx.SparkleParticleData.sparkle(
+                            1.8F * (float) (Math.random() - 0.5D),
+                            r + (float) (Math.random() / 4.0D - 0.125D),
+                            g + (float) (Math.random() / 4.0D - 0.125D),
+                            b + (float) (Math.random() / 4.0D - 0.125D), 3),
+                    entity.getX() + (Math.random() - 0.5D),
+                    entity.getY() + (Math.random() - 0.5D) * 2.0D - 0.5D,
+                    entity.getZ() + (Math.random() - 0.5D),
+                    0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
-        if (!(entity instanceof Player player) || level.isClientSide()) {
+        if (!(entity instanceof Player player)) {
+            return;
+        }
+        if (level.isClientSide()) {
+            spawnCooldownSparkles(stack, level, entity, selected);
             return;
         }
         ItemComponentData.update(stack, tag -> {
@@ -259,7 +293,9 @@ public class SpaceBladeItem extends SwordItem {
 
         @Override
         public boolean acceptDispatchedManaFromItem(ItemStack otherStack) {
-            return true;
+            // The original refuses mana from IManaGivingItem sources (e.g. Mana Flower, Band of Aura).
+            return !(otherStack.getItem() instanceof ManaFlowerItem)
+                    && !(otherStack.getItem() instanceof vazkii.botania.common.item.equipment.bauble.BandOfAuraItem);
         }
 
         @Override

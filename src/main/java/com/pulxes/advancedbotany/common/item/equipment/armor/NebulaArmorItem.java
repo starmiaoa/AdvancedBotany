@@ -83,7 +83,10 @@ public class NebulaArmorItem extends ManasteelArmorItem {
     private static final float MAX_BOOT_SPEED = 0.275F;
 
     private static final Set<UUID> PLAYERS_WITH_FLIGHT = new HashSet<>();
-    private static final Set<UUID> PLAYERS_WITH_STEP_UP = new HashSet<>();
+    // Tracked per logical side, like the original's "name:isRemote" keys - integrated client and
+    // server must not consume each other's step-up state.
+    private static final Set<UUID> PLAYERS_WITH_STEP_UP_CLIENT = new HashSet<>();
+    private static final Set<UUID> PLAYERS_WITH_STEP_UP_SERVER = new HashSet<>();
     private static final ResourceLocation HELM_HEALTH_ID = id("nebula_helmet_health");
     private static final ResourceLocation CHEST_KNOCKBACK_ID = id("nebula_chest_knockback");
     private static final ResourceLocation STEP_HEIGHT_ID = id("nebula_boots_step_height");
@@ -253,14 +256,15 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         UUID id = player.getUUID();
         ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
         boolean hasBoots = boots.getItem() instanceof NebulaArmorItem armor && armor.type == ArmorItem.Type.BOOTS;
+        Set<UUID> stepUpTracked = player.level().isClientSide() ? PLAYERS_WITH_STEP_UP_CLIENT : PLAYERS_WITH_STEP_UP_SERVER;
         if (!hasBoots) {
-            if (PLAYERS_WITH_STEP_UP.remove(id)) {
+            if (stepUpTracked.remove(id)) {
                 setStepHeight(player, 0.6D);
             }
             return;
         }
 
-        PLAYERS_WITH_STEP_UP.add(id);
+        stepUpTracked.add(id);
         setStepHeight(player, player.isShiftKeyDown() ? 0.50001D : 1.0D);
         if ((player.onGround() || player.getAbilities().flying) && player.zza > 0.0F) {
             float speed = getBootSpeed(boots) * (player.isSprinting() ? 1.0F : 0.2F);
@@ -453,7 +457,8 @@ public class NebulaArmorItem extends ManasteelArmorItem {
         if (attribute != null) {
             attribute.removeModifier(STEP_HEIGHT_ID);
             double base = attribute.getBaseValue();
-            if (value > base) {
+            // Allow negative deltas - crouching lowers step height below the 0.6 base.
+            if (value != base) {
                 attribute.addOrUpdateTransientModifier(new AttributeModifier(STEP_HEIGHT_ID, value - base,
                         AttributeModifier.Operation.ADD_VALUE));
             }

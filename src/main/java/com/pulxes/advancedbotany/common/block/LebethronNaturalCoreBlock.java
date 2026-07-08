@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.pulxes.advancedbotany.common.block.entity.LebethronNaturalCoreBlockEntity;
 import com.pulxes.advancedbotany.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.InteractionHand;
@@ -57,7 +56,8 @@ public class LebethronNaturalCoreBlock extends BaseEntityBlock {
         if (!leafState.is(BlockTags.LEAVES)) {
             return InteractionResult.PASS;
         }
-        if (heldItem.has(DataComponents.BLOCK_ENTITY_DATA)) {
+        // The original refuses any data-bearing leaf stack outright instead of consuming it and losing its data.
+        if (!heldItem.getComponentsPatch().isEmpty()) {
             return InteractionResult.PASS;
         }
 

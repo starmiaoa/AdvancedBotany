@@ -89,7 +89,9 @@ public final class ClientPacketHandlers {
         }
         Color color = new Color(Color.HSBtoRGB(hue / 360.0F, 0.9F + (float) (Math.random() * 0.1D), 1.0F));
         for (int i = 0; i < 11; i++) {
-            level.addParticle(WispParticleData.wisp(
+            // addAlwaysVisibleParticle bypasses the vanilla distance cull, like the
+            // original's no-distance-limit flag (depth test already disabled below).
+            level.addAlwaysVisibleParticle(WispParticleData.wisp(
                             0.3F + (float) (Math.random() * 0.25D),
                             color.getRed() / 100.0F,
                             color.getGreen() / 100.0F,

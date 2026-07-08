@@ -134,7 +134,8 @@ public class EntitySword extends ThrowableProjectile {
         }
     }
 
-    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps, boolean teleport) {
+    @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps) {
         // Original client entity ignores server interpolation corrections.
     }
 
@@ -161,6 +162,7 @@ public class EntitySword extends ThrowableProjectile {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         tag.putInt("ticks", tickCount);
         tag.putFloat("disDamage", getDamage());
         UUID attacker = getAttacker();
@@ -171,6 +173,7 @@ public class EntitySword extends ThrowableProjectile {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         tickCount = tag.getInt("ticks");
         setDamage(tag.getFloat("disDamage"));
         if (tag.hasUUID("attacker")) {

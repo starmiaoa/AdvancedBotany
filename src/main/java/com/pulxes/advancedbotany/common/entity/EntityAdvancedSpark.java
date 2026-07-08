@@ -130,7 +130,7 @@ public class EntityAdvancedSpark extends Entity implements ManaSpark {
         for (Player player : players) {
             for (ItemStack stack : getPlayerManaStacks(player)) {
                 ManaItem manaItem = stack.getCapability(BotaniaForgeCapabilities.getItemApiLookupById(ManaItem.LOOKUP));
-                if (manaItem == null || !manaItem.acceptDispatchedManaFromItem(new ItemStack(ModItems.SUPERCONDUCTIVE_SPARK.get()))) {
+                if (manaItem == null || !manaItem.acceptDispatchedManaFromItem(new ItemStack(BotaniaItems.SPARK))) {
                     continue;
                 }
                 int toSend = Math.min(receiver.getCurrentMana(), Math.min(AdvancedBotanyEquipment.ADVANCED_SPARK_TRANSFER_SPEED, manaItem.getMaxMana() - manaItem.getMana()));

@@ -36,7 +36,8 @@ public class NebulaRodItem extends Item {
             parseDimensionBlacklist(System.getProperty(DIMENSION_BLACKLIST_PROPERTY, ""));
 
     public NebulaRodItem(Properties properties) {
-        super(properties.stacksTo(1).durability(AdvancedBotanyEquipment.NEBULA_ROD_MAX_DAMAGE).rarity(AdvancedBotanyAPI.RARITY_NEBULA));
+        // Damage is a gameplay cooldown, not wear - the original forbids anvil repair.
+        super(properties.stacksTo(1).setNoRepair().durability(AdvancedBotanyEquipment.NEBULA_ROD_MAX_DAMAGE).rarity(AdvancedBotanyAPI.RARITY_NEBULA));
     }
 
     @Override
@@ -150,13 +151,19 @@ public class NebulaRodItem extends Item {
 
         boolean isFinish = time > 80;
         int ticks = Math.min(100, time);
+        if (time % 40 == 1) {
+            // The original loops the nether-portal ambience (portal.portal) while charging.
+            player.playSound(net.minecraft.sounds.SoundEvents.PORTAL_AMBIENT, 1.2F, 1.0F);
+        }
         int totalSpiritCount = (int) Math.max(3.0F, (float) ticks / 100.0F * 18.0F);
         double tickIncrement = 360.0D / totalSpiritCount;
         int speed = 8;
         double wticks = (double) (ticks * speed) - tickIncrement;
         double radius = Math.sin((double) ticks / 100.0D) * Math.max(0.75D, 1.4D * (double) ticks / 100.0D);
         Vec3 look = player.getLookAngle();
-        MutableVec lookOffset = new MutableVec(look.x, look.y, look.z);
+        // Remote players get the original 1.62 eye-height offset so the ring sits at the upper body.
+        float yawOffset = player.isLocalPlayer() ? 0.0F : 1.62F;
+        MutableVec lookOffset = new MutableVec(look.x, look.y + yawOffset, look.z);
         MutableVec playerPos = new MutableVec(player.getX(), player.getY(), player.getZ());
         MutableVec particlePos = new MutableVec();
 

@@ -34,7 +34,7 @@ public class NebulaBlazeItem extends Item {
         }
         if (remainingUseDuration % 5 == 2 && ManaItemHandler.instance().requestManaExactForTool(stack, player, AdvancedBotanyEquipment.NEBULA_BLAZE_MANA, true)) {
             EntityNebulaBlaze blaze = new EntityNebulaBlaze(level, player);
-            blaze.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.0F);
+            blaze.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F); // vanilla throwable spread, as the original inherited
             level.addFreshEntity(blaze);
             level.playSound(null, player.blockPosition(), ModSounds.NEBULA_BLAZE.get(), SoundSource.PLAYERS, 0.4F, 1.4F);
         }

@@ -97,7 +97,8 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     private boolean craft(boolean fullCheck) {
-        if (level == null || fullCheck && !hasCraftingInput()) {
+        // The original only crafts once every unlocked crafting slot is filled.
+        if (level == null || fullCheck && !areCraftingSlotsBlocked()) {
             return false;
         }
         if (!(level instanceof ServerLevel serverLevel)) {
@@ -164,17 +165,9 @@ public class MagicCraftCrateBlockEntity extends BaseInventoryBlockEntity impleme
     }
 
     public boolean isFull() {
-        return hasCraftingInput();
+        return areCraftingSlotsBlocked();
     }
 
-    private boolean hasCraftingInput() {
-        for (int i = 0; i < 9; i++) {
-            if (!isLocked(i) && !getItem(i).isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private boolean areCraftingSlotsBlocked() {
         for (int i = 0; i < 9; i++) {

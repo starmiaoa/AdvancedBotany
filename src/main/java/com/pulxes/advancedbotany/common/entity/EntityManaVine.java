@@ -43,7 +43,8 @@ import vazkii.botania.client.fx.WispParticleData;
 public class EntityManaVine extends ThrowableProjectile {
     private static final EntityDataAccessor<Optional<UUID>> ATTACKER =
             SynchedEntityData.defineId(EntityManaVine.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final int MAX_LIFETIME = 240;
+    // The original increments ticksExisted twice per tick before its >= 240 check, so ~120 real ticks.
+    private static final int MAX_LIFETIME = 120;
 
     public EntityManaVine(EntityType<? extends EntityManaVine> entityType, Level level) {
         super(entityType, level);
@@ -107,7 +108,9 @@ public class EntityManaVine extends ThrowableProjectile {
     }
 
     private void makeAnimalsLove(BlockPos center, Player player) {
-        AABB bounds = new AABB(center).inflate(10.0D);
+        // Exact +/-10 span from the impact coords; AABB(BlockPos) would add +1 on the positive axes.
+        AABB bounds = new AABB(center.getX() - 10, center.getY() - 10, center.getZ() - 10,
+                center.getX() + 10, center.getY() + 10, center.getZ() + 10);
         List<Animal> animals = level().getEntitiesOfClass(Animal.class, bounds, Animal::isAlive);
         for (Animal animal : animals) {
             if (CommonHooks.onEntityIncomingDamage(animal,
@@ -257,7 +260,8 @@ public class EntityManaVine extends ThrowableProjectile {
         super.remove(reason);
     }
 
-    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps, boolean teleport) {
+    @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps) {
         // The original projectile ignores client interpolation corrections.
     }
 
@@ -284,6 +288,7 @@ public class EntityManaVine extends ThrowableProjectile {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         tag.putInt("ticks", tickCount);
         UUID attacker = getAttacker();
         if (attacker != null) {
@@ -293,6 +298,7 @@ public class EntityManaVine extends ThrowableProjectile {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         tickCount = tag.getInt("ticks");
         if (tag.hasUUID("attacker")) {
             setAttacker(tag.getUUID("attacker"));

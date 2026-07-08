@@ -74,6 +74,7 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 }
 
                 if (level.isClientSide) {
+                    spawnConsumeParticles(level, itemEntity, stack);
                     return;
                 }
 
@@ -105,6 +106,22 @@ public class AncientAlphirineBlockEntity extends FunctionalFlowerBlockEntity {
                 .map(holder -> holder.value())
                 .filter(recipe -> recipe.matches(new ContainerRecipeInput(container), level))
                 .findFirst();
+    }
+
+    private void spawnConsumeParticles(Level level, ItemEntity itemEntity, ItemStack stack) {
+        for (int i = 0; i < 10; i++) {
+            double mx = (level.random.nextDouble() - 0.5D) * 0.2D;
+            double my = (level.random.nextDouble() - 0.5D) * 0.2D;
+            double mz = (level.random.nextDouble() - 0.5D) * 0.2D;
+            level.addParticle(
+                    new net.minecraft.core.particles.ItemParticleOption(net.minecraft.core.particles.ParticleTypes.ITEM, stack),
+                    itemEntity.getX(),
+                    itemEntity.getY(),
+                    itemEntity.getZ(),
+                    mx,
+                    my,
+                    mz);
+        }
     }
 
     private void spawnPortal(ItemStack stack) {

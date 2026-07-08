@@ -92,8 +92,23 @@ public class EngineerHopperBlockEntity extends BaseInventoryBlockEntity implemen
             return false;
         }
 
-        ItemStack remainder = ItemHandlerHelper.insertItem(target, stack.copy(), false);
-        int moved = stack.getCount() - remainder.getCount();
+        // The original only moves what the first accepting target slot can take per cooldown,
+        // then lets the insert spread that amount across slots.
+        int pullCount = 0;
+        for (int i = 0; i < target.getSlots(); i++) {
+            ItemStack leftover = target.insertItem(i, stack.copy(), true);
+            if (leftover.getCount() < stack.getCount()) {
+                pullCount = stack.getCount() - leftover.getCount();
+                break;
+            }
+        }
+        if (pullCount <= 0) {
+            return false;
+        }
+        ItemStack offer = stack.copy();
+        offer.setCount(pullCount);
+        ItemStack remainder = ItemHandlerHelper.insertItem(target, offer, false);
+        int moved = pullCount - remainder.getCount();
         if (moved <= 0) {
             return false;
         }
