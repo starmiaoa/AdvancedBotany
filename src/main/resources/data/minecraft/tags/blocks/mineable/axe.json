@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "advancedbotany:magic_craft_crate",
+    "advancedbotany:lebethron_wood",
+    "advancedbotany:glimmering_lebethron_wood",
+    "advancedbotany:lebethron_planks",
+    "advancedbotany:mossy_lebethron_planks",
+    "advancedbotany:lebethron_natural_core",
+    "advancedbotany:natural_mana_spreader"
+  ]
+}
