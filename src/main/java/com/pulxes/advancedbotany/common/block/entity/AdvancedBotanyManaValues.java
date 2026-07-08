@@ -11,7 +11,7 @@ public final class AdvancedBotanyManaValues {
     public static final float NATURAL_SPREADER_LOSS_PER_TICK = NATURAL_SPREADER_BURST_MANA / 4.5F;
     public static final float NATURAL_SPREADER_MOTION_MODIFIER = 2.5F;
     public static final float NATURAL_SPREADER_GRAVITY = 0.0F;
-    public static final int NATURAL_SPREADER_COLOR = 0xCDE699;
+    public static final int NATURAL_SPREADER_COLOR = 0xCDD419; // original decimal 13489177
 
     public static final int MANA_CHARGER_SPEED = 11_240;
 

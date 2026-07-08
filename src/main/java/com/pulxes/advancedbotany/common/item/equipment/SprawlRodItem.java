@@ -18,7 +18,8 @@ import vazkii.botania.common.item.GrassSeedsItem;
 
 public class SprawlRodItem extends Item {
     public SprawlRodItem(Properties properties) {
-        super(properties.stacksTo(1).durability(AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE));
+        // Damage is a gameplay cooldown, not wear - the original forbids anvil repair.
+        super(properties.stacksTo(1).setNoRepair().durability(AdvancedBotanyEquipment.SPRAWL_ROD_MAX_DAMAGE));
     }
 
     @Override

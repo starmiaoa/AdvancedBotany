@@ -91,7 +91,9 @@ public final class ClientPacketHandlers {
         for (int i = 0; i < 11; i++) {
             // Original: wispFX with depth test + distance limit disabled so highlights show
             // through walls (the whole point of a block finder); /100 colours are original.
-            level.addParticle(WispParticleData.wisp(
+            // addAlwaysVisibleParticle also bypasses the vanilla distance cull, like the
+            // original's no-distance-limit flag.
+            level.addAlwaysVisibleParticle(WispParticleData.wisp(
                             0.3F + (float) (Math.random() * 0.25D),
                             color.getRed() / 100.0F,
                             color.getGreen() / 100.0F,

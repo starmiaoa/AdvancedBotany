@@ -40,7 +40,8 @@ public class TerraFarmlandBlock extends Block {
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
         Block plant = plantable.getPlant(level, pos.above()).getBlock();
-        return plant != Blocks.SUGAR_CANE && (plant != Blocks.NETHER_WART || isRegisteredSpecialPlant(plant));
+        // The original also refuses cactus alongside reeds (sugar cane).
+        return plant != Blocks.CACTUS && plant != Blocks.SUGAR_CANE && (plant != Blocks.NETHER_WART || isRegisteredSpecialPlant(plant));
     }
 
     @Override

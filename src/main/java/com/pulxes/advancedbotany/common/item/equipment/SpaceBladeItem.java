@@ -81,7 +81,7 @@ public class SpaceBladeItem extends SwordItem {
                 && ManaItemHandler.instance().requestManaExactForTool(stack, player, AdvancedBotanyEquipment.SPACE_BLADE_PROJECTILE_MANA, true)) {
             EntitySword sword = new EntitySword(player.level(), player);
             sword.setDamage(getSwordDamage(stack));
-            sword.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.0F);
+            sword.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F); // vanilla throwable spread, as the original inherited
             sword.setDeltaMovement(sword.getDeltaMovement().scale(0.2D));
             player.level().addFreshEntity(sword);
             player.level().playSound(null, player.blockPosition(), ModSounds.BLADE_SPACE.get(), SoundSource.PLAYERS, 0.5F, 3.6F);
@@ -261,7 +261,9 @@ public class SpaceBladeItem extends SwordItem {
 
         @Override
         public boolean canReceiveManaFromItem(ItemStack otherStack) {
-            return true;
+            // The original refuses mana from IManaGivingItem sources (e.g. Mana Flower, Band of Aura).
+            return !(otherStack.getItem() instanceof ManaFlowerItem)
+                    && !(otherStack.getItem() instanceof vazkii.botania.common.item.equipment.bauble.BandOfAuraItem);
         }
 
         @Override

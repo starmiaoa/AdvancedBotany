@@ -222,7 +222,13 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
     }
 
     @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps, boolean teleport) {
+        // The original projectile ignores client interpolation corrections.
+    }
+
+    @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         tag.putInt("ticks", tickCount);
         tag.putString("attacker", getAttacker());
         tag.put("seedStack", getSeed().save(new CompoundTag()));
@@ -231,6 +237,7 @@ public class EntitySeed extends ThrowableProjectile implements ItemSupplier {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         tickCount = tag.getInt("ticks");
         setAttacker(tag.getString("attacker"));
         setSeed(ItemStack.of(tag.getCompound("seedStack")));

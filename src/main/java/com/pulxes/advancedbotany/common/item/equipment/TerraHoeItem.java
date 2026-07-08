@@ -24,6 +24,20 @@ public class TerraHoeItem extends HoeItem {
         super(AdvancedBotanyEquipment.terrasteelTier(), -3, 0.0F, properties.stacksTo(1));
     }
 
+    private static void spawnTillParticles(Level level, BlockPos pos) {
+        // Original: a burst of 48 green wisps when the hoe tills.
+        float velMul = 0.025F;
+        for (int i = 0; i < 48; i++) {
+            double px = (Math.random() - 0.5D) * 3.0D;
+            double py = Math.random() - 0.5D + 1.0D;
+            double pz = (Math.random() - 0.5D) * 3.0D;
+            float size = (float) Math.random() * 0.15F + 0.15F;
+            level.addParticle(vazkii.botania.client.fx.WispParticleData.wisp(size, 0.0F, 0.4F, 0.0F),
+                    pos.getX() + 0.5D + px, pos.getY() + 0.5D + py, pos.getZ() + 0.5D + pz,
+                    -px * velMul, -py * velMul, -pz * velMul);
+        }
+    }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
@@ -44,7 +58,9 @@ public class TerraHoeItem extends HoeItem {
             BlockState farmland = ModBlocks.TERRA_FARMLAND.get().defaultBlockState();
             SoundType sound = farmland.getSoundType(level, pos, player);
             level.playSound(player, pos, sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
-            if (!level.isClientSide()) {
+            if (level.isClientSide()) {
+                spawnTillParticles(level, pos);
+            } else {
                 level.setBlock(pos, farmland, 11);
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
             }

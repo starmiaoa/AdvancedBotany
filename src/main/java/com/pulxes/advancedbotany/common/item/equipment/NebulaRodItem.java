@@ -37,7 +37,8 @@ public class NebulaRodItem extends Item {
             parseDimensionBlacklist(System.getProperty(DIMENSION_BLACKLIST_PROPERTY, ""));
 
     public NebulaRodItem(Properties properties) {
-        super(properties.stacksTo(1).durability(AdvancedBotanyEquipment.NEBULA_ROD_MAX_DAMAGE).rarity(AdvancedBotanyAPI.RARITY_NEBULA));
+        // Damage is a gameplay cooldown, not wear - the original forbids anvil repair.
+        super(properties.stacksTo(1).setNoRepair().durability(AdvancedBotanyEquipment.NEBULA_ROD_MAX_DAMAGE).rarity(AdvancedBotanyAPI.RARITY_NEBULA));
     }
 
     @Override

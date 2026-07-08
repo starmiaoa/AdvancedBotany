@@ -161,6 +161,7 @@ public class EntitySword extends ThrowableProjectile {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         tag.putInt("ticks", tickCount);
         tag.putFloat("disDamage", getDamage());
         UUID attacker = getAttacker();
@@ -171,6 +172,7 @@ public class EntitySword extends ThrowableProjectile {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         tickCount = tag.getInt("ticks");
         setDamage(tag.getFloat("disDamage"));
         if (tag.hasUUID("attacker")) {

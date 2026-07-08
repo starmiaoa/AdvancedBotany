@@ -45,7 +45,8 @@ public class LebethronNaturalCoreBlock extends BaseEntityBlock {
         if (!leafState.is(BlockTags.LEAVES)) {
             return InteractionResult.PASS;
         }
-        if (heldItem.hasTag() && heldItem.getTag() != null && heldItem.getTag().contains("BlockEntityTag")) {
+        // The original refuses any NBT-bearing leaf stack outright instead of consuming it and losing its data.
+        if (heldItem.hasTag()) {
             return InteractionResult.PASS;
         }
 

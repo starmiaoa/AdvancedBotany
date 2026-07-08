@@ -168,6 +168,7 @@ public class EntityNebulaBlaze extends ThrowableProjectile {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         tag.putInt("ticks", tickCount);
         UUID attacker = getAttacker();
         if (attacker != null) {
@@ -177,6 +178,7 @@ public class EntityNebulaBlaze extends ThrowableProjectile {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         tickCount = tag.getInt("ticks");
         if (tag.hasUUID("attacker")) {
             setAttacker(tag.getUUID("attacker"));

@@ -35,7 +35,8 @@ public class AquaSwordItem extends SwordItem {
             return false;
         }
 
-        AABB bounds = target.getBoundingBox().inflate(1.7D);
+        // The original sweeps from the previous-tick position to the current one before inflating.
+        AABB bounds = new AABB(target.getX(), target.getY(), target.getZ(), target.xo, target.yo, target.zo).inflate(1.7D);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, bounds, entity -> canDamage(player, entity));
         boolean splashed = false;
         for (LivingEntity living : entities) {
@@ -71,7 +72,7 @@ public class AquaSwordItem extends SwordItem {
             spawnHoldEffects(level, player, stack, remainingUseDuration);
             return;
         }
-        AABB bounds = player.getBoundingBox().inflate(2.75D);
+        AABB bounds = new AABB(player.getX(), player.getY(), player.getZ(), player.xo, player.yo, player.zo).inflate(2.75D);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, bounds, entity -> canDamage(player, entity));
         for (LivingEntity living : entities) {
             double distance = living.distanceTo(player) / 2.5D;
